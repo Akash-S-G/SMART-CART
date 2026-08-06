@@ -27,15 +27,22 @@ const PRICE_FILTERS = [
 const SORTS = ['Recommended', 'Price: Low to High', 'Price: High to Low', 'Top Rated']
 
 export function CollectionsPage() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('search') || ''
+  const categoryParam = searchParams.get('category') || ''
   const { addItem } = useCart()
   const { items: wishlistItems, toggleItem: toggleWishlist } = useWishlist()
   const { toast } = useToast()
 
-  const [cats, setCats] = useState<string[]>([])
+  const [cats, setCats] = useState<string[]>(() => categoryParam ? [categoryParam] : [])
   const [prices, setPrices] = useState<string[]>([])
   const [sort, setSort] = useState('Recommended')
+
+  useEffect(() => {
+    if (categoryParam && !cats.includes(categoryParam)) {
+      setCats([categoryParam])
+    }
+  }, [categoryParam])
 
   const { data: categories } = useQuery({
     queryKey: ['categories'],
@@ -346,6 +353,18 @@ function ProductCard({
             {p.rating || 4.5}
           </span>
         </div>
+        {/* Stock indicator */}
+        {typeof p.stock === 'number' && (
+          <div className="mt-1">
+            {p.stock === 0 ? (
+              <span className="text-[10px] font-semibold text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">Out of Stock</span>
+            ) : p.stock <= 5 ? (
+              <span className="text-[10px] font-semibold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full">Only {p.stock} left!</span>
+            ) : (
+              <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full">In Stock</span>
+            )}
+          </div>
+        )}
       </div>
     </Link>
   )

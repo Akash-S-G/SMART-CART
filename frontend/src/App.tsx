@@ -8,6 +8,7 @@ import { CheckoutPage } from '@/pages/checkout'
 import { AnalyticsPage } from '@/pages/analytics'
 import { AdminPage } from '@/pages/admin'
 import { ProfilePage } from '@/pages/profile'
+import { OrdersPage } from '@/pages/orders'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="admin" element={<AdminPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="orders" element={<OrdersPage />} />
         <Route path="*" element={<LandingPage />} />
       </Route>
     </Routes>

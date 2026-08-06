@@ -25,10 +25,22 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+    VariantProps<typeof badgeVariants> {
+  success?: boolean
+  warning?: boolean
+  destructive?: boolean
+  ai?: boolean
+}
 
-export function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />
+export function Badge({ className, variant, success, warning, destructive, ai, ...props }: BadgeProps) {
+  let resolvedVariant = variant
+  if (!resolvedVariant) {
+    if (success) resolvedVariant = 'success'
+    else if (warning) resolvedVariant = 'warning'
+    else if (destructive) resolvedVariant = 'destructive'
+    else if (ai) resolvedVariant = 'ai'
+  }
+  return <div className={cn(badgeVariants({ variant: resolvedVariant }), className)} {...props} />
 }
 
 export { badgeVariants }

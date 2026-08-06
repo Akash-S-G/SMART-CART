@@ -1,10 +1,12 @@
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { ShoppingCart, User, LogOut, LayoutDashboard } from 'lucide-react'
+import { ShoppingCart, User, LogOut, LayoutDashboard, Sun, Moon, Package } from 'lucide-react'
 import { Logo } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/cn'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
+import { useTheme } from '@/hooks/use-theme'
+import { useLanguage } from '@/hooks/use-language'
 import { useEffect } from 'react'
 import {
   DropdownMenu,
@@ -25,6 +27,8 @@ export function Navbar() {
   const navigate = useNavigate()
   const { isAuthenticated, user, openLogin, logout } = useAuth()
   const { cart, fetchCart } = useCart()
+  const { isDark, toggle: toggleTheme } = useTheme()
+  const { lang, toggleLanguage, t } = useLanguage()
 
   const isCheckout = location.pathname.startsWith('/checkout')
 
@@ -80,6 +84,28 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Language toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-label="Switch language"
+            className="text-xs font-bold font-mono px-2 py-1 h-8 text-muted-foreground hover:text-foreground"
+            onClick={toggleLanguage}
+          >
+            {lang === 'en' ? 'EN | हिन्दी' : 'हिन्दी | EN'}
+          </Button>
+
+          {/* Dark mode toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Toggle theme"
+            className="text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary"
+            onClick={toggleTheme}
+          >
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+
           <Button
             variant="ghost"
             size="icon"
@@ -118,6 +144,9 @@ export function Navbar() {
                 <DropdownMenuSeparator className="bg-black/[0.06]" />
                 <DropdownMenuItem onClick={() => navigate('/profile')} className="rounded-xl flex items-center gap-2 py-2">
                   <User className="h-4 w-4" /> My Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/orders')} className="rounded-xl flex items-center gap-2 py-2">
+                  <Package className="h-4 w-4" /> My Orders
                 </DropdownMenuItem>
                 {user?.role === 'admin' && (
                   <DropdownMenuItem onClick={() => navigate('/admin')} className="rounded-xl flex items-center gap-2 py-2">

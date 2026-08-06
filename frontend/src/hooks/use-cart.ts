@@ -40,6 +40,10 @@ export const useCart = create<CartStore>((set, get) => ({
       set({ cart, loading: false })
       return cart
     } catch (err: any) {
+      if (err.response?.status === 401) {
+        set({ cart: null, loading: false })
+        return null
+      }
       set({ error: err.message || 'Failed to fetch cart', loading: false })
       return null
     }

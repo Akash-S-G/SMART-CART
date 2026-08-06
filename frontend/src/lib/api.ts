@@ -152,3 +152,42 @@ export async function createProductApi(body: any): Promise<Product> {
   return postJson<Product, any>('/products', body)
 }
 
+/* ==========================================================================
+   REVIEWS APIs
+   ========================================================================== */
+
+export interface Review {
+  id: string
+  product_id: string
+  user_name: string | null
+  rating: number
+  title: string | null
+  body: string
+  verified_purchase: boolean
+  helpful_count: number
+  review_date: string
+  is_generated: boolean
+}
+
+export async function getProductReviewsApi(productId: string, page = 1): Promise<Review[]> {
+  return getJson<Review[]>(`/products/${productId}/reviews?page=${page}&page_size=10`)
+}
+
+export async function createReviewApi(
+  productId: string,
+  body: { rating: number; title?: string; body: string }
+): Promise<Review> {
+  return postJson<Review, typeof body>(`/products/${productId}/reviews`, body)
+}
+
+export async function markReviewHelpfulApi(productId: string, reviewId: string): Promise<Review> {
+  return postJson<Review, Record<string, never>>(`/products/${productId}/reviews/${reviewId}/helpful`, {})
+}
+
+/* ==========================================================================
+   ORDER MANAGEMENT APIs
+   ========================================================================== */
+
+export async function cancelOrderApi(orderId: string): Promise<{ message: string }> {
+  return patchJson<{ message: string }, Record<string, never>>(`/orders/${orderId}/cancel`, {})
+}

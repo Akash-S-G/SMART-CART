@@ -227,6 +227,11 @@ def import_vdf_products(db):
 
 def main():
     print(">>> SmartCart AI — Catalog Cleanup & VDF Import")
+    from app.db.database import engine
+    from app.db.base import Base
+    print("[info] Ensuring all database tables exist...")
+    Base.metadata.create_all(bind=engine)
+
     db = SessionLocal()
     try:
         purge_non_english(db)

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Play,
   Star,
@@ -17,11 +17,14 @@ import {
   Activity,
   Heart,
   ArrowLeft,
+  Loader2,
+  CheckCircle,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { getProductApi, addToCartApi, getCategoriesApi } from '@/lib/api'
+import { getProductApi, addToCartApi, getCategoriesApi, getProductReviewsApi, createReviewApi, markReviewHelpfulApi } from '@/lib/api'
+import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useToast } from '@/components/ui/use-toast'
@@ -37,6 +40,11 @@ export function ProductPage() {
   const [qty, setQty] = useState(1)
   const [activeTab, setActiveTab] = useState('specs')
   const [activeImageIndex, setActiveImageIndex] = useState(0)
+  const [reviewRating, setReviewRating] = useState(5)
+  const [reviewTitle, setReviewTitle] = useState('')
+  const [reviewBody, setReviewBody] = useState('')
+  const { user } = useAuth()
+  const queryClient = useQueryClient()
 
   const { data: p, isLoading, error } = useQuery({
     queryKey: ['product', id],
@@ -47,6 +55,29 @@ export function ProductPage() {
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategoriesApi,
+  })
+
+  const { data: reviews = [], isLoading: reviewsLoading } = useQuery({
+    queryKey: ['reviews', id],
+    queryFn: () => getProductReviewsApi(id!),
+    enabled: !!id,
+  })
+
+  const submitReview = useMutation({
+    mutationFn: () => createReviewApi(id!, { rating: reviewRating, title: reviewTitle || undefined, body: reviewBody }),
+    onSuccess: () => {
+      toast({ title: 'Review submitted!', description: 'Thank you for your feedback.' })
+      setReviewBody('')
+      setReviewTitle('')
+      setReviewRating(5)
+      queryClient.invalidateQueries({ queryKey: ['reviews', id] })
+    },
+    onError: () => toast({ title: 'Error', description: 'Could not submit review.', variant: 'destructive' }),
+  })
+
+  const markHelpful = useMutation({
+    mutationFn: (reviewId: string) => markReviewHelpfulApi(id!, reviewId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['reviews', id] }),
   })
 
   // Fallback if no images are present
@@ -507,42 +538,109 @@ export function ProductPage() {
 
         <TabsContent value="reviews" className="mt-8">
           <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+            {/* Rating summary */}
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm flex flex-col gap-3">
-              <div className="text-4xl font-extrabold text-foreground">{p.rating || 4.5}</div>
-              <div className="flex text-warning">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className={`h-4 w-4 fill-current ${i < Math.floor(p.rating || 4.5) ? 'text-warning' : 'text-border'}`} />
-                ))}
+              <div className="text-4xl font-extrabold text-foreground">
+                {reviews.length > 0
+                  ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
+                  : (p.rating || '—')}
               </div>
-              <p className="text-xs text-muted-foreground">Verified ratings average</p>
+              <div className="flex text-warning">
+                {Array.from({ length: 5 }).map((_, i) => {
+                  const avg = reviews.length > 0 ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : (p.rating || 0)
+                  return <Star key={i} className={`h-4 w-4 fill-current ${i < Math.floor(avg) ? 'text-warning' : 'text-border'}`} />
+                })}
+              </div>
+              <p className="text-xs text-muted-foreground">{reviews.length} verified reviews</p>
             </div>
 
-            <div className="bg-card rounded-2xl border border-border p-6 shadow-sm flex flex-col gap-6">
-              <h4 className="font-bold text-foreground text-base">Reviews</h4>
-              <div className="divide-y divide-border space-y-6">
-                {dynamicInsightsAndReviews.reviews.map((r, idx) => (
-                  <div key={idx} className={`${idx > 0 ? 'pt-6' : 'pt-2'} flex flex-col gap-3`}>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
-                          {r.initials}
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-foreground">{r.author}</p>
-                          <div className="flex text-warning">
-                            {Array.from({ length: r.rating }).map((_, i) => (
-                              <Star key={i} className="h-3 w-3 fill-current text-warning" />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground"><ThumbsUp className="h-4 w-4" /></Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {r.text}
-                    </p>
+            <div className="flex flex-col gap-6">
+              {/* Write a Review */}
+              {user ? (
+                <div className="bg-card rounded-2xl border border-border p-6 shadow-sm flex flex-col gap-4">
+                  <h4 className="font-bold text-foreground text-sm">Write a Review</h4>
+                  {/* Star picker */}
+                  <div className="flex gap-1">
+                    {[1,2,3,4,5].map(star => (
+                      <button key={star} onClick={() => setReviewRating(star)} className="transition-transform hover:scale-110">
+                        <Star className={`h-6 w-6 ${star <= reviewRating ? 'fill-warning text-warning' : 'text-border'}`} />
+                      </button>
+                    ))}
                   </div>
-                ))}
+                  <input
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    placeholder="Review title (optional)"
+                    value={reviewTitle}
+                    onChange={e => setReviewTitle(e.target.value)}
+                  />
+                  <textarea
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+                    rows={4}
+                    placeholder="Share your experience with this product…"
+                    value={reviewBody}
+                    onChange={e => setReviewBody(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => submitReview.mutate()}
+                    disabled={submitReview.isPending || reviewBody.length < 5}
+                    className="self-end"
+                  >
+                    {submitReview.isPending ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                    Submit Review
+                  </Button>
+                </div>
+              ) : (
+                <div className="bg-card rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+                  Sign in to leave a review
+                </div>
+              )}
+
+              {/* Reviews list */}
+              <div className="bg-card rounded-2xl border border-border p-6 shadow-sm flex flex-col gap-6">
+                <h4 className="font-bold text-foreground text-base">Customer Reviews</h4>
+                {reviewsLoading ? (
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm"><Loader2 className="h-4 w-4 animate-spin" /> Loading reviews…</div>
+                ) : reviews.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No reviews yet. Be the first!</p>
+                ) : (
+                  <div className="divide-y divide-border">
+                    {reviews.map((r) => (
+                      <div key={r.id} className="py-5 first:pt-0 flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+                              {(r.user_name || 'U').slice(0, 2).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-xs font-bold text-foreground">{r.user_name || 'Anonymous'}</p>
+                                {r.verified_purchase && (
+                                  <span className="text-[10px] text-emerald-500 flex items-center gap-0.5 font-medium">
+                                    <CheckCircle className="h-3 w-3" /> Verified
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex text-warning">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <Star key={i} className={`h-3 w-3 fill-current ${i < r.rating ? 'text-warning' : 'text-border'}`} />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => markHelpful.mutate(r.id)}
+                            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            <ThumbsUp className="h-3.5 w-3.5" />
+                            {r.helpful_count > 0 && r.helpful_count}
+                          </button>
+                        </div>
+                        {r.title && <p className="text-sm font-semibold text-foreground">{r.title}</p>}
+                        <p className="text-xs text-muted-foreground leading-relaxed">{r.body}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
