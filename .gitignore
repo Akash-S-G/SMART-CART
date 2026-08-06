@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# uv
+.uv/
+
+# Environment variables
+.env
+*.env
+
+# Logs
+*.log
+logs/
+
+# Model weights (large binary files)
+*.pt
+*.onnx
+*.pb
+*.weights
+
+# Dataset images (downloaded at runtime)
+vision-dataset-factory/storage/exports/combined_groceries/train/
+vision-dataset-factory/storage/exports/combined_groceries/valid/
+vision-dataset-factory/storage/raw/
+vision-dataset-factory/storage/normalized/
+vision-dataset-factory/storage/candidate_images/
+vision-dataset-factory/storage/downloads/
+vision-dataset-factory/storage/duplicates/
+vision-dataset-factory/storage/rejected/
+vision-dataset-factory/storage/temp/
+
+# SQLite databases
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled test caches
+.pytest_cache/
+.mypy_cache/
