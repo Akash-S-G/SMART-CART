@@ -1,0 +1,66 @@
+from __future__ import annotations
+
+from ultralytics.engine.results import Results
+
+from app.ai.config import (
+    CONFIDENCE_THRESHOLD,
+    IOU_THRESHOLD,
+)
+
+from app.ai.model_loader import (
+    model_loader,
+)
+
+
+class YOLOProvider:
+
+    def __init__(self):
+
+        self.model = model_loader.get_model()
+
+    # =====================================================
+    # SINGLE IMAGE
+    # =====================================================
+
+    def predict(
+        self,
+        image,
+    ) -> Results:
+
+        result = self.model.predict(
+
+            source=image,
+
+            conf=CONFIDENCE_THRESHOLD,
+
+            iou=IOU_THRESHOLD,
+
+            verbose=False,
+
+        )
+
+        return result[0]
+
+    # =====================================================
+    # BATCH
+    # =====================================================
+
+    def predict_batch(
+        self,
+        images,
+    ):
+
+        return self.model.predict(
+
+            source=images,
+
+            conf=CONFIDENCE_THRESHOLD,
+
+            iou=IOU_THRESHOLD,
+
+            verbose=False,
+
+        )
+
+
+yolo_provider = YOLOProvider()

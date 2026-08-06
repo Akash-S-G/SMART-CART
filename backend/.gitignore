@@ -1,0 +1,16 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+static/
+
+# Virtual environments
+.venv
+
+# Local notes and reference docs
+SQLAlchemy-FastAPI-Postgres.md
+.env
+.vscode/

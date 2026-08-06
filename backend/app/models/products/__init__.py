@@ -1,0 +1,9 @@
+from app.models.products.categories import Category  # noqa: F401
+from app.models.products.product_image import ProductImage  # noqa: F401
+from app.models.products.inventory import Inventory  # noqa: F401
+from app.models.products.product_price import ProductPrice  # noqa: F401
+from app.models.products.product_weight import ProductWeight  # noqa: F401
+from app.models.products.prodcut_detection import ProductDetection  # noqa: F401
+from app.models.products.product import Product  # noqa: F401
+from app.models.products.inventory_transaction import InventoryTransaction  # noqa: F401
+from app.models.products.review import Review  # noqa: F401
