@@ -78,9 +78,19 @@ class Settings(BaseSettings):
     GOOGLE_REDIRECT_URI: str | None = None
 
 
+    def validate_secrets(self) -> None:
+        if not self.SECRET_KEY or self.SECRET_KEY in ["secret", "change-me", "your_secret_key"]:
+            if self.ENVIRONMENT == "production":
+                raise RuntimeError("CRITICAL: Insecure or missing SECRET_KEY in production environment!")
+        if not self.DATABASE_URL:
+            raise RuntimeError("CRITICAL: Missing DATABASE_URL environment variable!")
+
+
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()
+    st = Settings()
+    st.validate_secrets()
+    return st
 
 
 settings = get_settings()

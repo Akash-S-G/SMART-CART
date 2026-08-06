@@ -56,6 +56,8 @@ def _resolve_url() -> str:
                     break
     if not url:
         raise RuntimeError("DATABASE_URL not found in env or .env")
+    if url.startswith("postgresql://"):
+        url = url.replace("postgresql://", "postgresql+psycopg://", 1)
     return url
 
 

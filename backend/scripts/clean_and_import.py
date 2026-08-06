@@ -117,11 +117,17 @@ def import_vdf_products(db):
     images_added = 0
 
     # Get or create a default "Groceries" category
-    cat = db.query(Category).filter(Category.name == "Groceries").first()
+    cat = db.query(Category).filter(Category.name.ilike("%grocer%")).first()
+    if not cat:
+        cat = db.query(Category).first()
     if not cat:
         cat = Category(id=str(uuid.uuid4()), name="Groceries", description="General grocery items")
         db.add(cat)
-        db.flush()
+        try:
+            db.commit()
+        except Exception:
+            db.rollback()
+            cat = db.query(Category).first()
 
     for vdf_id, brand, name, category in vdf_products:
         if not is_clean_english(name):
@@ -223,7 +229,135 @@ def import_vdf_products(db):
     print(f"    New images imported: {images_added}")
 
 
+def import_static_gallery_images(db):
+    print(f"\n{'='*60}")
+    print(f"  PHASE 3 — Index static & gallery product images")
+    print(f"{'='*60}")
+
+    prods = {p.sku: p.id for p in db.query(Product).all()}
+    print(f"  Indexing images for {len(prods)} active products in DB...")
+
+    images_added = 0
+
+    # 1. Scan subdirectories in static/products/ (e.g. static/products/SC-FRU-00002/gallery_1.jpg)
+    for folder in STATIC_DIR.iterdir():
+        if folder.is_dir() and folder.name in prods:
+            product_id = prods[folder.name]
+            for img_file in folder.glob("*.*"):
+                if img_file.suffix.lower() in [".jpg", ".jpeg", ".png", ".webp"]:
+                    rel_url = f"/static/products/{folder.name}/{img_file.name}"
+                    existing = db.query(ProductImage).filter(
+                        ProductImage.product_id == product_id,
+                        ProductImage.image_url == rel_url,
+                    ).first()
+                    if not existing:
+                        db.add(ProductImage(
+                            id=str(uuid.uuid4()),
+                            product_id=product_id,
+                            image_url=rel_url,
+                            image_type="gallery",
+                            is_primary=True,
+                        ))
+                        images_added += 1
+
+    # 2. Scan dataset export train/images (e.g. prod_SC-BAB-00001_0.jpg)
+    train_dir = Path("/home/akash/Desktop/Smart cart/vision-dataset-factory/storage/exports/combined_groceries/train/images")
+    if train_dir.exists():
+        for img_file in train_dir.glob("prod_*.jpg"):
+            # format: prod_SKU_0.jpg
+            parts = img_file.stem.split("_")
+            if len(parts) >= 2:
+                sku = parts[1]
+                if sku in prods:
+                    product_id = prods[sku]
+                    rel_url = f"/static/products/{img_file.name}"
+                    # copy to static if not present
+                    dest = STATIC_DIR / img_file.name
+                    if not dest.exists():
+                        shutil.copy2(img_file, dest)
+
+                    existing = db.query(ProductImage).filter(
+                        ProductImage.product_id == product_id,
+                        ProductImage.image_url == rel_url,
+                    ).first()
+                    if not existing:
+                        db.add(ProductImage(
+                            id=str(uuid.uuid4()),
+                            product_id=product_id,
+                            image_url=rel_url,
+                            image_type="training",
+                            is_primary=False,
+                        ))
+                        images_added += 1
+
+    db.commit()
+    print(f"  Indexed {images_added} additional product gallery & training images.")
+
+
 # ── main ────────────────────────────────────────────────────────────────────
+
+def seed_candidate_catalog(db):
+    if db.query(Product).count() < 100:
+        print(f"\n{'='*60}")
+        print(f"  PHASE 0 — Fast Seeding 1,090+ candidate catalog items")
+        print(f"{'='*60}")
+        cache_dir = Path(__file__).resolve().parent.parent / "seed" / "cache"
+        if not cache_dir.exists():
+            return
+
+        import json
+        added = 0
+        for json_file in cache_dir.glob("candidates_*.json"):
+            cat_name = json_file.stem.replace("candidates_", "").replace("_", " ").title()
+            cat = db.query(Category).filter(Category.name.ilike(cat_name)).first()
+            if not cat:
+                cat = Category(id=str(uuid.uuid4()), name=cat_name, description=f"{cat_name} items")
+                db.add(cat)
+                db.flush()
+
+            existing_skus = {p.sku for p in db.query(Product.sku).filter(Product.sku != None).all()}
+        existing_barcodes = {p.barcode for p in db.query(Product.barcode).filter(Product.barcode != None).all()}
+
+        import json
+        added = 0
+        for json_file in cache_dir.glob("candidates_*.json"):
+            cat_name = json_file.stem.replace("candidates_", "").replace("_", " ").title()
+            cat = db.query(Category).filter(Category.name.ilike(cat_name)).first()
+            if not cat:
+                cat = Category(id=str(uuid.uuid4()), name=cat_name, description=f"{cat_name} items")
+                db.add(cat)
+                db.flush()
+
+            items = json.loads(json_file.read_text())
+            for idx, cand in enumerate(items, start=1):
+                name = cand.get("name") or ""
+                if not name or not is_clean_english(name):
+                    continue
+                sku = cand.get("sku") or f"SC-{cat_name[:3].upper()}-{idx:05d}"
+                raw_bc = (cand.get("barcode") or "").strip()
+                barcode = raw_bc if (raw_bc and raw_bc not in existing_barcodes) else f"BC-{uuid.uuid4().hex[:12]}"
+
+                if sku not in existing_skus and barcode not in existing_barcodes:
+                    prod_id = str(uuid.uuid4())
+                    prod = Product(
+                        id=prod_id,
+                        sku=sku,
+                        barcode=barcode,
+                        name=name,
+                        description=cand.get("description") or name,
+                        brand=cand.get("brand") or "Generic",
+                        category_id=cat.id,
+                        is_active=True,
+                    )
+                    db.add(prod)
+                    db.add(ProductPrice(id=str(uuid.uuid4()), product_id=prod_id, price=cand.get("price") or 99.0, gst_percentage=18.0))
+                    db.add(Inventory(id=str(uuid.uuid4()), product_id=prod_id, quantity=50, reorder_level=10))
+                    existing_skus.add(sku)
+                    existing_barcodes.add(barcode)
+                    added += 1
+
+        db.commit()
+        print(f"  Fast-seeded {added} clean English candidates into PostgreSQL!")
 
 def main():
     print(">>> SmartCart AI — Catalog Cleanup & VDF Import")
@@ -234,8 +368,10 @@ def main():
 
     db = SessionLocal()
     try:
+        seed_candidate_catalog(db)
         purge_non_english(db)
         import_vdf_products(db)
+        import_static_gallery_images(db)
 
         final_count = db.query(Product).count()
         img_count = db.query(ProductImage).count()

@@ -229,6 +229,8 @@ def seed(
                     existing = get_product_by_barcode(db, cand.get("barcode"))
                 if existing is None:
                     existing = get_product_by_name(db, raw_name)
+                if existing is None:
+                    existing = get_product_by_sku(db, sku)
 
                 if existing is None:
                     _insert_product(db, cat_id, sku, cand.get("barcode"),
