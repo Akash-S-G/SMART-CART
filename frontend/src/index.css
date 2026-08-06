@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* =============================================================
+   SmartCart AI · Lumina Noir
+   Stripe-level production styling driven by Stitch design tokens.
+   ============================================================= */
+
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.985 0.004 255);   /* #f7f9fb */
+  --foreground: oklch(0.21 0.02 262);     /* #191c1e */
+  --card: oklch(1 0 0);                    /* #ffffff */
+  --card-foreground: oklch(0.21 0.02 262);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.21 0.02 262);
+  --primary: oklch(0.55 0.2 255);         /* electric blue accent */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.62 0.18 235);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.95 0.006 255);
+  --muted-foreground: oklch(0.5 0.02 262);
+  --accent: oklch(0.96 0.006 255);
+  --accent-foreground: oklch(0.23 0.02 262);
+  --destructive: oklch(0.58 0.2 20);
+  --destructive-foreground: oklch(0.98 0.01 20);
+  --border: oklch(0.88 0.01 255);
+  --input: oklch(0.88 0.01 255);
+  --ring: oklch(0.55 0.2 255);
+  --success: oklch(0.55 0.14 160);
+  --warning: oklch(0.62 0.14 65);
+  --info: oklch(0.62 0.12 250);
+}
+
+.theme-dark {
+  --background: oklch(0.055 0.012 262);
+  --foreground: oklch(0.9 0.02 262);
+  --card: oklch(0.11 0.02 256);
+  --card-foreground: oklch(0.9 0.02 262);
+  --popover: oklch(0.11 0.02 256);
+  --popover-foreground: oklch(0.9 0.02 262);
+  --primary: oklch(0.62 0.2 260);
+  --primary-foreground: oklch(0.16 0.04 260);
+  --secondary: oklch(0.85 0.08 210);
+  --secondary-foreground: oklch(0.15 0.03 210);
+  --muted: oklch(0.18 0.02 256);
+  --muted-foreground: oklch(0.68 0.03 262);
+  --accent: oklch(0.2 0.03 256);
+  --accent-foreground: oklch(0.9 0.02 262);
+  --border: oklch(0.24 0.02 256);
+  --input: oklch(0.24 0.02 256);
+  --ring: oklch(0.62 0.2 260);
+}
+
+@theme inline {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(1100px 500px at 15% -10%, color-mix(in oklab, var(--primary) 6%, transparent), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, color-mix(in oklab, var(--secondary) 5%, transparent), transparent 55%),
+    radial-gradient(800px 600px at 80% 100%, color-mix(in oklab, var(--primary) 4%, transparent), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* glass + ambient glow surfaces */
+.glass {
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Thin, elegant scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* shimmer for AI indicators */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.ai-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    color-mix(in oklab, var(--secondary) 35%, transparent) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+/* gradient text */
+.text-gradient {
+  background: linear-gradient(100deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* grain texture */
+.noise::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Auto-hidden scroll container */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

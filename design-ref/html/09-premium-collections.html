@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#adc6ff","primary-fixed-dim":"#bcc7de","outline-variant":"#c5c6cd","secondary":"#0058be","surface-tint":"#545f73","on-secondary-fixed-variant":"#004395","error":"#ba1a1a","on-error-container":"#93000a","inverse-primary":"#bcc7de","tertiary-fixed":"#d3e4fe","on-surface-variant":"#45474c","surface-container-low":"#f2f4f6","on-tertiary-fixed":"#0b1c30","on-surface":"#191c1e","on-error":"#ffffff","on-secondary-fixed":"#001a42","on-tertiary":"#ffffff","primary":"#091426","tertiary-container":"#1a2a3e","surface-container":"#eceef0","surface-dim":"#d8dadc","surface-container-high":"#e6e8ea","inverse-on-surface":"#eff1f3","primary-container":"#1e293b","inverse-surface":"#2d3133","on-background":"#191c1e","on-tertiary-fixed-variant":"#38485d","on-primary-fixed":"#111c2d","surface":"#f7f9fb","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#b7c8e1","secondary-container":"#2170e4","on-primary":"#ffffff","outline":"#75777d","on-secondary":"#ffffff","secondary-fixed":"#d8e2ff","on-secondary-container":"#fefcff","error-container":"#ffdad6","background":"#f7f9fb","surface-variant":"#e0e3e5","primary-fixed":"#d8e3fb","tertiary":"#041528","surface-container-highest":"#e0e3e5","on-tertiary-container":"#8191a9","surface-bright":"#f7f9fb","on-primary-fixed-variant":"#3c475a","on-primary-container":"#8590a6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"24px","container-max":"1280px","margin-desktop":"48px","unit":"4px","margin-mobile":"16px","section-gap":"80px"},"fontFamily":{"label-sm":["Geist"],"headline-md":["Geist"],"body-md":["Geist"],"display-lg":["Geist"],"display-lg-mobile":["Geist"],"body-lg":["Geist"]},"fontSize":{"label-sm":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"1.5","letterSpacing":"0","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"1.6","letterSpacing":"0","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-4"><img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-headline-md text-headline-md text-primary tracking-tight">SmartCart AI</span></div><nav class="hidden md:flex items-center gap-8" data-active-classes="text-secondary font-medium"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="shop" href="#">Shop</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-scanner" href="#">AI Scanner</a><a aria-current="page" class="transition-colors text-secondary font-medium" data-path="collections" href="#">Collections</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="offers" href="#">Offers</a></nav><div class="flex items-center gap-6"><button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"><span class="material-symbols-outlined">shopping_cart</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20"><div class="flex flex-col w-full">
+<!-- Desktop Layout Grid -->
+<div class="max-w-container-max mx-auto w-full px-margin-mobile lg:px-margin-desktop py-12 lg:py-16 flex flex-col lg:flex-row gap-gutter">
+<!-- Sidebar Filters (Desktop) -->
+<aside class="hidden lg:block w-[240px] shrink-0">
+<div class="sticky top-28 flex flex-col gap-8">
+<!-- Filter Group: Categories -->
+<div class="flex flex-col gap-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Categories</h3>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input checked="" class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">All Products</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Audio &amp; Electronics</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Wearables</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Home Smart Devices</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group"><div class="relative w-4 h-4 flex items-center justify-center"><input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"><span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span></div><span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Home Office</span></label><label class="flex items-center gap-3 cursor-pointer group"><div class="relative w-4 h-4 flex items-center justify-center"><input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"><span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span></div><span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Kitchen Tech</span></label><label class="flex items-center gap-3 cursor-pointer group"><div class="relative w-4 h-4 flex items-center justify-center"><input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox"><span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span></div><span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Wellness</span></label></div>
+</div>
+<!-- Filter Group: Price -->
+<div class="flex flex-col gap-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Price Range</h3>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Under $50</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">$50 - $150</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative w-4 h-4 flex items-center justify-center">
+<input class="peer appearance-none w-4 h-4 border border-outline-variant rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer" type="checkbox">
+<span class="material-symbols-outlined absolute text-[12px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Over $150</span>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Product Area -->
+<div class="flex-1 flex flex-col gap-8">
+<!-- Mobile Filter Toggle (Visible only on mobile) -->
+<div class="lg:hidden flex items-center justify-between mb-4">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 36 products</span>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-full text-on-surface font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">tune</span> Filters
+                </button>
+</div>
+<!-- Header / Sort -->
+<div class="hidden lg:flex items-center justify-between pb-4">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 36 products</span>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Sort By:</span>
+<select class="appearance-none bg-transparent font-body-md text-body-md text-on-surface outline-none cursor-pointer pr-4 border-b border-transparent hover:border-outline-variant transition-colors">
+<option>Recommended</option>
+<option>Newest Arrivals</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-12">
+<!-- Product Card 1 -->
+<div class="group flex flex-col gap-4 cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="High-end, minimalist studio photography of sleek, matte black over-ear wireless headphones resting on a clean, stark white background. Soft, diffused lighting highlighting the premium texture and subtle metallic accents. Shot with a shallow depth of field, minimalist composition, e-commerce style, modern aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD73MZLS3Gg5ELbIYQw_U1hq--_nvcjqPLQRYH84ZVF4Mm0qkd8pum0GNF04PscSwP-2tPGLbDQ96x1SFhWuFM1KN4efpBZSikghJmsFCi1yJo07LRt5x5fxeh28hBjmKNnr61RTvNVFZLl8ZbzR-SixhoPfYEp-GM5lMRj4B-IBsggNG2TsHQPm_ZykVBeFWAdXwOjGdhrQ9JzSYS3Ff-8t5rsvP4HZwoYoZnWDiaeRU2thxjpQLS5">
+<!-- AI Insight Badge -->
+<div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">auto_awesome</span>
+<span class="font-label-sm text-label-sm text-on-surface">Top Pick</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Aura Sync Over-Ear</h2>
+<span class="font-body-lg text-body-lg text-on-surface">₹299</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Active Noise Cancelling</p>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col gap-4 cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close-up, top-down view of a minimalist smart watch with a circular metallic face and a woven cream-colored band. Resting on a pale, warm grey surface. Precise, crisp lighting, high contrast, minimalist editorial product photography, focusing on the interface design details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyQ5dCgZTwBVskmuseCbvwlDUnaxhDUcCDKrlgNHPeK_MM8o8hb4HsJaAgjl7CPxxvz5En3v8iXBDEZxpqxxdasIbHbBZs3ZllcoVfk3V_l6cd-zkJF2Ukub3DjJ00n0H5sI_-a2ld4IEoSlyt4LZw1NHrttsb0dn0pNIwzAzYfrzcs6QvpniYGAx_BtclE-5kVNMj-DnKoTD8d98Vum7BAgQQh2SvQT9mq1cbq1mfNbzHsVPf8q4D">
+</div>
+<div class="flex flex-col gap-1 px-1">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Zenith Chrono V2</h2>
+<span class="font-body-lg text-body-lg text-on-surface">₹185</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Biometric tracking</p>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col gap-4 cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Minimalist product shot of a small, cylindrical smart home speaker in a soft matte sage green finish. Placed off-center on a pristine white marble slab. Soft natural window light creating long, elegant shadows. Calm, organic, modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGFmLUM0d4rxgy_vUghnc3KpG6s4bWjQmy0NoTsemwWTmc0I2RIBlJB9vvmIlDYiIhJVmpXLG_gATgiXvjh3dXlqBMmEC0pef28VJNLJbI_kVXenBmCph-SwLWMmnphgkVFn2QAqIf7knE9x7zrC8WFW8XrD9KLDemGGK_AaphRCr4jArDASsWeEGngDMaR4GvSfql6wWKe5eyJaEftI1GNvysmvtFJXd0NCmXM8zlvoWK0Gpdcl9H">
+</div>
+<div class="flex flex-col gap-1 px-1">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Echo Node Mini</h2>
+<span class="font-body-lg text-body-lg text-on-surface">₹89</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Smart Home Hub</p>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col gap-4 cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A pair of sleek, truly wireless earbuds in a brushed aluminum charging case, slightly open. Placed on a dark slate background to emphasize the metallic finish. Moody, dramatic studio lighting highlighting the contours and premium materials." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUQgkqjmf0O_YSTCZcH5Z8HyTWnW_9xQpz50sEjvJS5KM7qRvW0pJ_ptDna_pqhLzdepCAI9IJqX_G7s_mVMh9MQPxs8FaW6EYC_xMOg94QcYJIC6rnITueFYvrGZG9D89WOdwP3ZzmUBSlP-KiXJ_cKAqPl2GfsetQijqefwO08dWjh4eZbnC87pEkhulQ11qZJ1xBNWEtPXlUJQ367fYB-MLN9aCNXX-U7V6wGOnuNzG_eI0ERfo">
+<!-- Discount Badge -->
+<div class="absolute top-4 right-4 bg-primary px-2.5 py-1 rounded-sm">
+<span class="font-label-sm text-label-sm text-on-primary">15% OFF</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Sonic True Wireless</h2>
+<div class="flex flex-col items-end">
+<span class="font-body-lg text-body-lg text-on-surface">₹129</span>
+<span class="font-label-sm text-label-sm text-outline line-through">₹149</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Spatial Audio</p>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="group flex flex-col gap-4 cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Minimalist lifestyle photography showing a sleek, slim power bank with a matte sandstone finish next to a modern smartphone. Both resting on a warm wooden desk surface. Soft morning sunlight casting gentle shadows. Clean, organized, productive vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxSBKZdkKL3X6hxqne-dAoiICtMQ0zhWJcL0CbEwhfl9CPxcUMNqZdRaCWXHyM8BCILIrDRcN2kLkgty0H2ZoynNZi2s4pXkH14TGRi83IOeYpfO55NlYKsFn2a-HOzt1vxcccgAAfwCfk16PyQzmoyNkWJ9PlFAzargGX0OW_ZZ3sc9IITS8cOxHn0cmEYbcmzHD69gzk1PNb7TqYZPpDn1TldHTlGjHAyXaokDv-wyK3hv9soa67">
+</div>
+<div class="flex flex-col gap-1 px-1">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Core Power Bank</h2>
+<span class="font-body-lg text-body-lg text-on-surface">₹45</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">10,000 mAh Fast Charge</p>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="group flex flex-col gap-4 cursor-pointer">
+<div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Abstract, high-concept product photography of a smart lighting strip coiled elegantly. Illuminated with a soft, warm ambient glow against a pitch-black background. The light highlights the flexible texture of the strip. Modern, technological, premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAReMzJWxI6cYatKzbyCdRxB8q_-F2tGa27saHOvFLkATZMsA0glW5hQwMMPQH0pmfPmFf4ismpkJ59aItjXuqmQke8bVnThWk4lZA8krvvTMbJfKwggRrE60qW4fI_bVjWgrYBU6w2HnmHgvSyzMcf4MBNuIQ47F3fqbLPPfk0NJ21GUJyV8F5AdJAb91K36z9EXN0AZ63syg4AbQNqG8xk8mpoImG_JuSUBGXEkNwNsZZUCZKrDdn">
+<!-- Out of Stock Overlay -->
+<div class="absolute inset-0 bg-surface-container-low/60 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="bg-surface-container-lowest px-4 py-2 rounded-full border border-outline-variant shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Notify Me</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1 px-1">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-body-lg text-body-lg text-on-surface-variant font-medium truncate">Lumen Flex Strip</h2>
+<span class="font-body-lg text-body-lg text-on-surface-variant">₹65</span>
+</div>
+<p class="font-body-md text-body-md text-error truncate">Out of Stock</p>
+</div>
+</div>
+<div class="group flex flex-col gap-4 cursor-pointer"><div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1585333120167-081824d30145?auto=format&amp;fit=crop&amp;q=80&amp;w=800"><div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-outline-variant/20 shadow-sm"><span class="material-symbols-outlined text-[14px] text-secondary">auto_awesome</span><span class="font-label-sm text-label-sm text-on-surface">Top Pick</span></div></div><div class="flex flex-col gap-1 px-1"><div class="flex justify-between items-start gap-4"><h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Nova Smart Lamp</h2><span class="font-body-lg text-body-lg text-on-surface">₹115</span></div><p class="font-body-md text-body-md text-on-surface-variant truncate">Adaptive Lighting</p></div></div><div class="group flex flex-col gap-4 cursor-pointer"><div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&amp;fit=crop&amp;q=80&amp;w=800"></div><div class="flex flex-col gap-1 px-1"><div class="flex justify-between items-start gap-4"><h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Slate Tablet Pro</h2><span class="font-body-lg text-body-lg text-on-surface">₹799</span></div><p class="font-body-md text-body-md text-on-surface-variant truncate">12.9" Liquid Retina</p></div></div><div class="group flex flex-col gap-4 cursor-pointer"><div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&amp;fit=crop&amp;q=80&amp;w=800"><div class="absolute top-4 right-4 bg-primary px-2.5 py-1 rounded-sm"><span class="font-label-sm text-label-sm text-on-primary">20% OFF</span></div></div><div class="flex flex-col gap-1 px-1"><div class="flex justify-between items-start gap-4"><h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Apex Mechanical Keyboard</h2><div class="flex flex-col items-end"><span class="font-body-lg text-body-lg text-on-surface">₹159</span><span class="font-label-sm text-label-sm text-outline line-through">₹199</span></div></div><p class="font-body-md text-body-md text-on-surface-variant truncate">Wireless Hot-swap</p></div></div><div class="group flex flex-col gap-4 cursor-pointer"><div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&amp;fit=crop&amp;q=80&amp;w=800"></div><div class="flex flex-col gap-1 px-1"><div class="flex justify-between items-start gap-4"><h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Studio Monitor One</h2><span class="font-body-lg text-body-lg text-on-surface">₹450</span></div><p class="font-body-md text-body-md text-on-surface-variant truncate">Reference Grade Audio</p></div></div><div class="group flex flex-col gap-4 cursor-pointer"><div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&amp;fit=crop&amp;q=80&amp;w=800"><div class="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-outline-variant/20 shadow-sm"><span class="material-symbols-outlined text-[14px] text-secondary">auto_awesome</span><span class="font-label-sm text-label-sm text-on-surface">Top Pick</span></div></div><div class="flex flex-col gap-1 px-1"><div class="flex justify-between items-start gap-4"><h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Zenith Smart Watch</h2><span class="font-body-lg text-body-lg text-on-surface">₹249</span></div><p class="font-body-md text-body-md text-on-surface-variant truncate">Health &amp; Fitness</p></div></div><div class="group flex flex-col gap-4 cursor-pointer"><div class="relative w-full aspect-[4/5] bg-surface-container-lowest overflow-hidden border border-outline-variant/30 rounded-xl transition-all duration-300 group-hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:border-outline-variant"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&amp;fit=crop&amp;q=80&amp;w=800"></div><div class="flex flex-col gap-1 px-1"><div class="flex justify-between items-start gap-4"><h2 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Aura Sunglasses</h2><span class="font-body-lg text-body-lg text-on-surface">₹180</span></div><p class="font-body-md text-body-md text-on-surface-variant truncate">Smart Audio Frames</p></div></div></div>
+<!-- Load More Action -->
+<div class="w-full flex justify-center mt-12">
+<button class="px-8 py-4 bg-surface-container-lowest border border-outline-variant rounded-xl font-label-sm text-label-sm text-on-surface uppercase tracking-widest hover:bg-surface-container-low transition-colors duration-300">
+                    Load More Products
+                </button>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-low py-section-gap border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8 text-center"><div class="flex items-center gap-3"><img alt="SmartCart AI" class="h-6 w-auto opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">SmartCart AI Core</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">Intelligent retail experiences powered by advanced neural insights.</p><div class="flex gap-8"><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Privacy</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Terms</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Support</a></div></div></footer>
+
+
+
+</body></html>

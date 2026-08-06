@@ -1,0 +1,6 @@
+2026-07-09 14:03:15,246 | WARNING | matplotlib | /home/akash/.config/matplotlib is not a writable directory
+2026-07-09 14:03:15,247 | WARNING | matplotlib | Matplotlib created a temporary cache directory at /tmp/matplotlib-t1gs1xce because there was an issue with the default path ({configdir}); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+2026-07-09 14:03:16,904 | INFO | matplotlib.font_manager | Failed to extract font properties from /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf: Non-scalable fonts are not supported
+2026-07-09 14:03:17,050 | INFO | matplotlib.font_manager | generated new fontManager
+2026-07-09 14:05:01,543 | INFO | matplotlib.font_manager | Failed to extract font properties from /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf: Non-scalable fonts are not supported
+2026-07-09 14:05:01,588 | INFO | matplotlib.font_manager | generated new fontManager

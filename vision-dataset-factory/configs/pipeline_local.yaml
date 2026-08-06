@@ -1,0 +1,53 @@
+# Local folder Pipeline DAG definition for Vision Dataset Factory
+pipeline:
+  name: "local_import_pipeline"
+  storage_dir: "storage"
+  
+  nodes:
+    - name: "discover"
+      plugin: "sources.local_folder"
+      depends_on: []
+      config:
+        input_dir: "storage/raw_local/"
+
+    - name: "download"
+      plugin: "downloader"
+      depends_on: ["discover"]
+      config:
+        concurrency: 2
+        timeout: 10
+        user_agent: "VisionDatasetFactory/1.0"
+
+    - name: "dedup"
+      plugin: "deduplication"
+      depends_on: ["download"]
+      config:
+        hash_size: 8
+        threshold: 8
+
+    - name: "quality"
+      plugin: "quality_check"
+      depends_on: ["dedup"]
+      config:
+        min_width: 224
+        min_height: 224
+        blur_threshold: 100.0  # Laplacian variance threshold
+
+    - name: "annotate"
+      plugin: "auto_annotation"
+      depends_on: ["quality"]
+      config:
+        annotator: "plugins.annotators.grounding_dino.GroundingDinoAnnotator"
+        prompt_template: "product box packaging of {product_name}"
+        min_confidence: 0.7
+
+    - name: "export"
+      plugin: "yolo_exporter"
+      depends_on: ["annotate"]
+      config:
+        dataset_version: "local_beverages_dataset"
+        split_ratio:
+          train: 0.5
+          val: 0.5
+          test: 0.0
+        label_field: "product"

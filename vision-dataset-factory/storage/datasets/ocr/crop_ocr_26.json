@@ -1,0 +1,15 @@
+{
+  "ocr_items": [
+    {
+      "text": "DAIRY MILK",
+      "bbox": [
+        0.2,
+        0.2,
+        0.8,
+        0.4
+      ],
+      "confidence": 0.96,
+      "language": "en"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+target_images_per_class: 1000
+minimum_images_per_class: 100
+families:
+  - "Parle-G"
+  - "Marie Gold"
+  - "Good Day"
+  - "KitKat"
+  - "Dairy Milk"
+  - "Maggi Masala"
+  - "Yippee Magic Masala"
+  - "Thums Up"
+  - "Sprite"
+  - "Coca-Cola"
+  - "Pepsi"
+  - "Bisleri"
+  - "Amul Butter"
+  - "Amul Taaza"
+  - "Nandini Milk"
+  - "Aashirvaad Atta"
+  - "Fortune Sunflower Oil"
+  - "Surf Excel"
+  - "Colgate"
+  - "Lux Soap"

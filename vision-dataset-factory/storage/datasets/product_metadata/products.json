@@ -1,0 +1,187 @@
+[
+  {
+    "name": "Parle-G",
+    "brand": "Parle",
+    "packaging": "Packet",
+    "variants": [
+      "55 g",
+      "110 g",
+      "250 g"
+    ]
+  },
+  {
+    "name": "Marie Gold",
+    "brand": "Britannia",
+    "packaging": "Packet",
+    "variants": [
+      "120 g",
+      "250 g"
+    ]
+  },
+  {
+    "name": "Good Day",
+    "brand": "Britannia",
+    "packaging": "Packet",
+    "variants": [
+      "Cashew",
+      "Butter",
+      "Pista Badam"
+    ]
+  },
+  {
+    "name": "KitKat",
+    "brand": "Nestl\u00e9",
+    "packaging": "Wrapper",
+    "variants": [
+      "12.8 g",
+      "37.3 g"
+    ]
+  },
+  {
+    "name": "Dairy Milk",
+    "brand": "Cadbury",
+    "packaging": "Wrapper",
+    "variants": [
+      "Silk",
+      "Fruit & Nut"
+    ]
+  },
+  {
+    "name": "Maggi Masala",
+    "brand": "Nestl\u00e9",
+    "packaging": "Packet",
+    "variants": [
+      "70 g",
+      "140 g",
+      "280 g"
+    ]
+  },
+  {
+    "name": "Yippee Magic Masala",
+    "brand": "ITC",
+    "packaging": "Packet",
+    "variants": [
+      "70 g",
+      "280 g"
+    ]
+  },
+  {
+    "name": "Thums Up",
+    "brand": "Coca-Cola",
+    "packaging": "Bottle",
+    "variants": [
+      "250 ml",
+      "500 ml",
+      "1.25 L"
+    ]
+  },
+  {
+    "name": "Sprite",
+    "brand": "Coca-Cola",
+    "packaging": "Bottle",
+    "variants": [
+      "250 ml",
+      "750 ml"
+    ]
+  },
+  {
+    "name": "Coca-Cola",
+    "brand": "Coca-Cola",
+    "packaging": "Bottle",
+    "variants": [
+      "Zero",
+      "750 ml"
+    ]
+  },
+  {
+    "name": "Pepsi",
+    "brand": "PepsiCo",
+    "packaging": "Bottle",
+    "variants": [
+      "Black",
+      "250 ml"
+    ]
+  },
+  {
+    "name": "Bisleri",
+    "brand": "Bisleri",
+    "packaging": "Bottle",
+    "variants": [
+      "250 ml",
+      "1 L",
+      "2 L"
+    ]
+  },
+  {
+    "name": "Amul Butter",
+    "brand": "Amul",
+    "packaging": "Box",
+    "variants": [
+      "100 g",
+      "500 g"
+    ]
+  },
+  {
+    "name": "Amul Taaza",
+    "brand": "Amul",
+    "packaging": "Carton",
+    "variants": [
+      "500 ml",
+      "1 L"
+    ]
+  },
+  {
+    "name": "Nandini Milk",
+    "brand": "Nandini",
+    "packaging": "Pouch",
+    "variants": [
+      "500 ml",
+      "1 L"
+    ]
+  },
+  {
+    "name": "Aashirvaad Atta",
+    "brand": "ITC",
+    "packaging": "Bag",
+    "variants": [
+      "1 kg",
+      "5 kg"
+    ]
+  },
+  {
+    "name": "Fortune Sunflower Oil",
+    "brand": "Fortune",
+    "packaging": "Pouch",
+    "variants": [
+      "1 L",
+      "5 L"
+    ]
+  },
+  {
+    "name": "Surf Excel",
+    "brand": "Surf Excel",
+    "packaging": "Packet",
+    "variants": [
+      "Easy Wash",
+      "1 kg"
+    ]
+  },
+  {
+    "name": "Colgate",
+    "brand": "Colgate",
+    "packaging": "Box",
+    "variants": [
+      "Strong Teeth",
+      "100 g"
+    ]
+  },
+  {
+    "name": "Lux Soap",
+    "brand": "Lux",
+    "packaging": "Wrapper",
+    "variants": [
+      "Velvet Touch",
+      "100 g"
+    ]
+  }
+]

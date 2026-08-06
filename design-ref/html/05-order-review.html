@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#adc6ff","primary-fixed-dim":"#bcc7de","outline-variant":"#c5c6cd","secondary":"#0058be","surface-tint":"#545f73","on-secondary-fixed-variant":"#004395","error":"#ba1a1a","on-error-container":"#93000a","inverse-primary":"#bcc7de","tertiary-fixed":"#d3e4fe","on-surface-variant":"#45474c","surface-container-low":"#f2f4f6","on-tertiary-fixed":"#0b1c30","on-surface":"#191c1e","on-error":"#ffffff","on-secondary-fixed":"#001a42","on-tertiary":"#ffffff","primary":"#091426","tertiary-container":"#1a2a3e","surface-container":"#eceef0","surface-dim":"#d8dadc","surface-container-high":"#e6e8ea","inverse-on-surface":"#eff1f3","primary-container":"#1e293b","inverse-surface":"#2d3133","on-background":"#191c1e","on-tertiary-fixed-variant":"#38485d","on-primary-fixed":"#111c2d","surface":"#f7f9fb","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#b7c8e1","secondary-container":"#2170e4","on-primary":"#ffffff","outline":"#75777d","on-secondary":"#ffffff","secondary-fixed":"#d8e2ff","on-secondary-container":"#fefcff","error-container":"#ffdad6","background":"#f7f9fb","surface-variant":"#e0e3e5","primary-fixed":"#d8e3fb","tertiary":"#041528","surface-container-highest":"#e0e3e5","on-tertiary-container":"#8191a9","surface-bright":"#f7f9fb","on-primary-fixed-variant":"#3c475a","on-primary-container":"#8590a6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"24px","container-max":"1280px","margin-desktop":"48px","unit":"4px","margin-mobile":"16px","section-gap":"80px"},"fontFamily":{"label-sm":["Geist"],"headline-md":["Geist"],"body-md":["Geist"],"display-lg":["Geist"],"display-lg-mobile":["Geist"],"body-lg":["Geist"]},"fontSize":{"label-sm":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"1.5","letterSpacing":"0","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"1.6","letterSpacing":"0","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-4"><img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-headline-md text-headline-md text-primary tracking-tight">SmartCart AI</span></div><nav class="hidden md:flex items-center gap-8" data-active-classes="text-secondary font-medium"><a aria-current="page" class="transition-colors text-secondary font-medium" data-path="shop" href="#">Shop</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-scanner" href="#">AI Scanner</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="collections" href="#">Collections</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="offers" href="#">Offers</a></nav><div class="flex items-center gap-6"><button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"><span class="material-symbols-outlined">shopping_cart</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20"><div class="flex flex-col w-full">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop w-full pb-section-gap">
+<!-- Progress Indicator -->
+<div class="flex items-center justify-center gap-4 py-8 mb-8 relative">
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-surface-variant -z-10 -translate-y-1/2"></div>
+<div class="flex items-center gap-2 bg-surface px-4">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest hidden md:block">Shipping</span>
+</div>
+<div class="flex items-center gap-2 bg-surface px-4">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest hidden md:block">Payment</span>
+</div>
+<div class="flex items-center gap-2 bg-surface px-4">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="font-label-sm text-label-sm">3</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary-container uppercase tracking-widest hidden md:block">Review</span>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Left Column: Review Details -->
+<div class="flex-1 flex flex-col gap-8">
+<div class="bg-surface-container-lowest rounded-[24px] p-8 shadow-sm">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6">Review Your Details</h2>
+<div class="flex flex-col gap-6">
+<!-- Shipping Details -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface rounded-xl p-6">
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-on-surface-variant mt-1">location_on</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Shipping Address</p>
+<p class="font-body-md text-body-md text-on-surface">Alex Mercer</p>
+<p class="font-body-md text-body-md text-on-surface">123 Innovation Drive, Apt 4B</p>
+<p class="font-body-md text-body-md text-on-surface">San Francisco, CA 94105</p>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-secondary hover:text-secondary-container transition-colors uppercase tracking-widest">Edit</button>
+</div>
+<!-- Payment Details -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface rounded-xl p-6">
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-on-surface-variant mt-1">credit_card</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Payment Method</p>
+<div class="flex items-center gap-2">
+<div class="w-10 h-6 bg-surface-variant rounded flex items-center justify-center">
+<span class="font-label-sm text-[10px] text-on-surface-variant font-bold">VISA</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">•••• •••• •••• 4242</p>
+</div>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-secondary hover:text-secondary-container transition-colors uppercase tracking-widest">Edit</button>
+</div>
+<!-- Contact Details -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface rounded-xl p-6">
+<div class="flex gap-4 items-start">
+<span class="material-symbols-outlined text-on-surface-variant mt-1">mail</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Contact Email</p>
+<p class="font-body-md text-body-md text-on-surface">alex.mercer@example.com</p>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-secondary hover:text-secondary-container transition-colors uppercase tracking-widest">Edit</button>
+</div>
+</div>
+</div>
+<!-- Order Items -->
+<div class="bg-surface-container-lowest rounded-[24px] p-8 shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Items in Order</h3>
+<div class="flex flex-col gap-6">
+<!-- Item 1 -->
+<div class="flex items-center gap-4">
+<div class="w-20 h-20 rounded-xl bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Product photography of high-end over-ear ANC headphones in a matte dark slate finish, minimalist studio lighting on a pure white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYVbZdLKiTKnhKRq4zgFaFapSILbeGoonlKUf4yl-7pi4plRzkGfaFEV86P4Qijtg-jCsCQikjTbCp1rM3-UOAtKnQ--OgjrHKOd5UiY1j3ic7DQu76RuzONf8vSsKygiX0Dxw9EQi8Fg-9g4n3MgcRCZSP-iKhkVY-DMRevumwt3e6c7oTN9-vWxyNehGA3YzyTHmxQpPR-7GwgjOIEIPPR0Zi2QgmE06btK-JYRdJVZE4do7ya5q">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate font-medium">Auralis Pro ANC Headphones</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Qty: 1</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-body-md text-body-md text-on-surface font-medium">₹349.00</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-4">
+<div class="w-20 h-20 rounded-xl bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Minimalist solid walnut wood wireless charging dock for smartphones and earbuds, natural grain texture, soft studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcLBCnTShlcSV0ZPWSFoVTE3_gcI-mFBalHdmsYjbHpUKR9AlYBBdhWvmp6hVYbfj3II2boa1Uuj32H0lUWTXRybY98lqDG-SC1HPNgm5bxEpVOoo5_89JDEPBqM1bH-gxVZMQL1LJVAu8mhqYTHlnPc-FtK3hrkzlHAxAXJDR0BoE1YbADrAksqsjm-bcpgE7n5lhpWbgL0OYeRrdhZe5mRcszjoWSwqiiiEN9taGc2ue6p5ZjGbE">
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate font-medium">Walnut Charging Dock</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Qty: 1</p>
+</div>
+<div class="text-right shrink-0">
+<p class="font-body-md text-body-md text-on-surface font-medium">₹128.00</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary -->
+<div class="w-full lg:w-96 shrink-0">
+<div class="bg-surface-container-lowest text-on-surface rounded-[24px] p-8 sticky top-28 shadow-xl border border-outline-variant/30">
+<h3 class="font-headline-md text-headline-md mb-6 text-primary">Order Summary</h3>
+<div class="flex flex-col gap-4 mb-8">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Subtotal</span>
+<span class="font-body-md text-body-md">₹477.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Shipping</span>
+<span class="font-body-md text-body-md">Free</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Estimated Tax</span>
+<span class="font-body-md text-body-md">₹38.16</span>
+</div>
+<div class="h-[1px] w-full bg-outline-variant/30 my-4"></div>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg font-medium">Total</span>
+<span class="font-display-lg-mobile text-display-lg-mobile">₹515.16</span>
+</div>
+</div>
+<button class="w-full py-4 px-8 bg-primary hover:bg-secondary text-on-primary rounded-xl font-body-md text-body-md font-bold transition-all shadow-lg hover:shadow-xl flex justify-center items-center gap-3 group">
+                  Place Order
+                  <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="flex items-center justify-center gap-2 mt-6 text-on-surface-variant/60">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Secure AI-Verified Transaction</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-low py-section-gap border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8 text-center"><div class="flex items-center gap-3"><img alt="SmartCart AI" class="h-6 w-auto opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">SmartCart AI Core</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">Intelligent retail experiences powered by advanced neural insights.</p><div class="flex gap-8"><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Privacy</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Terms</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Support</a></div></div></footer>
+
+</body></html>

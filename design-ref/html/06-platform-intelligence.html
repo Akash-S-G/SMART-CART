@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>
+@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}
+::-webkit-scrollbar{display:none;}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseActive { 0% { box-shadow: 0 0 0 0 rgba(0, 88, 190, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(0, 88, 190, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 88, 190, 0); } }
+@keyframes drawLine { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+@keyframes drawDonut { from { stroke-dasharray: 0 100; } to { stroke-dasharray: var(--val) 100; } }
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.pulse-point { border-radius: 50%; animation: pulseActive 2s infinite; }
+.draw-line { stroke-dasharray: 1000; animation: drawLine 2s ease-out forwards; }
+.draw-donut-segment { animation: drawDonut 1.5s ease-out forwards; }
+.tooltip-trigger:hover .tooltip-content { opacity: 1; visibility: visible; transform: translateY(0); }
+</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#adc6ff","primary-fixed-dim":"#bcc7de","outline-variant":"#c5c6cd","secondary":"#0058be","surface-tint":"#545f73","on-secondary-fixed-variant":"#004395","error":"#ba1a1a","on-error-container":"#93000a","inverse-primary":"#bcc7de","tertiary-fixed":"#d3e4fe","on-surface-variant":"#45474c","surface-container-low":"#f2f4f6","on-tertiary-fixed":"#0b1c30","on-surface":"#191c1e","on-error":"#ffffff","on-secondary-fixed":"#001a42","on-tertiary":"#ffffff","primary":"#091426","tertiary-container":"#1a2a3e","surface-container":"#eceef0","surface-dim":"#d8dadc","surface-container-high":"#e6e8ea","inverse-on-surface":"#eff1f3","primary-container":"#1e293b","inverse-surface":"#2d3133","on-background":"#191c1e","on-tertiary-fixed-variant":"#38485d","on-primary-fixed":"#111c2d","surface":"#f7f9fb","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#b7c8e1","secondary-container":"#2170e4","on-primary":"#ffffff","outline":"#75777d","on-secondary":"#ffffff","secondary-fixed":"#d8e2ff","on-secondary-container":"#fefcff","error-container":"#ffdad6","background":"#f7f9fb","surface-variant":"#e0e3e5","primary-fixed":"#d8e3fb","tertiary":"#041528","surface-container-highest":"#e0e3e5","on-tertiary-container":"#8191a9","surface-bright":"#f7f9fb","on-primary-fixed-variant":"#3c475a","on-primary-container":"#8590a6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"24px","container-max":"1280px","margin-desktop":"48px","unit":"4px","margin-mobile":"16px","section-gap":"80px"},"fontFamily":{"label-sm":["Geist"],"headline-md":["Geist"],"body-md":["Geist"],"display-lg":["Geist"],"display-lg-mobile":["Geist"],"body-lg":["Geist"]},"fontSize":{"label-sm":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"1.5","letterSpacing":"0","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"1.6","letterSpacing":"0","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-4"><img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-headline-md text-headline-md text-primary tracking-tight">SmartCart AI</span></div><nav class="hidden md:flex items-center gap-8" data-active-classes="text-secondary font-medium"><a aria-current="page" class="transition-colors text-secondary font-medium" data-path="shop" href="#">Shop</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-scanner" href="#">AI Scanner</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="collections" href="#">Collections</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="offers" href="#">Offers</a></nav><div class="flex items-center gap-6"><button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"><span class="material-symbols-outlined">shopping_cart</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20"><div class="flex flex-col w-full h-full">
+<div class="flex flex-col max-w-container-max mx-auto w-full px-margin-mobile lg:px-margin-desktop py-8 gap-section-gap">
+<!-- Top Metrics Section -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Metric Card 1 -->
+<div class="animate-fade-in-up relative overflow-hidden bg-surface-container-lowest rounded-xl p-8 border border-outline-variant transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-secondary group">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Scans Today</span>
+<div class="tooltip-trigger relative cursor-help">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">info</span>
+<div class="tooltip-content absolute z-10 w-48 p-2 mt-2 -left-24 top-full bg-surface-container-high rounded shadow-lg text-label-sm text-on-surface opacity-0 invisible transform -translate-y-2 transition-all duration-200">Total number of items processed across all active AI scanners.</div>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface group-hover:text-secondary transition-colors">12,483</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px]">trending_up</span>
+<span class="font-label-sm text-label-sm text-secondary">+14.2% vs yesterday</span>
+</div>
+</div>
+</div>
+<!-- Metric Card 2 -->
+<div class="animate-fade-in-up delay-100 relative overflow-hidden bg-surface-container-lowest rounded-xl p-8 border border-outline-variant transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-secondary group">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Detection Accuracy</span>
+<div class="tooltip-trigger relative cursor-help">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">info</span>
+<div class="tooltip-content absolute z-10 w-48 p-2 mt-2 -left-24 top-full bg-surface-container-high rounded shadow-lg text-label-sm text-on-surface opacity-0 invisible transform -translate-y-2 transition-all duration-200">Percentage of items correctly identified without manual override.</div>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface group-hover:text-secondary transition-colors">99.8%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px]">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nominal operations</span>
+</div>
+</div>
+</div>
+<!-- Metric Card 3 -->
+<div class="animate-fade-in-up delay-200 relative overflow-hidden bg-surface-container-lowest rounded-xl p-8 border border-outline-variant transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-secondary group">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Avg Checkout Time</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface group-hover:text-secondary transition-colors">1.2s</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px]">trending_down</span>
+<span class="font-label-sm text-label-sm text-secondary">-0.3s optimization</span>
+</div>
+</div>
+</div>
+<!-- Metric Card 4 -->
+<div class="animate-fade-in-up delay-300 relative overflow-hidden bg-surface-container-lowest rounded-xl p-8 border border-outline-variant transition-all duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-secondary group">
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Active Carts</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-on-surface group-hover:text-secondary transition-colors">342</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary pulse-point mr-1"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Across 12 locations</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Additional Analytics Section (New) -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Map Heatmap -->
+<div class="animate-fade-in-up bg-surface-container-lowest rounded-xl p-8 border border-outline-variant flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Real-time Traffic</h2>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-fixed/30 text-secondary text-[11px] font-medium tracking-wide uppercase"><div class="w-1.5 h-1.5 rounded-full bg-secondary mr-2 pulse-point"></div>Live</span>
+</div>
+<div class="flex-1 w-full h-[300px] relative bg-surface rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<!-- Simplified World Map Mockup -->
+<svg class="w-full h-full text-outline-variant/40" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1000 500">
+<path d="M150,150 Q200,100 250,150 T350,150 T450,200 T550,150 T650,250 T750,200 T850,250 T950,150 L950,350 L150,350 Z" fill="currentColor" opacity="0.3"></path>
+<circle class="pulse-point" cx="250" cy="200" fill="var(--color-secondary)" r="4"></circle>
+<circle class="pulse-point delay-100" cx="450" cy="250" fill="var(--color-secondary)" r="6"></circle>
+<circle class="pulse-point delay-200" cx="650" cy="180" fill="var(--color-secondary)" r="3"></circle>
+<circle class="pulse-point delay-300" cx="800" cy="220" fill="var(--color-secondary)" r="5"></circle>
+</svg>
+</div>
+</div>
+<!-- Category Distribution -->
+<div class="animate-fade-in-up delay-100 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Category Distribution</h2>
+</div>
+<div class="flex-1 flex items-center justify-center gap-8">
+<div class="relative w-48 h-48">
+<svg class="w-full h-full -rotate-90" viewBox="0 0 32 32">
+<circle class="text-surface-container-highest" cx="16" cy="16" fill="none" r="16" stroke="currentColor" stroke-width="3"></circle>
+<circle class="text-secondary draw-donut-segment" cx="16" cy="16" fill="none" r="16" stroke="currentColor" stroke-dasharray="45 100" stroke-width="4" style="--val: 45;"></circle>
+<circle class="text-tertiary draw-donut-segment" cx="16" cy="16" fill="none" r="16" stroke="currentColor" stroke-dasharray="30 100" stroke-dashoffset="-45" stroke-width="4" style="--val: 30;"></circle>
+<circle class="text-primary draw-donut-segment" cx="16" cy="16" fill="none" r="16" stroke="currentColor" stroke-dasharray="25 100" stroke-dashoffset="-75" stroke-width="4" style="--val: 25;"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col">
+<span class="font-display-lg-mobile text-on-surface">3.4k</span>
+<span class="font-label-sm text-on-surface-variant">Items</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-sm bg-secondary"></div><span class="font-label-sm text-on-surface-variant">Produce (45%)</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-sm bg-tertiary"></div><span class="font-label-sm text-on-surface-variant">Dairy (30%)</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-sm bg-primary"></div><span class="font-label-sm text-on-surface-variant">Pantry (25%)</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<div class="animate-fade-in-up lg:col-span-2 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">System Performance</h2>
+<div class="flex gap-2">
+<button class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface hover:border-outline transition-colors">24h</button>
+<button class="px-4 py-2 rounded-full border border-secondary bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm">7d</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface hover:border-outline transition-colors">30d</button>
+</div>
+</div>
+<div class="w-full h-[300px] relative">
+<!-- SVG Line Chart Mockup -->
+<svg class="w-full h-full text-secondary" preserveAspectRatio="none" viewBox="0 0 800 300">
+<!-- Grid Lines -->
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="800" y1="50" y2="50"></line>
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="800" y1="150" y2="150"></line>
+<line stroke="currentColor" stroke-opacity="0.1" stroke-width="1" x1="0" x2="800" y1="250" y2="250"></line>
+<!-- Line 1: Accuracy -->
+<path class="draw-line" d="M0,250 C100,200 200,280 300,150 C400,20 500,220 600,100 C700,-20 800,80 800,80" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+<!-- Line 2: Process Time (Added) -->
+<path class="draw-line" d="M0,150 C150,180 250,100 350,120 C450,140 550,60 650,90 C750,120 800,40 800,40" fill="none" stroke="var(--color-tertiary)" stroke-dasharray="5 5" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<!-- Area under line -->
+<path d="M0,250 C100,200 200,280 300,150 C400,20 500,220 600,100 C700,-20 800,80 800,80 L800,300 L0,300 Z" fill="url(#grad1)" opacity="0.1"></path>
+<!-- Gradient Def -->
+<defs>
+<linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="currentColor" stop-opacity="1"></stop>
+<stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<!-- Data Points -->
+<circle cx="300" cy="150" fill="currentColor" r="4"></circle>
+<circle cx="600" cy="100" fill="currentColor" r="4"></circle>
+</svg>
+<div class="absolute top-0 right-4 flex gap-4">
+<div class="flex items-center gap-2"><div class="w-3 h-1 bg-secondary"></div><span class="text-xs text-on-surface-variant">Detection Acc.</span></div>
+<div class="flex items-center gap-2"><div class="w-3 h-1 border-t-2 border-dashed border-tertiary"></div><span class="text-xs text-on-surface-variant">Proc. Time</span></div>
+</div>
+</div>
+</div>
+<div class="animate-fade-in-up delay-100 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">Confidence Score</h2>
+<div class="tooltip-trigger relative cursor-help">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">info</span>
+<div class="tooltip-content absolute z-10 w-48 p-2 mt-2 -left-48 top-full bg-surface-container-high rounded shadow-lg text-label-sm text-on-surface opacity-0 invisible transform -translate-y-2 transition-all duration-200">Aggregate AI confidence metric across all product bounding boxes.</div>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">Real-time object recognition confidence index across all active sessions.</p>
+</div>
+<div class="relative w-full aspect-square max-w-[240px] mx-auto flex items-center justify-center">
+<!-- Radial Progress SVG -->
+<svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+<circle class="text-outline-variant/30" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-secondary drop-shadow-[0_0_8px_rgba(0,88,190,0.4)] draw-line transition-all duration-1000 ease-out" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="283" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-display-lg-mobile text-display-lg-mobile text-on-surface">99<span class="text-body-lg">%</span></span>
+</div>
+</div>
+<div class="flex justify-center gap-4 mt-8">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Matched</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full border border-outline-variant"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Flagged</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Table Section -->
+<section class="animate-fade-in-up delay-200 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant mb-section-gap">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Recent Cart Sessions</h2>
+<button class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 border-b border-outline-variant font-medium">Session ID</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 border-b border-outline-variant font-medium">Time</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 border-b border-outline-variant font-medium">Items</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 border-b border-outline-variant font-medium">Value</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 border-b border-outline-variant font-medium text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant/50">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<td class="py-5"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span><span class="font-mono text-sm text-on-surface-variant group-hover:text-secondary transition-colors">#SCAI-4921</span></div></td>
+<td class="py-5 text-on-surface-variant">2 mins ago</td>
+<td class="py-5">14 items</td>
+<td class="py-5">₹142.50</td>
+<td class="py-5 text-right">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed text-[11px] font-medium tracking-wide uppercase">Completed</span>
+</td>
+</tr>
+<!-- Expanded Row 1 -->
+<tr class="hidden bg-surface-container/30">
+<td class="py-4 px-6 border-l-2 border-secondary" colspan="5">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Organic Avocados x3</span>
+<div class="flex gap-4 text-on-surface-variant"><span class="font-mono">Conf: 99.8%</span><span class="">10:42:01 AM</span></div>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Whole Milk 1G</span>
+<div class="flex gap-4 text-on-surface-variant"><span class="font-mono">Conf: 98.5%</span><span class="">10:42:15 AM</span></div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<td class="py-5"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span><span class="font-mono text-sm text-on-surface-variant group-hover:text-secondary transition-colors">#SCAI-4920</span></div></td>
+<td class="py-5 text-on-surface-variant">5 mins ago</td>
+<td class="py-5">3 items</td>
+<td class="py-5">₹24.99</td>
+<td class="py-5 text-right">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed text-[11px] font-medium tracking-wide uppercase">Completed</span>
+</td>
+</tr>
+<!-- Expanded Row 2 -->
+<tr class="hidden bg-surface-container/30">
+<td class="py-4 px-6 border-l-2 border-secondary" colspan="5">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Artisan Bread</span>
+<div class="flex gap-4 text-on-surface-variant"><span class="font-mono">Conf: 99.1%</span><span class="">10:39:22 AM</span></div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors group cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+<td class="py-5"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span><span class="font-mono text-sm text-on-surface-variant group-hover:text-secondary transition-colors">#SCAI-4919</span></div></td>
+<td class="py-5 text-on-surface-variant">12 mins ago</td>
+<td class="py-5">27 items</td>
+<td class="py-5">₹318.20</td>
+<td class="py-5 text-right">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container text-[11px] font-medium tracking-wide uppercase">Verification Reqd</span>
+</td>
+</tr>
+<!-- Expanded Row 3 -->
+<tr class="hidden bg-surface-container/30">
+<td class="py-4 px-6 border-l-2 border-error" colspan="5">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface">Unknown Item (Requires manual tag)</span>
+<div class="flex gap-4 text-error"><span class="font-mono">Conf: 45.2%</span><span class="">10:32:05 AM</span></div>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="py-5"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-outline-variant">horizontal_rule</span><span class="font-mono text-sm text-on-surface-variant group-hover:text-secondary transition-colors">#SCAI-4918</span></div></td>
+<td class="py-5 text-on-surface-variant">18 mins ago</td>
+<td class="py-5">8 items</td>
+<td class="py-5">₹89.00</td>
+<td class="py-5 text-right">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary-fixed/30 text-on-secondary-fixed text-[11px] font-medium tracking-wide uppercase">Completed</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div></main><footer class="w-full bg-surface-container-low py-section-gap border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8 text-center"><div class="flex items-center gap-3"><img alt="SmartCart AI" class="h-6 w-auto opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">SmartCart AI Core</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">Intelligent retail experiences powered by advanced neural insights.</p><div class="flex gap-8"><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Privacy</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Terms</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Support</a></div></div></footer>
+
+</body></html>

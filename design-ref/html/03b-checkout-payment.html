@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#adc6ff","primary-fixed-dim":"#bcc7de","outline-variant":"#c5c6cd","secondary":"#0058be","surface-tint":"#545f73","on-secondary-fixed-variant":"#004395","error":"#ba1a1a","on-error-container":"#93000a","inverse-primary":"#bcc7de","tertiary-fixed":"#d3e4fe","on-surface-variant":"#45474c","surface-container-low":"#f2f4f6","on-tertiary-fixed":"#0b1c30","on-surface":"#191c1e","on-error":"#ffffff","on-secondary-fixed":"#001a42","on-tertiary":"#ffffff","primary":"#091426","tertiary-container":"#1a2a3e","surface-container":"#eceef0","surface-dim":"#d8dadc","surface-container-high":"#e6e8ea","inverse-on-surface":"#eff1f3","primary-container":"#1e293b","inverse-surface":"#2d3133","on-background":"#191c1e","on-tertiary-fixed-variant":"#38485d","on-primary-fixed":"#111c2d","surface":"#f7f9fb","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#b7c8e1","secondary-container":"#2170e4","on-primary":"#ffffff","outline":"#75777d","on-secondary":"#ffffff","secondary-fixed":"#d8e2ff","on-secondary-container":"#fefcff","error-container":"#ffdad6","background":"#f7f9fb","surface-variant":"#e0e3e5","primary-fixed":"#d8e3fb","tertiary":"#041528","surface-container-highest":"#e0e3e5","on-tertiary-container":"#8191a9","surface-bright":"#f7f9fb","on-primary-fixed-variant":"#3c475a","on-primary-container":"#8590a6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"24px","container-max":"1280px","margin-desktop":"48px","unit":"4px","margin-mobile":"16px","section-gap":"80px"},"fontFamily":{"label-sm":["Geist"],"headline-md":["Geist"],"body-md":["Geist"],"display-lg":["Geist"],"display-lg-mobile":["Geist"],"body-lg":["Geist"]},"fontSize":{"label-sm":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"1.5","letterSpacing":"0","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"1.6","letterSpacing":"0","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-4"><img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-headline-md text-headline-md text-primary tracking-tight">SmartCart AI</span></div><nav class="hidden md:flex items-center gap-8" data-active-classes="text-secondary font-medium"><a aria-current="page" class="transition-colors text-secondary font-medium" data-path="shop" href="#">Shop</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-scanner" href="#">AI Scanner</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="collections" href="#">Collections</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="offers" href="#">Offers</a></nav><div class="flex items-center gap-6"><button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"><span class="material-symbols-outlined">shopping_cart</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20"><div class="flex flex-col w-full">
+<!-- Content Container -->
+<div class="w-full max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop py-12 flex flex-col gap-12">
+<!-- Progress Indicator -->
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-4 w-full max-w-2xl">
+<!-- Step 1: Completed -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Shipping</span>
+</div>
+<div class="flex-1 h-[2px] bg-primary/20 rounded-full"></div>
+<!-- Step 2: Active -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="font-label-sm text-label-sm">2</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest font-semibold">Payment</span>
+</div>
+<div class="flex-1 h-[2px] bg-surface-variant rounded-full"></div>
+<!-- Step 3: Upcoming -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="font-label-sm text-label-sm">3</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Review</span>
+</div>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Payment Form -->
+<div class="lg:col-span-7 flex flex-col gap-10">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2">Payment Method</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">All transactions are secure and encrypted.</p>
+</div>
+<!-- Payment Options List -->
+<div class="flex flex-col gap-4">
+<!-- Option 1: Credit Card (Active) -->
+<div class="bg-surface-container-lowest shadow-lg rounded-2xl p-8 flex flex-col gap-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
+<div class="flex items-center justify-between relative z-10">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center shadow-sm">
+<div class="w-2 h-2 rounded-full bg-on-primary"></div>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">Credit / Debit Card</span>
+</div>
+<div class="flex gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined">credit_card</span>
+<span class="material-symbols-outlined">contactless</span>
+</div>
+</div>
+<!-- Card Form -->
+<div class="flex flex-col gap-6 relative z-10">
+<!-- Card Number -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Card Number</label>
+<div class="w-full bg-surface-container p-4 rounded-xl flex items-center gap-3 transition-shadow focus-within:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant">credit_score</span>
+<input class="bg-transparent w-full font-body-md text-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50" placeholder="0000 0000 0000 0000" type="text">
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<!-- Expiry -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Expiry Date</label>
+<div class="w-full bg-surface-container p-4 rounded-xl transition-shadow focus-within:shadow-md">
+<input class="bg-transparent w-full font-body-md text-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50" placeholder="MM / YY" type="text">
+</div>
+</div>
+<!-- CVV -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">CVV</label>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">info</span>
+</div>
+<div class="w-full bg-surface-container p-4 rounded-xl transition-shadow focus-within:shadow-md">
+<input class="bg-transparent w-full font-body-md text-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50" placeholder="123" type="password">
+</div>
+</div>
+</div>
+<!-- Name on Card -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Name on Card</label>
+<div class="w-full bg-surface-container p-4 rounded-xl transition-shadow focus-within:shadow-md">
+<input class="bg-transparent w-full font-body-md text-body-md text-on-surface outline-none placeholder:text-on-surface-variant/50" placeholder="Jane Doe" type="text">
+</div>
+</div>
+</div>
+</div>
+<!-- Option 2: Apple Pay -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-2xl p-6 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center"></div>
+<span class="font-headline-md text-headline-md text-on-surface">Apple Pay</span>
+</div>
+<img class="h-6 w-auto mix-blend-multiply opacity-80" data-alt="Apple Pay logo, minimal black vector logo on transparent background, high contrast, sleek corporate styling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAz1RJYtDu3QUO5_EfguS3PCS44UhO-vx2LQYModhnl5v2O5eZJZ8KI3KvGMARIFJ5bKXEBcpbTdULNDkB6QYe8kWIkHeivhEifWTpme29An1pYwBP66-ySO30TCjIR-F6F1QTiDTjBltWvNkubWhzoHBy6mWjd5oVhWbnyOI2Tct9sSt8eHpcf3sNrLTiZxlOmJ3jyd_7ISW1d3JR1Nlee4bbrUg9kOf_80aBwVq8WJjJCEQGTJC_">
+</div>
+<!-- Option 3: Google Pay -->
+<div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-2xl p-6 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center"></div>
+<span class="font-headline-md text-headline-md text-on-surface">Google Pay</span>
+</div>
+<img class="h-6 w-auto mix-blend-multiply opacity-80" data-alt="Google Pay logo, colorful but subtle G Pay branding, minimal presentation, transparent background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBEULttj1dmExWzSnnt8cLJ2kw3TTh34HxmwBYfVxNMdrDFnNznOUe124_LQ8_nqxfz8NNQvXW0NYttd5snj_dGSTzQUJb18_P7m9Cb3W1Q4AotY2m9owPk_pS-sar8PG8pagBC1oJ55PIVlcSGZ6A8y_XdBuVUTmwvXbXGFXCtOOZTaa21h7zvRComQ0xtSbl8KujzNQFeRTOmBUkNn0Ejfu9zdVkpXiTKVNCMLW7hhx6gtixQc3z">
+</div><div class="bg-surface-container-low hover:bg-surface-container transition-colors rounded-2xl p-6 flex items-center justify-between cursor-pointer"><div class="flex items-center gap-4"><div class="w-6 h-6 rounded-full bg-surface-variant flex items-center justify-center"></div><span class="font-headline-md text-headline-md text-on-surface">UPI / Net Banking</span></div><span class="material-symbols-outlined text-on-surface-variant opacity-80">account_balance</span></div>
+</div>
+<div class="pt-8 flex flex-col gap-6">
+<button class="w-full bg-primary text-on-primary font-headline-md text-headline-md py-5 px-8 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all flex items-center justify-center gap-2">
+            Review Order
+            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<div class="flex items-center justify-center gap-4 text-on-surface-variant opacity-80">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">256-Bit SSL Encryption</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary (Sidebar) -->
+<div class="lg:col-span-5 relative">
+<div class="sticky top-32 bg-surface-container-low rounded-[2rem] shadow-sm p-8 flex flex-col gap-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Order Summary</h2>
+<div class="flex flex-col gap-6">
+<!-- Item 1 -->
+<div class="flex gap-4 items-center">
+<div class="w-20 h-20 rounded-xl overflow-hidden bg-surface-container-highest shadow-inner shrink-0">
+<div class="bg-cover bg-center w-full h-full mix-blend-multiply" data-alt="A pair of sleek Auralis Pro ANC Headphones resting on a minimalist concrete plinth, soft diffused studio lighting, deep indigo accents" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5dp4vJl6vdwMetEI7qOY1CAY8YfZKs3HoOSdnkb78-kFVTh88OQIr4SuMotH5-3O3dbsYqK2chd1oVdpCWJrSbRyeydML2rnVVqEayoATU0rsuffEvConSAhKNxMktqS3fh5s5_nBKQE61baPQwfAAaNryGrr4NlhMOVqs71n3Uw0ETIxR7pinTJtPhBEWJqlg1oPlxr4fd2RIYsNC3gaM2S3IUh0uI043WTVhSN-EgFfVIs5aqmy')"></div>
+</div>
+<div class="flex flex-col justify-center flex-1 min-w-0">
+<span class="font-body-md text-body-md text-on-surface font-semibold truncate">Auralis Pro ANC Headphones</span>
+<div class="flex items-center gap-3 mt-2"><button class="w-6 h-6 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant opacity-50 cursor-not-allowed" disabled=""><span class="material-symbols-outlined text-[16px]">remove</span></button><span class="font-body-md text-body-md text-on-surface font-medium">1</span><button class="w-6 h-6 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[16px]">add</span></button></div>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface shrink-0">₹299</span>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4 items-center">
+<div class="w-20 h-20 rounded-xl overflow-hidden bg-surface-container-highest shadow-inner shrink-0">
+<div class="bg-cover bg-center w-full h-full mix-blend-multiply" data-alt="A beautifully crafted walnut wood charging dock on a pristine white desk, natural sunlight casting subtle shadows, warm wood tones" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYnWq4TLv6L6XX1_wT5ysSe8Wdg1nTWzSs2TS_vO8OpANDqBGrjE8mWy4-xPyOYBgsKXSKVxRWOhqX_3jpBjBHssTxdlTn8j885itLsjSbadL3d6h134XW8oruoz_f2aHCk4cvelsdzdTH8OtMPj9rjj0CsrHpL6fYU6Ig7yPa03AtdYQDHHZs8iTvygddxBSs_5_-z5ENE7ldklctmmWDvjZ_9XPHz15x6shn1gLcBZTCJeJvqlP9')"></div>
+</div>
+<div class="flex flex-col justify-center flex-1 min-w-0">
+<span class="font-body-md text-body-md text-on-surface font-semibold truncate">Walnut Charging Dock</span>
+<div class="flex items-center gap-3 mt-2"><button class="w-6 h-6 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant opacity-50 cursor-not-allowed" disabled=""><span class="material-symbols-outlined text-[16px]">remove</span></button><span class="font-body-md text-body-md text-on-surface font-medium">1</span><button class="w-6 h-6 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[16px]">add</span></button></div>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface shrink-0">₹89</span>
+</div>
+</div>
+<div class="w-full h-[1px] bg-surface-variant/50"></div>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Subtotal</span>
+<span class="font-body-md text-body-md text-on-surface">₹388.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Shipping</span>
+<span class="font-body-md text-body-md text-on-surface">Free</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Estimated Tax</span>
+<span class="font-body-md text-body-md text-on-surface">₹31.04</span>
+</div>
+</div>
+<div class="w-full h-[1px] bg-surface-variant/50"></div>
+<div class="flex justify-between items-center bg-surface-container p-6 rounded-2xl shadow-sm">
+<span class="font-headline-md text-headline-md text-on-surface">Total</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">₹419.04</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-low py-section-gap border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8 text-center"><div class="flex items-center gap-3"><img alt="SmartCart AI" class="h-6 w-auto opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">SmartCart AI Core</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">Intelligent retail experiences powered by advanced neural insights.</p><div class="flex gap-8"><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Privacy</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Terms</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Support</a></div></div></footer>
+
+</body></html>

@@ -1,0 +1,10 @@
+providers:
+  detector: mock_detector
+  ocr: mock_ocr
+  barcode: mock_barcode
+  embedder: mock_embedder
+  retriever: mock_retriever
+
+settings:
+  confidence_threshold: 0.85
+  unknown_queue_path: "storage/unknown_products"

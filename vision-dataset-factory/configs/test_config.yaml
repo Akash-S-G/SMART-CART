@@ -1,0 +1,4 @@
+target_images_per_class: 15
+minimum_images_per_class: 5
+families:
+  - "Parle-G"

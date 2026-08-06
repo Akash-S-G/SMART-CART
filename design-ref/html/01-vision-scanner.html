@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#adc6ff","primary-fixed-dim":"#bcc7de","outline-variant":"#c5c6cd","secondary":"#0058be","surface-tint":"#545f73","on-secondary-fixed-variant":"#004395","error":"#ba1a1a","on-error-container":"#93000a","inverse-primary":"#bcc7de","tertiary-fixed":"#d3e4fe","on-surface-variant":"#45474c","surface-container-low":"#f2f4f6","on-tertiary-fixed":"#0b1c30","on-surface":"#191c1e","on-error":"#ffffff","on-secondary-fixed":"#001a42","on-tertiary":"#ffffff","primary":"#091426","tertiary-container":"#1a2a3e","surface-container":"#eceef0","surface-dim":"#d8dadc","surface-container-high":"#e6e8ea","inverse-on-surface":"#eff1f3","primary-container":"#1e293b","inverse-surface":"#2d3133","on-background":"#191c1e","on-tertiary-fixed-variant":"#38485d","on-primary-fixed":"#111c2d","surface":"#f7f9fb","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#b7c8e1","secondary-container":"#2170e4","on-primary":"#ffffff","outline":"#75777d","on-secondary":"#ffffff","secondary-fixed":"#d8e2ff","on-secondary-container":"#fefcff","error-container":"#ffdad6","background":"#f7f9fb","surface-variant":"#e0e3e5","primary-fixed":"#d8e3fb","tertiary":"#041528","surface-container-highest":"#e0e3e5","on-tertiary-container":"#8191a9","surface-bright":"#f7f9fb","on-primary-fixed-variant":"#3c475a","on-primary-container":"#8590a6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"24px","container-max":"1280px","margin-desktop":"48px","unit":"4px","margin-mobile":"16px","section-gap":"80px"},"fontFamily":{"label-sm":["Geist"],"headline-md":["Geist"],"body-md":["Geist"],"display-lg":["Geist"],"display-lg-mobile":["Geist"],"body-lg":["Geist"]},"fontSize":{"label-sm":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"1.5","letterSpacing":"0","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"1.6","letterSpacing":"0","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-4"><img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-headline-md text-headline-md text-primary tracking-tight">SmartCart AI</span></div><nav class="hidden md:flex items-center gap-8" data-active-classes="text-secondary font-medium"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="shop" href="#">Shop</a><a aria-current="page" class="transition-colors text-secondary font-medium" data-path="ai-scanner" href="#">AI Scanner</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="collections" href="#">Collections</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="offers" href="#">Offers</a></nav><div class="flex items-center gap-6"><button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"><span class="material-symbols-outlined">shopping_cart</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20"><div class="flex flex-col w-full">
+<div class="w-full max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop py-section-gap flex flex-col gap-gutter">
+<!-- Header -->
+<div class="flex flex-col gap-2 max-w-3xl">
+<h1 class="font-display-lg text-display-lg text-on-background tracking-tight">AI Vision Scanner</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Upload an image of your cart or receipt. Our neural engine will instantly detect items, verify pricing, and organize your list with high precision.</p>
+</div>
+<!-- Main Workspace -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start mt-8">
+<!-- Scanner Area (Left) -->
+<div class="col-span-1 lg:col-span-8 flex flex-col gap-6">
+<!-- Dropzone / Active Scanner -->
+<div class="relative w-full aspect-[4/3] lg:aspect-[16/10] rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low overflow-hidden group cursor-default">
+<!-- Background Image (Simulated Scan Target) -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-90 mix-blend-multiply" data-alt="Overhead view of a sleek modern shopping basket containing fresh produce, a bottle of wine, and artisan bread, sitting on a clean checkout counter. High contrast, studio lighting, minimal background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCx4A8-VGtLiGO7ocQrpIV5pnT-L93NrWQEH0dWCLgQvq8Vux_IDfS6SoSaWxGIeWOcF0c1bmNHW9i7SG2lX4jeYBX7_LhV0iQtYy-XNz9jThnlJn4EKtlJN15Yg73ll-8DAoYobfisI33I5vuWOTyBNCQhDeV40K4e24eR7L1fAQidv0AggQiIpN3WawqGt7TO0AUPJ9ebNcDDS_Ak6ZIWhNMj9knwRHQu79Fbore57J7_N1Vl0S6S')"></div>
+<!-- Gradient Scrim for Readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low/90 via-surface-container-low/20 to-transparent pointer-events-none"></div>
+<!-- Scanning Animation Line -->
+<div class="absolute left-0 w-full h-[1px] bg-secondary shadow-[0_2px_15px_rgba(0,88,190,0.6)] pointer-events-none" id="scanner-line" style="top: 5%; transition: top 2.5s ease-in-out;">
+<!-- Subtle trailing gradient -->
+<div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-secondary/10 to-transparent"></div>
+</div>
+<!-- Top Status Indicators -->
+<div class="absolute top-6 left-6 flex gap-3 pointer-events-none">
+<span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant shadow-sm font-label-sm text-label-sm text-on-surface">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span> 
+                            Analysis Active
+                        </span>
+<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant shadow-sm font-label-sm text-label-sm text-on-surface-variant font-mono">
+                            ENG_v4.2
+                        </span>
+</div>
+<!-- Upload Action -->
+<div class="absolute bottom-8 left-0 w-full flex justify-center">
+<button class="px-8 py-4 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-all shadow-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">upload_file</span>
+                            Upload New Image
+                        </button>
+</div>
+</div>
+<!-- Guidance Notes -->
+<div class="flex items-start gap-3 p-4 rounded-lg bg-surface-container-low border border-outline-variant/50">
+<span class="material-symbols-outlined text-on-surface-variant">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant m-0">For best results, ensure the image is well-lit and items are not heavily obscured. The AI model detects both loose produce and packaged goods.</p>
+</div>
+</div>
+<!-- Results Panel (Right) -->
+<div class="col-span-1 lg:col-span-4 flex flex-col bg-surface-container-lowest rounded-xl border border-outline-variant shadow-lg h-[650px] relative overflow-hidden">
+<!-- Panel Header -->
+<div class="p-6 border-b border-outline-variant bg-surface-container-lowest flex items-center justify-between z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface m-0">Detected Items</h2>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-fixed-dim/20 px-2.5 py-1 rounded-full border border-secondary/20">
+                        3 Found
+                    </span>
+</div>
+<!-- Scrollable Item List -->
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-surface z-0 relative">
+<!-- Decorative background grid -->
+<div class="absolute inset-0 bg-[linear-gradient(rgba(197,198,205,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(197,198,205,0.1)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+<!-- Item Card 1 -->
+<div class="relative p-4 rounded-lg bg-surface-container-lowest border border-outline-variant hover:border-secondary/50 transition-colors flex gap-4 items-center shadow-sm group">
+<div class="w-12 h-12 rounded bg-surface-container-low border border-outline-variant/50 flex items-center justify-center shrink-0 group-hover:bg-secondary-fixed/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">nutrition</span>
+</div>
+<div class="flex-1 flex flex-col min-w-0">
+<div class="flex justify-between items-start gap-2">
+<span class="font-label-sm text-label-sm text-on-surface truncate">Organic Hass Avocado</span>
+<span class="font-label-sm text-label-sm text-on-surface font-mono">₹4.99</span>
+</div>
+<div class="flex justify-between items-end mt-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Qty: 2</span>
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1 bg-secondary-fixed-dim/10 px-1.5 rounded">
+<span class="material-symbols-outlined text-[14px]">verified</span> 99%
+                                </span>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="relative p-4 rounded-lg bg-surface-container-lowest border border-outline-variant hover:border-secondary/50 transition-colors flex gap-4 items-center shadow-sm group">
+<div class="w-12 h-12 rounded bg-surface-container-low border border-outline-variant/50 flex items-center justify-center shrink-0 group-hover:bg-secondary-fixed/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">bakery_dining</span>
+</div>
+<div class="flex-1 flex flex-col min-w-0">
+<div class="flex justify-between items-start gap-2">
+<span class="font-label-sm text-label-sm text-on-surface truncate">Artisan Sourdough Loaf</span>
+<span class="font-label-sm text-label-sm text-on-surface font-mono">₹6.50</span>
+</div>
+<div class="flex justify-between items-end mt-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</span>
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1 bg-secondary-fixed-dim/10 px-1.5 rounded">
+<span class="material-symbols-outlined text-[14px]">verified</span> 95%
+                                </span>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="relative p-4 rounded-lg bg-surface-container-lowest border border-outline-variant hover:border-secondary/50 transition-colors flex gap-4 items-center shadow-sm group">
+<div class="w-12 h-12 rounded bg-surface-container-low border border-outline-variant/50 flex items-center justify-center shrink-0 group-hover:bg-secondary-fixed/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">water_bottle</span>
+</div>
+<div class="flex-1 flex flex-col min-w-0">
+<div class="flex justify-between items-start gap-2">
+<span class="font-label-sm text-label-sm text-on-surface truncate">Sparkling Mineral Water</span>
+<span class="font-label-sm text-label-sm text-on-surface font-mono">₹2.29</span>
+</div>
+<div class="flex justify-between items-end mt-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</span>
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1 bg-secondary-fixed-dim/10 px-1.5 rounded">
+<span class="material-symbols-outlined text-[14px]">verified</span> 88%
+                                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Panel Footer / Total -->
+<div class="p-6 border-t border-outline-variant bg-surface-container-lowest flex flex-col gap-5 z-10">
+<div class="flex justify-between items-end">
+<span class="font-body-md text-body-md text-on-surface-variant">Estimated Total</span>
+<span class="font-headline-md text-headline-md text-on-surface font-mono tracking-tight">₹13.78</span>
+</div>
+<button class="w-full py-3.5 bg-secondary text-on-secondary font-label-sm text-label-sm uppercase tracking-widest rounded-lg hover:bg-secondary-container transition-colors shadow-md">
+                        Process Items
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Client-side script for subtle scanning animation loop -->
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const line = document.getElementById('scanner-line');
+            if(!line) return;
+            
+            let isDown = true;
+            
+            const animateScanner = () => {
+                if(isDown) {
+                    line.style.top = '95%';
+                } else {
+                    line.style.top = '5%';
+                }
+                isDown = !isDown;
+            };
+
+            // Initial trigger
+            setTimeout(animateScanner, 100);
+            
+            // Loop matching transition duration
+            setInterval(animateScanner, 2500);
+        });
+    </script>
+</div></main><footer class="w-full bg-surface-container-low py-section-gap border-t border-outline-variant/30"><div class="max-w-container-max mx-auto px-margin-desktop flex flex-col items-center gap-8 text-center"><div class="flex items-center gap-3"><img alt="SmartCart AI" class="h-6 w-auto opacity-50 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">SmartCart AI Core</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">Intelligent retail experiences powered by advanced neural insights.</p><div class="flex gap-8"><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Privacy</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Terms</a><a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-sm text-label-sm" href="#">Support</a></div></div></footer>
+
+</body></html>

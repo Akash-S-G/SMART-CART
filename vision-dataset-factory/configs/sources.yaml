@@ -1,0 +1,20 @@
+# External data sources configuration
+sources:
+  openfoodfacts:
+    api_url: "https://world.openfoodfacts.org/cgi/search.pl"
+    user_agent: "VisionDatasetFactory/1.0 (contact@smartcart.local)"
+    categories:
+      - "snacks"
+      - "beverages"
+      - "chocolates"
+    limit_per_category: 20
+    timeout: 10
+
+  blinkit:
+    base_url: "https://api.blinkit.com"
+    headers:
+      User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    rate_limit_delay: 1.5
+
+  local_folder:
+    input_dir: "storage/raw_local/"

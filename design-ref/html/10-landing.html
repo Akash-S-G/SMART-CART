@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"secondary-fixed-dim":"#adc6ff","primary-fixed-dim":"#bcc7de","outline-variant":"#c5c6cd","secondary":"#0058be","surface-tint":"#545f73","on-secondary-fixed-variant":"#004395","error":"#ba1a1a","on-error-container":"#93000a","inverse-primary":"#bcc7de","tertiary-fixed":"#d3e4fe","on-surface-variant":"#45474c","surface-container-low":"#f2f4f6","on-tertiary-fixed":"#0b1c30","on-surface":"#191c1e","on-error":"#ffffff","on-secondary-fixed":"#001a42","on-tertiary":"#ffffff","primary":"#091426","tertiary-container":"#1a2a3e","surface-container":"#eceef0","surface-dim":"#d8dadc","surface-container-high":"#e6e8ea","inverse-on-surface":"#eff1f3","primary-container":"#1e293b","inverse-surface":"#2d3133","on-background":"#191c1e","on-tertiary-fixed-variant":"#38485d","on-primary-fixed":"#111c2d","surface":"#f7f9fb","surface-container-lowest":"#ffffff","tertiary-fixed-dim":"#b7c8e1","secondary-container":"#2170e4","on-primary":"#ffffff","outline":"#75777d","on-secondary":"#ffffff","secondary-fixed":"#d8e2ff","on-secondary-container":"#fefcff","error-container":"#ffdad6","background":"#f7f9fb","surface-variant":"#e0e3e5","primary-fixed":"#d8e3fb","tertiary":"#041528","surface-container-highest":"#e0e3e5","on-tertiary-container":"#8191a9","surface-bright":"#f7f9fb","on-primary-fixed-variant":"#3c475a","on-primary-container":"#8590a6"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter":"24px","container-max":"1280px","margin-desktop":"48px","unit":"4px","margin-mobile":"16px","section-gap":"80px"},"fontFamily":{"label-sm":["Geist"],"headline-md":["Geist"],"body-md":["Geist"],"display-lg":["Geist"],"display-lg-mobile":["Geist"],"body-lg":["Geist"]},"fontSize":{"label-sm":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"500"}],"headline-md":["24px",{"lineHeight":"1.3","letterSpacing":"-0.01em","fontWeight":"500"}],"body-md":["16px",{"lineHeight":"1.5","letterSpacing":"0","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"600"}],"display-lg-mobile":["32px",{"lineHeight":"1.2","letterSpacing":"-0.02em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"1.6","letterSpacing":"0","fontWeight":"400"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-background"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop flex items-center justify-between"><div class="flex items-center gap-4"><img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon"><span class="font-headline-md text-headline-md text-primary tracking-tight">SmartCart AI</span></div><nav class="hidden md:flex items-center gap-8" data-active-classes="text-secondary font-medium"><a aria-current="page" class="transition-colors text-secondary font-medium" data-path="shop" href="#">Shop</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-scanner" href="#">AI Scanner</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="collections" href="#">Collections</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="offers" href="#">Offers</a></nav><div class="flex items-center gap-6"><button class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center"><span class="material-symbols-outlined">shopping_cart</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20"><div class="flex flex-col w-full font-body-md text-on-surface bg-background">
+<section class="w-full min-h-[70vh] flex flex-col items-center justify-center pt-24 pb-16 px-gutter relative overflow-hidden">
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary-fixed-dim/20 rounded-full blur-[120px] -z-10 mix-blend-multiply"></div>
+<div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary-fixed-dim/15 rounded-full blur-[100px] -z-10 mix-blend-multiply"></div>
+<div class="w-20 h-20 mb-8 mx-auto flex items-center justify-center">
+<img alt="SmartCart AI Logo" class="w-full h-full object-contain drop-shadow-sm transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon">
+</div>
+<div class="text-center max-w-3xl mx-auto flex flex-col items-center gap-6 relative z-10">
+<h1 class="font-display-lg md:text-[72px] text-display-lg-mobile leading-[1.05] tracking-tighter text-on-surface">
+        Shop Smarter with <br>
+<span class="text-secondary inline-block animate-[fade-in-up_0.8s_ease-out_forwards]">AI Vision</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+        Experience seamless retail. Point your camera, instantly recognize products, compare real-time prices, and checkout without friction.
+      </p>
+<div class="w-full max-w-2xl mt-8 relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-lowest text-on-surface rounded-full py-5 pl-12 pr-16 shadow-lg shadow-black/[0.03] outline-none transition-all duration-300 focus:shadow-xl focus:shadow-secondary/10 placeholder:text-on-surface-variant/60 font-body-lg text-body-lg" placeholder="Search or scan any product..." type="text">
+<div class="absolute inset-y-2 right-2 flex items-center">
+<button aria-label="Start AI Scan" class="bg-primary text-on-primary w-12 h-12 rounded-full flex items-center justify-center transition-transform hover:scale-105 shadow-md shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">document_scanner</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3 mt-6 text-label-sm text-on-surface-variant font-label-sm tracking-widest uppercase">
+<span class="w-8 h-[1px] bg-outline-variant/40"></span>
+<span class="">Powered by Neural Search</span>
+<span class="w-8 h-[1px] bg-outline-variant/40"></span>
+</div>
+</div>
+</section>
+<section class="w-full max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop pb-section-gap relative z-20 -mt-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="col-span-1 md:col-span-2 bg-surface-container-lowest rounded-3xl p-8 shadow-xl shadow-black/[0.02] flex flex-col justify-between overflow-hidden relative group">
+<div class="relative z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 text-secondary rounded-full font-label-sm text-label-sm mb-4">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Real-time Processing
+              </div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Instant Recognition</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Identify thousands of products in milliseconds using our edge-optimized AI models.</p>
+</div>
+<div class="mt-8 flex items-baseline gap-2">
+<span class="font-display-lg text-[64px] text-primary tracking-tighter leading-none">99.8</span>
+<span class="font-body-lg text-body-lg text-on-surface-variant">%</span>
+</div>
+<div class="absolute right-0 bottom-0 w-64 h-64 bg-surface-variant/30 rounded-full blur-3xl translate-x-1/4 translate-y-1/4 transition-transform duration-700 group-hover:scale-110"></div>
+<div class="absolute -right-8 -bottom-8 w-48 h-48 flex items-center justify-center opacity-10 pointer-events-none">
+<svg class="w-full h-full fill-current text-primary animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100"><path d="M50 0 A50 50 0 1 1 49.9 0 Z" fill="none" stroke="currentColor" stroke-dasharray="4 8" stroke-width="2"></path></svg>
+</div>
+</div>
+<div class="col-span-1 bg-primary text-on-primary rounded-3xl p-8 shadow-xl shadow-primary/10 flex flex-col justify-between relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md mb-2">Active Users</h3>
+<p class="font-body-md text-body-md text-on-primary/70">Global adoption scaling rapidly across major retail hubs.</p>
+</div>
+<div class="mt-8">
+<div class="font-display-lg text-[56px] tracking-tighter leading-none">2.4M</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="absolute -left-4 -top-4 w-32 h-32 bg-secondary/20 rounded-full blur-2xl"></div>
+</div>
+<div class="col-span-1 bg-surface-container-lowest rounded-3xl p-8 shadow-lg shadow-black/[0.02] flex flex-col justify-between group">
+<div>
+<div class="w-12 h-12 bg-surface-container flex items-center justify-center rounded-xl mb-6 text-on-surface">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Zero Friction</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-4">Eliminate checkout lines. Scan, pay, and walk out.</p>
+</div>
+<div class="col-span-1 md:col-span-2 bg-surface-container rounded-3xl p-8 shadow-lg shadow-black/[0.02] flex items-center justify-between relative overflow-hidden group">
+<div class="relative z-10 max-w-md">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Enterprise Ready</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Integrate SmartCart vision APIs directly into your existing retail infrastructure.</p>
+<a class="inline-flex items-center gap-2 font-label-sm text-label-sm text-primary group-hover:text-secondary transition-colors uppercase tracking-wider font-semibold" href="#">
+                   View Documentation <span class="material-symbols-outlined text-[16px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+<div class="hidden md:block w-32 h-32 relative">
+<div class="absolute inset-0 border border-outline-variant/40 rounded-full animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+<div class="absolute inset-4 border border-outline-variant/60 rounded-full flex items-center justify-center bg-surface-container-lowest shadow-sm z-10">
+<span class="material-symbols-outlined text-primary text-[32px]">api</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trusted Brands -->
+<section class="w-full py-12 border-y border-outline-variant/30 bg-surface-container-lowest overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop mb-8 text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Trusted by Global Retailers</p>
+</div>
+<div class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+<ul class="flex items-center justify-center md:justify-start [&amp;_li]:mx-8 [&amp;_img]:max-w-none animate-[infinite-scroll_25s_linear_infinite]">
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">NEXUS</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">AURALIGHT</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">QUANTUM</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">VELOCITY</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">NEXUS</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">AURALIGHT</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">QUANTUM</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">VELOCITY</span></li>
+</ul>
+<ul aria-hidden="true" class="flex items-center justify-center md:justify-start [&amp;_li]:mx-8 [&amp;_img]:max-w-none animate-[infinite-scroll_25s_linear_infinite]">
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">NEXUS</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">AURALIGHT</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">QUANTUM</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">VELOCITY</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">NEXUS</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">AURALIGHT</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-tighter">QUANTUM</span></li>
+<li class=""><span class="font-headline-md text-headline-md text-on-surface-variant/50 font-bold tracking-widest">VELOCITY</span></li>
+</ul>
+</div>
+</section>
+<!-- Interactive Categories -->
+<section class="w-full py-section-gap bg-background">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+<div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-[40px] text-on-surface tracking-tight mb-4">Explore Categories</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Intelligent curation tailored to your lifestyle.</p>
+</div>
+<a class="inline-flex items-center gap-2 font-label-sm text-label-sm text-primary uppercase tracking-widest hover:text-secondary transition-colors" href="#">View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<a class="group block relative h-80 rounded-2xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors" href="#">
+<div class="absolute inset-0 p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Electronics</h3>
+</div>
+<img alt="Electronics" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYlEwYSYnujJMLGL-I9_38H6XPQ8GMzhBQ4Q3XPhikfTlCkJmvTjQEB13ieh_3DDLBbbk86h1OrTg2ack1Q1rpL3Ufx9rVbk33EUdQtGT38EllJoJ32vdCFpu5zixeu7mBpqCp-WVzIsEUFOfs-g6cQjFoKFBrukyuS5L10W2Knjr6ccZ_vF-B3G_TXhjKzoio0f5W37izGNfmF3bBJkUjS2O3sbyARX3bR1nduF_f4HovDjqX84vE">
+</a>
+<a class="group block relative h-80 rounded-2xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors" href="#">
+<div class="absolute inset-0 p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Wearables</h3>
+</div>
+<img alt="Wearables" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkOw9hFxPy4UipfvrgKtcb4JVif-32Jw4OaGcU_MK-m1-ymjqUxMoRcCE6pk_XPDk4KezmTgwuWoHoSIy-BICl4B-n8OOsFLlZ1M9wtLWvM2fAAEur-a9TPvpBXxPFwPqTaVQfICA60AwbuISy_EIzPwvzelrWLaC_RU2y8EHhIT6AstRROi8vDslXoclZGL0aMa0G2PJpTawu7HmGuj9fIfL6p_nAHTOyBuTMouKgBx_542pv6KUw">
+</a>
+<a class="group block relative h-80 rounded-2xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors" href="#">
+<div class="absolute inset-0 p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Home Smart Devices</h3>
+</div>
+<img alt="Home Smart Devices" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHOXPwhVjhMok38_autOcp3GXyriNUSqDCSwh9kffkSidk89iuBb3uc5oPVZzEDXRHSZ-vIvzlJA6DXuYF4bJcnsG2df3mFwp9ehngq4tn7P47FLJIqY75E5eHXGDCcCEyUi2xPxZ7ChFEpJeYOIv0s2ff7iCecXFudsVIxBXCkqVjT5qI47_Wq8CCgbsrBgYSs5bu43JTFgahPbGYJJrZJHqTie4Uxi3mVwHEviJj00WVjIdzwh6T">
+</a>
+<a class="group block relative h-80 rounded-2xl overflow-hidden bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant transition-colors" href="#">
+<div class="absolute inset-0 p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Premium Accessories</h3>
+</div>
+<img alt="Premium Accessories" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjqHmbAzI63S4J2HgfJSVon0dMn_cAh_89M9PR5knu1cVqQHIpxTzMXjzY_umnjGPklILjOfZyuCjNkePSbhPB-a-dswDTVK-76l4RFScoh4jtbdxu11VsEcuXEtrp54SAx0000MHvLWFGedHXSrExLnkwF0b3s9tiZMdQI9P-705uJlbwmi9jbBH2sC1PH-skVWjlXLSU2FbK8deWyk4rQaZSsbNcqzNpO8BtRvwIzdsrg_Pb4NEW">
+</a>
+</div>
+</div>
+</section>
+<!-- Featured Products Carousel -->
+<section class="w-full py-section-gap bg-surface-container-low border-y border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop">
+<div class="flex justify-between items-center mb-12">
+<h2 class="font-display-lg text-display-lg-mobile md:text-[40px] text-on-surface tracking-tight">Featured Collections</h2>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container-lowest hover:text-on-surface transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container-lowest hover:text-on-surface transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Product 1 -->
+<div class="group flex flex-col gap-4 cursor-pointer bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-outline-variant hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="High-end, minimalist studio photography of sleek, matte black over-ear wireless headphones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD73MZLS3Gg5ELbIYQw_U1hq--_nvcjqPLQRYH84ZVF4Mm0qkd8pum0GNF04PscSwP-2tPGLbDQ96x1SFhWuFM1KN4efpBZSikghJmsFCi1yJo07LRt5x5fxeh28hBjmKNnr61RTvNVFZLl8ZbzR-SixhoPfYEp-GM5lMRj4B-IBsggNG2TsHQPm_ZykVBeFWAdXwOjGdhrQ9JzSYS3Ff-8t5rsvP4HZwoYoZnWDiaeRU2thxjpQLS5">
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-sm text-label-sm uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform shadow-lg">Quick Add</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start gap-4">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Aura Sync Over-Ear</h3>
+<span class="font-body-lg text-body-lg text-on-surface">₹299</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Active Noise Cancelling</p>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="group flex flex-col gap-4 cursor-pointer bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-outline-variant hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close-up, top-down view of a minimalist smart watch." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyQ5dCgZTwBVskmuseCbvwlDUnaxhDUcCDKrlgNHPeK_MM8o8hb4HsJaAgjl7CPxxvz5En3v8iXBDEZxpqxxdasIbHbBZs3ZllcoVfk3V_l6cd-zkJF2Ukub3DjJ00n0H5sI_-a2ld4IEoSlyt4LZw1NHrttsb0dn0pNIwzAzYfrzcs6QvpniYGAx_BtclE-5kVNMj-DnKoTD8d98Vum7BAgQQh2SvQT9mq1cbq1mfNbzHsVPf8q4D">
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-sm text-label-sm uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform shadow-lg">Quick Add</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start gap-4">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Zenith Chrono V2</h3>
+<span class="font-body-lg text-body-lg text-on-surface">₹185</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Biometric tracking</p>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="group flex flex-col gap-4 cursor-pointer bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-outline-variant hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Minimalist product shot of a small, cylindrical smart home speaker." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGFmLUM0d4rxgy_vUghnc3KpG6s4bWjQmy0NoTsemwWTmc0I2RIBlJB9vvmIlDYiIhJVmpXLG_gATgiXvjh3dXlqBMmEC0pef28VJNLJbI_kVXenBmCph-SwLWMmnphgkVFn2QAqIf7knE9x7zrC8WFW8XrD9KLDemGGK_AaphRCr4jArDASsWeEGngDMaR4GvSfql6wWKe5eyJaEftI1GNvysmvtFJXd0NCmXM8zlvoWK0Gpdcl9H">
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-sm text-label-sm uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform shadow-lg">Quick Add</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start gap-4">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Echo Node Mini</h3>
+<span class="font-body-lg text-body-lg text-on-surface">₹89</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Smart Home Hub</p>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="group flex flex-col gap-4 cursor-pointer bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-outline-variant hover:shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300">
+<div class="relative w-full aspect-[4/5] bg-surface overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A pair of sleek, truly wireless earbuds in a brushed aluminum charging case." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUQgkqjmf0O_YSTCZcH5Z8HyTWnW_9xQpz50sEjvJS5KM7qRvW0pJ_ptDna_pqhLzdepCAI9IJqX_G7s_mVMh9MQPxs8FaW6EYC_xMOg94QcYJIC6rnITueFYvrGZG9D89WOdwP3ZzmUBSlP-KiXJ_cKAqPl2GfsetQijqefwO08dWjh4eZbnC87pEkhulQ11qZJ1xBNWEtPXlUJQ367fYB-MLN9aCNXX-U7V6wGOnuNzG_eI0ERfo">
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-sm text-label-sm uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform shadow-lg">Quick Add</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-start gap-4">
+<h3 class="font-body-lg text-body-lg text-on-surface font-medium truncate">Sonic True Wireless</h3>
+<span class="font-body-lg text-body-lg text-on-surface">₹129</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Spatial Audio</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Platform Intelligence -->
+<section class="w-full py-section-gap bg-background">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop text-center">
+<h2 class="font-display-lg text-display-lg-mobile md:text-[40px] text-on-surface tracking-tight mb-16">How Intelligence Works</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+<div class="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-[1px] bg-outline-variant/30 z-0"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center relative z-10">
+<div class="w-24 h-24 bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-[40px]">center_focus_strong</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">1. Scan</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Point your device at any product on the shelf. Our vision engine captures structural and visual data instantly.</p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center relative z-10">
+<div class="w-24 h-24 bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-[40px]">memory</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">2. Recognize</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Neural models match the item against our global database, retrieving specs, reviews, and dynamic pricing.</p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center relative z-10">
+<div class="w-24 h-24 bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined text-[40px]">check_circle</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">3. Checkout</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Add to your virtual cart and complete your purchase securely with a single tap. Zero lines, zero waiting.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Developer Tech Section -->
+<section class="w-full py-section-gap bg-primary text-on-primary overflow-hidden relative">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+PC9yZWN0Pgo8Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIj48L2NpcmNsZT4KPC9zdmc+')] opacity-20"></div>
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-on-primary rounded-full font-label-sm text-label-sm mb-6 border border-white/20">
+<span class="material-symbols-outlined text-[14px]">code</span> API-First Architecture
+              </div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-[40px] tracking-tight mb-6">Powered by the Neural Engine</h2>
+<p class="font-body-lg text-body-lg text-on-primary/80 mb-8 max-w-lg">
+                Build sophisticated computer vision capabilities directly into your native applications. Our SDKs provide sub-millisecond inference times on edge devices.
+              </p>
+<div class="grid grid-cols-2 gap-8 mb-8">
+<div>
+<div class="font-display-lg text-[32px] tracking-tighter text-secondary-fixed">15ms</div>
+<div class="font-label-sm text-label-sm text-on-primary/60 uppercase tracking-widest mt-1">Latency</div>
+</div>
+<div>
+<div class="font-display-lg text-[32px] tracking-tighter text-secondary-fixed">99.9%</div>
+<div class="font-label-sm text-label-sm text-on-primary/60 uppercase tracking-widest mt-1">Uptime SLA</div>
+</div>
+</div>
+<button class="bg-on-primary text-primary px-8 py-3 rounded-xl font-label-sm text-label-sm uppercase tracking-widest hover:bg-surface-container-lowest transition-colors">Read Documentation</button>
+</div>
+<div class="bg-[#0b1c30] rounded-2xl border border-white/10 p-6 shadow-2xl font-mono text-sm overflow-x-auto">
+<div class="flex gap-2 mb-4">
+<div class="w-3 h-3 rounded-full bg-error"></div>
+<div class="w-3 h-3 rounded-full bg-[#f59e0b]"></div>
+<div class="w-3 h-3 rounded-full bg-[#10b981]"></div>
+</div>
+<pre class="text-on-primary/80 leading-relaxed"><span class="text-[#a78bfa]">import</span> { SmartCart } <span class="text-[#a78bfa]">from</span> <span class="text-[#34d399]">'@smartcart/vision-sdk'</span>;
+
+<span class="text-[#60a5fa]">const</span> scanner = <span class="text-[#a78bfa]">new</span> SmartCart({
+  apiKey: process.env.<span class="text-[#f472b6]">SC_API_KEY</span>,
+  edgeInference: <span class="text-[#fb923c]">true</span>
+});
+
+<span class="text-[#6b7280]">/* Initialize real-time stream */</span>
+<span class="text-[#a78bfa]">await</span> scanner.startStream(cameraRef, (<span class="text-[#fb923c]">result</span>) =&gt; {
+  <span class="text-[#a78bfa]">if</span> (result.confidence &gt; <span class="text-[#fb923c]">0.98</span>) {
+    cart.add(result.productId);
+    ui.showToast(<span class="text-[#34d399]">'Item Recognized'</span>);
+  }
+});
+</pre>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="w-full py-section-gap bg-surface-container-low border-b border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop">
+<h2 class="font-display-lg text-display-lg-mobile md:text-[40px] text-on-surface tracking-tight text-center mb-16">Retail Leaders Agree</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="flex text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface mb-8 italic">"Implementing SmartCart's vision AI reduced our in-store checkout times by 73%. It's completely transformed the customer experience in our flagship locations."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">S</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Sarah Jenkins</div>
+<div class="font-body-md text-body-md text-on-surface-variant">CTO, Nexus Retail</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="flex text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface mb-8 italic">"The accuracy of the product recognition is staggering. Even with similar packaging, the neural engine correctly identifies SKUs in sub-optimal lighting."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">M</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Marcus Chen</div>
+<div class="font-body-md text-body-md text-on-surface-variant">VP Innovation, Auralight</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/30 shadow-sm hidden lg:block">
+<div class="flex text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface mb-8 italic">"Integration was seamless thanks to the well-documented APIs. We rolled out to 500 stores in under a quarter with zero downtime."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface font-headline-md">E</div>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest">Elena Rodriguez</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Lead Architect, Quantum</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<style>
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+</style></main>
+<!-- Comprehensive Footer -->
+<footer class="w-full bg-surface py-16 border-t border-outline-variant/30">
+<div class="max-w-container-max mx-auto px-margin-mobile lg:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<img alt="SmartCart AI Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH6_obYOF1gW6WkP8D9aewlOIcENt4y-iIfheqSmTPzTxsMROXGLOWv5SpUEsdDTYfefC4uIhy6MdkHAZG_yV8KoRZSr8lnFeF1ggEWrymq9bGuoXeN8hKI6Ti6aTogFyupykMaN1iewvE-mHnK4OCDn7TiCpEzrUI1FJt_cOZq10yms6pMQBVBR6gZpfVKgoIn5NmPg_bEIAemCfMsrtdkig1nAnoYY2_PyZzeva9gFR-BCMYPCon">
+<span class="font-headline-md text-[20px] text-primary tracking-tight">SmartCart AI</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Building the future of frictionless commerce through advanced computer vision and neural networks.</p>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest mb-6">Platform</h4>
+<ul class="flex flex-col gap-4 font-body-md text-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">Vision API</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Edge SDKs</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Retail Analytics</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Hardware Integration</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest mb-6">Company</h4>
+<ul class="flex flex-col gap-4 font-body-md text-body-md text-on-surface-variant">
+<li class=""><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Blog</a></li>
+<li class=""><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface uppercase tracking-widest mb-6">Stay Updated</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Subscribe to our newsletter for the latest AI retail insights.</p>
+<div class="flex gap-2">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/50 rounded-xl px-4 py-2 font-body-md text-body-md text-on-surface outline-none focus:border-primary transition-colors" placeholder="Email address" type="email">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-xl font-label-sm text-label-sm uppercase tracking-widest hover:bg-secondary transition-colors">Subscribe</button>
+</div>
+</div>
+</div>
+<div class="pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 SmartCart AI Inc. All rights reserved.</p>
+<div class="flex gap-8">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>
