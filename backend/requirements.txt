@@ -17,5 +17,6 @@ Pillow
 ultralytics
 easyocr
 rapidfuzz
+email-validator
 cloudinary
 httpx
