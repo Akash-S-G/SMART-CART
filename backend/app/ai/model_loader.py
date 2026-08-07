@@ -36,16 +36,28 @@ class ModelLoader:
     # =====================================================
 
     def load(self):
-
         if self._loaded:
             return
 
-        if not Path(MODEL_PATH).exists():
-            raise FileNotFoundError(
-                f"YOLO model not found: {MODEL_PATH}"
-            )
+        import os
+        try:
+            from app.core.config import settings
+            custom_path = getattr(settings, "AI_MODEL_PATH", None) or os.getenv("AI_MODEL_PATH")
+        except Exception:
+            custom_path = os.getenv("AI_MODEL_PATH")
 
-        self._model = YOLO(str(MODEL_PATH))
+        if custom_path and Path(custom_path).exists():
+            target_path = str(custom_path)
+        elif Path(MODEL_PATH).exists():
+            target_path = str(MODEL_PATH)
+        else:
+            target_path = "yolo11n.pt"
+
+        try:
+            self._model = YOLO(target_path)
+        except Exception as e:
+            print(f"[warn] Failed to load YOLO from {target_path}: {e}")
+            self._model = YOLO("yolo11n.pt")
 
         self._loaded = True
 

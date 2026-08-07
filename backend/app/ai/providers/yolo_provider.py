@@ -15,8 +15,13 @@ from app.ai.model_loader import (
 class YOLOProvider:
 
     def __init__(self):
+        self._model = None
 
-        self.model = model_loader.get_model()
+    @property
+    def model(self):
+        if self._model is None:
+            self._model = model_loader.get_model()
+        return self._model
 
     # =====================================================
     # SINGLE IMAGE
