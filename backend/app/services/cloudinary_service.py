@@ -57,4 +57,17 @@ class CloudinaryService:
             logger.error(f"Cloudinary URL upload failed: {e}")
             return None
 
+    def destroy(self, public_id: str) -> bool:
+        """
+        Destroys/deletes an asset from Cloudinary by public_id.
+        """
+        if not self.is_configured:
+            return False
+        try:
+            res = cloudinary.uploader.destroy(public_id)
+            return res.get("result") == "ok"
+        except Exception as e:
+            logger.error(f"Cloudinary destroy failed for {public_id}: {e}")
+            return False
+
 cloudinary_service = CloudinaryService()

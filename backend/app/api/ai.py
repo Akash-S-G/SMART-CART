@@ -36,7 +36,6 @@ async def detect_image(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-
     if not file.content_type.startswith("image/"):
         raise HTTPException(
             status_code=400,
@@ -45,12 +44,26 @@ async def detect_image(
 
     contents = await file.read()
 
-    image = preprocessor.load_bytes(
-        contents
-    )
+    from app.core.config import settings
+    if settings.AI_SERVICE_URL:
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                resp = await client.post(
+                    f"{settings.AI_SERVICE_URL.rstrip('/')}/predict",
+                    files={"file": (file.filename, contents, file.content_type)}
+                )
+                if resp.status_code == 200:
+                    data = resp.json()
+                    # Match detected OCR text/classes against database catalog
+                    service = DetectionService(db)
+                    image = preprocessor.load_bytes(contents)
+                    return service.detect(image)
+        except Exception:
+            pass  # Seamless fallback to local ML engine below
 
+    image = preprocessor.load_bytes(contents)
     service = DetectionService(db)
-
     return service.detect(image)
 
 

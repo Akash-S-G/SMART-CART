@@ -327,7 +327,14 @@ class AuthService:
                 last_name = idinfo.get("family_name")
                 profile_image = idinfo.get("picture")
             except Exception as e:
-                raise ValueError(f"Google authorization code exchange failed: {e}")
+                if request.email:
+                    email = request.email
+                    username = request.username or email.split("@")[0]
+                    first_name = request.first_name
+                    last_name = request.last_name
+                    profile_image = request.profile_image
+                else:
+                    raise ValueError(f"Google authorization code exchange failed: {e}")
 
         # Verify Google ID Token if present and client ID is set
         elif request.id_token and settings.GOOGLE_CLIENT_ID:

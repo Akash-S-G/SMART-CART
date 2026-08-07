@@ -191,3 +191,31 @@ export async function markReviewHelpfulApi(productId: string, reviewId: string):
 export async function cancelOrderApi(orderId: string): Promise<{ message: string }> {
   return patchJson<{ message: string }, Record<string, never>>(`/orders/${orderId}/cancel`, {})
 }
+
+/* ==========================================================================
+   WISHLIST & COUPON & ANALYTICS APIs
+   ========================================================================== */
+
+export async function getWishlistApi(): Promise<Product[]> {
+  return getJson<Product[]>('/wishlist')
+}
+
+export async function addWishlistApi(productId: string): Promise<any> {
+  return postJson<any, Record<string, never>>(`/wishlist/${productId}`, {})
+}
+
+export async function removeWishlistApi(productId: string): Promise<any> {
+  return deleteJson<any>(`/wishlist/${productId}`)
+}
+
+export async function validateCouponApi(code: string, orderAmount: number): Promise<any> {
+  return postJson<any, any>('/coupons/validate', { code, order_amount: orderAmount })
+}
+
+export async function getDashboardAnalyticsApi(): Promise<any> {
+  return getJson<any>('/analytics/dashboard')
+}
+
+export async function restockProductApi(productId: string, quantity: number): Promise<Product> {
+  return postJson<Product, { quantity: number }>(`/products/${productId}/restock`, { quantity })
+}

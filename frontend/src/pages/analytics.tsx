@@ -118,19 +118,24 @@ export function AnalyticsPage() {
     })
   }, [products])
 
+  // Fetch real system analytics from backend /analytics/dashboard
+  const { data: dbMetrics, refetch: refetchMetrics } = useQuery({
+    queryKey: ['analytics-dashboard'],
+    queryFn: async () => {
+      const { getDashboardAnalyticsApi } = await import('@/lib/api')
+      return getDashboardAnalyticsApi()
+    },
+  })
+
   // 4. Summarize system metrics cards
   const metrics = useMemo(() => {
-    const activeCarts = Math.floor(280 + Math.random() * 150)
-    const scanVolume = performanceData.reduce((sum, d) => sum + d.volume, 0)
-    const avgLatency = Math.round(performanceData.reduce((sum, d) => sum + d.latency, 0) / performanceData.length)
-
     return [
-      { label: 'Vision Scans Today', value: scanVolume.toLocaleString(), icon: Activity, detail: '+12.3% from yesterday', color: 'text-primary' },
-      { label: 'AI Accuracy Rating', value: '99.82%', icon: CheckCircle, detail: 'Based on 50k+ logs', color: 'text-success' },
-      { label: 'Avg Inference Latency', value: `${avgLatency}ms`, icon: Clock, detail: 'Fast edge-YOLO processing', color: 'text-secondary' },
-      { label: 'Active Checkout Sessions', value: activeCarts.toString(), icon: ShoppingCart, detail: 'Real-time shoppers', color: 'text-warning' },
+      { label: 'Total DB Orders', value: (dbMetrics?.total_orders || 0).toLocaleString(), icon: Activity, detail: 'Recorded in PostgreSQL', color: 'text-primary' },
+      { label: 'Gross Revenue', value: `₹${(dbMetrics?.total_revenue || 0).toLocaleString()}`, icon: CheckCircle, detail: `Avg Order: ₹${dbMetrics?.average_order_value || 0}`, color: 'text-success' },
+      { label: 'Catalog Products', value: (dbMetrics?.total_products || 0).toLocaleString(), icon: Clock, detail: 'Active English catalog items', color: 'text-secondary' },
+      { label: 'Registered Customers', value: (dbMetrics?.total_customers || 0).toString(), icon: ShoppingCart, detail: 'User accounts', color: 'text-warning' },
     ]
-  }, [performanceData])
+  }, [dbMetrics])
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">

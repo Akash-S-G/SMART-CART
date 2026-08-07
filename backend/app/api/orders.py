@@ -6,6 +6,7 @@ from fastapi import (
     status,
 )
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 from app.auth.dependencies import (
     get_current_admin,
@@ -163,6 +164,31 @@ def cancel_order(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(exc),
         )
+
+
+class UpdateOrderStatusRequest(BaseModel):
+    status: str
+
+@router.patch(
+    "/{order_id}/status",
+    response_model=OrderResponse,
+)
+def update_order_status(
+    order_id: str,
+    request: UpdateOrderStatusRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    from app.models.order.order import Order
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    status_upper = request.status.upper()
+    order.status = status_upper
+    db.commit()
+    service = OrderService(db)
+    return service.get_order(user_id=str(current_user.id), order_id=order_id, is_admin=True)
 
 
 # =====================================================

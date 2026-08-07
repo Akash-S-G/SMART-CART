@@ -8,8 +8,8 @@ python-dotenv
 pydantic
 pydantic-settings
 python-jose[cryptography]
-passlib[bcrypt]
-bcrypt==4.0.1
+pwdlib[argon2,bcrypt]
+argon2-cffi
 websockets
 numpy
 opencv-python-headless

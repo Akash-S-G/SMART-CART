@@ -471,17 +471,27 @@ function OrderSummary({
   updateItem: (productId: string, qty: number) => Promise<any>
   removeItem: (productId: string) => Promise<any>
 }) {
-  const summary = cart?.summary
-  const items = cart?.items || []
+  const [promoCode, setPromoCode] = useState('')
+  const [discountAmount, setDiscountAmount] = useState(0)
+  const [appliedCode, setAppliedCode] = useState('')
+  const [promoLoading, setPromoLoading] = useState(false)
 
-  const handleQtyChange = async (productId: string, currentQty: number, change: number) => {
-    const newQty = currentQty + change
-    if (newQty <= 0) {
-      await removeItem(productId)
-    } else {
-      await updateItem(productId, newQty)
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return
+    setPromoLoading(true)
+    try {
+      const { validateCouponApi } = await import('@/lib/api')
+      const res = await validateCouponApi(promoCode, summary?.subtotal || 0)
+      setDiscountAmount(res.discount_amount)
+      setAppliedCode(res.code)
+    } catch (err: any) {
+      alert(err?.message || 'Invalid promo code')
+    } finally {
+      setPromoLoading(false)
     }
   }
+
+  const finalTotal = Math.max(0, (summary?.total_amount || 0) - discountAmount)
 
   return (
     <aside className="glass border border-white/5 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
@@ -512,13 +522,41 @@ function OrderSummary({
         ))}
       </div>
 
+      {/* Promo Code Box */}
+      <div className="border-t border-black/[0.06] pt-4">
+        <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 block">Promo Code</label>
+        <div className="flex gap-2">
+          <Input
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+            placeholder="SMART10"
+            className="text-xs rounded-xl bg-card/60"
+          />
+          <Button size="sm" variant="outline" className="rounded-xl text-xs px-3 shrink-0" onClick={handleApplyPromo} disabled={promoLoading}>
+            Apply
+          </Button>
+        </div>
+        {appliedCode && (
+          <div className="mt-2 flex items-center justify-between text-[11px] text-success font-semibold bg-success/10 px-2.5 py-1 rounded-lg">
+            <span>Promo applied: {appliedCode}</span>
+            <Sparkles className="h-3 w-3" />
+          </div>
+        )}
+      </div>
+
       <div className="border-t border-black/[0.06] pt-4 flex flex-col gap-2.5 text-xs">
         <SummaryRow label="Subtotal" value={`₹${summary?.subtotal || 0}`} />
         <SummaryRow label="Shipping" value="Free Delivery" />
         <SummaryRow label="Estimated Tax (18% GST)" value={`₹${summary?.tax || 0}`} />
+        {discountAmount > 0 && (
+          <div className="flex justify-between text-xs text-success font-semibold">
+            <span>Promo Discount</span>
+            <span>-₹{discountAmount}</span>
+          </div>
+        )}
         <div className="flex justify-between border-t border-black/[0.06] pt-3 text-sm font-black text-foreground">
           <span>Total</span>
-          <span>₹{summary?.total_amount || 0}</span>
+          <span>₹{finalTotal.toFixed(2)}</span>
         </div>
       </div>
 

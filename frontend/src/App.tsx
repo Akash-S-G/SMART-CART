@@ -10,6 +10,8 @@ import { AdminPage } from '@/pages/admin'
 import { ProfilePage } from '@/pages/profile'
 import { OrdersPage } from '@/pages/orders'
 
+import { RequireAuth } from '@/components/auth/require-auth'
+
 export default function App() {
   return (
     <Routes>
@@ -18,11 +20,11 @@ export default function App() {
         <Route path="scanner" element={<ScannerPage />} />
         <Route path="collections" element={<CollectionsPage />} />
         <Route path="product/:id" element={<ProductPage />} />
-        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="checkout" element={<RequireAuth><CheckoutPage /></RequireAuth>} />
         <Route path="analytics" element={<AnalyticsPage />} />
-        <Route path="admin" element={<AdminPage />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="orders" element={<OrdersPage />} />
+        <Route path="admin" element={<RequireAuth adminOnly><AdminPage /></RequireAuth>} />
+        <Route path="profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
+        <Route path="orders" element={<RequireAuth><OrdersPage /></RequireAuth>} />
         <Route path="*" element={<LandingPage />} />
       </Route>
     </Routes>

@@ -56,12 +56,18 @@ class CartItemResponse(BaseModel):
         product = getattr(data, "product", None)
         inventory = getattr(product, "inventory", None) if product else None
         image_url = None
-        if product and product.images:
-            primary_img = next((img for img in product.images if getattr(img, "is_primary", False)), None)
-            if not primary_img and product.images:
-                primary_img = product.images[0]
-            if primary_img:
-                image_url = primary_img.image_url
+        if product and getattr(product, "images", None):
+            imgs = product.images
+            if isinstance(imgs, (list, tuple, set)) and len(imgs) > 0:
+                primary_img = next((img for img in imgs if getattr(img, "is_primary", False)), None)
+                if not primary_img:
+                    primary_img = imgs[0]
+                if hasattr(primary_img, "image_url"):
+                    image_url = primary_img.image_url
+                elif isinstance(primary_img, str):
+                    image_url = primary_img
+            elif isinstance(imgs, dict):
+                image_url = imgs.get("thumbnail") or (imgs.get("gallery")[0] if isinstance(imgs.get("gallery"), list) and imgs["gallery"] else None)
         return {
             "id": data.id,
             "product_id": data.product_id,

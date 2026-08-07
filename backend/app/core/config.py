@@ -75,7 +75,10 @@ class Settings(BaseSettings):
     # =====================
     GOOGLE_CLIENT_ID: str | None = None
     GOOGLE_CLIENT_SECRET: str | None = None
-    GOOGLE_REDIRECT_URI: str | None = None
+    # =====================
+    # AI Microservice URL (Hugging Face / Modal / Remote GPU)
+    # =====================
+    AI_SERVICE_URL: str | None = None
 
 
     def validate_secrets(self) -> None:

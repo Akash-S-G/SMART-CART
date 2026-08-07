@@ -65,10 +65,37 @@ class ProductResponse(BaseModel):
         tags_val = meta.get("tags", [])
 
         images_val = []
-        if getattr(data, "images", None):
-            images_val = [img.image_url for img in data.images if img.image_url]
-        if not images_val:
-            images_val = meta.get("images", [])
+        raw_images = getattr(data, "images", None)
+        if raw_images:
+            if isinstance(raw_images, (list, tuple, set)):
+                for item in raw_images:
+                    if hasattr(item, "image_url") and item.image_url:
+                        images_val.append(str(item.image_url))
+                    elif isinstance(item, str) and item:
+                        images_val.append(item)
+            elif isinstance(raw_images, dict):
+                if raw_images.get("thumbnail"):
+                    images_val.append(str(raw_images["thumbnail"]))
+                if isinstance(raw_images.get("gallery"), list):
+                    for g in raw_images["gallery"]:
+                        if isinstance(g, str) and g:
+                            images_val.append(g)
+
+        if not images_val and meta.get("images"):
+            raw_meta = meta.get("images")
+            if isinstance(raw_meta, (list, tuple, set)):
+                for item in raw_meta:
+                    if isinstance(item, str) and item:
+                        images_val.append(item)
+            elif isinstance(raw_meta, dict):
+                if raw_meta.get("thumbnail"):
+                    images_val.append(str(raw_meta["thumbnail"]))
+                if isinstance(raw_meta.get("gallery"), list):
+                    for g in raw_meta["gallery"]:
+                        if isinstance(g, str) and g:
+                            images_val.append(g)
+            elif isinstance(raw_meta, str):
+                images_val.append(raw_meta)
 
         return {
             "id": data.id,

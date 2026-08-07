@@ -11,24 +11,27 @@ import { useCart } from '@/hooks/use-cart'
 import { useToast } from '@/components/ui/use-toast'
 import { Loader2 } from 'lucide-react'
 
+import { useRef } from 'react'
+
 export function AppShell() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [authChecking, setAuthChecking] = useState(false)
   const { login } = useAuth()
   const { fetchCart } = useCart()
   const { toast } = useToast()
+  const processedCodeRef = useRef<string | null>(null)
 
   useEffect(() => {
     const code = searchParams.get('code')
-    if (code) {
+    if (code && processedCodeRef.current !== code) {
+      processedCodeRef.current = code
+      // Immediately strip the code parameter from the browser URL bar
+      window.history.replaceState({}, document.title, window.location.pathname)
+      setSearchParams({}, { replace: true })
+
       setAuthChecking(true)
       const exchangeCode = async () => {
         try {
-          // Remove the code from search params immediately
-          const newParams = new URLSearchParams(searchParams)
-          newParams.delete('code')
-          setSearchParams(newParams, { replace: true })
-
           const redirectUri = window.location.origin
           const tokens = await googleLoginApi({ code, redirect_uri: redirectUri })
           saveSession(tokens, null)

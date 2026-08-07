@@ -192,17 +192,18 @@ export function AdminPage() {
               <thead>
                 <tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
                   <th className="p-4 uppercase tracking-wider">Product Name</th>
-                  <th className="p-4 uppercase tracking-wider">SKU ID</th>
+                  <th className="p-4 uppercase tracking-wider">SKU</th>
                   <th className="p-4 uppercase tracking-wider">Barcode</th>
-                  <th className="p-4 uppercase tracking-wider">Available Stock</th>
-                  <th className="p-4 uppercase tracking-wider">Price (INR)</th>
+                  <th className="p-4 uppercase tracking-wider">Stock</th>
+                  <th className="p-4 uppercase tracking-wider">Price</th>
                   <th className="p-4 uppercase tracking-wider">Status</th>
+                  <th className="p-4 uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.04]">
                 {isLoading ? (
                   <tr>
-                    <td colSpan={6} className="p-10 text-center text-muted-foreground">Loading inventory data...</td>
+                    <td colSpan={7} className="p-10 text-center text-muted-foreground">Loading inventory data...</td>
                   </tr>
                 ) : (
                   products?.map((p) => {
@@ -218,6 +219,28 @@ export function AdminPage() {
                           <Badge success={!isLow} warning={isLow} className="text-[10px]">
                             {isLow ? 'Low Stock' : 'Optimal'}
                           </Badge>
+                        </td>
+                        <td className="p-4 text-right">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-lg text-[11px] h-7 px-2.5 gap-1"
+                            onClick={async () => {
+                              const qty = prompt(`Restock ${p.name} (Add units):`, '50')
+                              if (qty && !isNaN(Number(qty))) {
+                                try {
+                                  const { restockProductApi } = await import('@/lib/api')
+                                  await restockProductApi(p.id, Number(qty))
+                                  queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+                                  toast({ title: 'Stock Restocked', description: `Added ${qty} units to ${p.name}.` })
+                                } catch {
+                                  toast({ title: 'Restock Failed', variant: 'destructive' })
+                                }
+                              }
+                            }}
+                          >
+                            <Plus className="h-3 w-3" /> Restock
+                          </Button>
                         </td>
                       </tr>
                     )

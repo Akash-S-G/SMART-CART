@@ -401,6 +401,9 @@ export function ScannerPage() {
                       <p className="font-bold text-sm text-foreground truncate">{item.name}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="text-[10px] text-muted-foreground">Conf: {item.confidence}%</span>
+                        {item.confidence < 70 && (
+                          <Badge warning className="text-[9px] px-1.5 py-0">Low Confidence</Badge>
+                        )}
                         <span className="text-muted-foreground/30">·</span>
                         
                         {/* Interactive Quantity Adjuster */}

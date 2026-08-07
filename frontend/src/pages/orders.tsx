@@ -114,15 +114,15 @@ function OrderCard({ order }: { order: any }) {
   })
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur overflow-hidden hover:border-white/20 transition-all">
+    <div className="rounded-3xl border border-border bg-card shadow-sm overflow-hidden hover:border-primary/20 transition-all">
       {/* Header */}
       <div
         className="flex items-center justify-between p-5 cursor-pointer select-none"
         onClick={() => setExpanded(e => !e)}
       >
         <div className="flex flex-col gap-1">
-          <span className="font-semibold text-white text-sm">#{order.order_number}</span>
-          <span className="text-xs text-white/50">
+          <span className="font-semibold text-foreground text-sm">#{order.order_number}</span>
+          <span className="text-xs text-muted-foreground">
             {new Date(order.created_at).toLocaleDateString('en-IN', {
               day: 'numeric', month: 'short', year: 'numeric',
             })}
@@ -134,8 +134,8 @@ function OrderCard({ order }: { order: any }) {
             <Icon className="w-3.5 h-3.5" />
             {cfg.label}
           </span>
-          <span className="text-white font-semibold">₹{Number(order.total_amount).toLocaleString('en-IN')}</span>
-          {expanded ? <ChevronUp className="w-4 h-4 text-white/50" /> : <ChevronDown className="w-4 h-4 text-white/50" />}
+          <span className="text-foreground font-semibold">₹{Number(order.total_amount).toLocaleString('en-IN')}</span>
+          {expanded ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
         </div>
       </div>
 

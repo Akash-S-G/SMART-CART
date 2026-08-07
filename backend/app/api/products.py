@@ -7,6 +7,7 @@ from fastapi import (
 )
 
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 from app.auth.dependencies import (
     get_current_admin,
@@ -162,6 +163,31 @@ def delete_product(
     service = ProductService(db)
 
     service.delete_product(product_id)
+
+
+class RestockRequest(BaseModel):
+    quantity: int
+
+@router.post(
+    "/{product_id}/restock",
+    response_model=ProductResponse,
+)
+def restock_product(
+    product_id: str,
+    request: RestockRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    from app.models.products.inventory import Inventory
+    inv = db.query(Inventory).filter(Inventory.product_id == product_id).first()
+    if not inv:
+        inv = Inventory(product_id=product_id, quantity=request.quantity)
+        db.add(inv)
+    else:
+        inv.quantity += request.quantity
+    db.commit()
+    service = ProductService(db)
+    return service.get_product(product_id)
 
 
 
