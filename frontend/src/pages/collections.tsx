@@ -37,6 +37,8 @@ export function CollectionsPage() {
   const [cats, setCats] = useState<string[]>(() => categoryParam ? [categoryParam] : [])
   const [prices, setPrices] = useState<string[]>([])
   const [sort, setSort] = useState('Recommended')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
 
   useEffect(() => {
     if (categoryParam && !cats.includes(categoryParam)) {
@@ -49,16 +51,16 @@ export function CollectionsPage() {
     queryFn: getCategoriesApi,
   })
 
-  const [limit, setLimit] = useState(20)
-
   const { data: products, isLoading } = useQuery({
-    queryKey: ['products', searchQuery, limit],
-    queryFn: () => (searchQuery ? searchProductsApi(searchQuery) : listProductsApi(0, limit)),
+    queryKey: ['products', searchQuery],
+    queryFn: () => (searchQuery ? searchProductsApi(searchQuery) : listProductsApi(0, 100)),
     placeholderData: keepPreviousData,
   })
 
-  const toggle = (list: string[], set: (v: string[]) => void, v: string) =>
+  const toggle = (list: string[], set: (v: string[]) => void, v: string) => {
+    setCurrentPage(1)
     set(list.includes(v) ? list.filter((x) => x !== v) : [...list, v])
+  }
 
   const shown = useMemo(() => {
     if (!products || !Array.isArray(products)) return []
@@ -93,6 +95,12 @@ export function CollectionsPage() {
     return result
   }, [products, cats, prices, sort])
 
+  const totalPages = Math.max(1, Math.ceil(shown.length / itemsPerPage))
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage
+    return shown.slice(start, start + itemsPerPage)
+  }, [shown, currentPage])
+
   const handleQuickAdd = async (e: React.MouseEvent, productId: string, name: string) => {
     e.preventDefault()
     try {
@@ -101,10 +109,10 @@ export function CollectionsPage() {
         title: 'Added to Cart',
         description: `${name} has been added to your shopping cart.`,
       })
-    } catch (err: any) {
+    } catch {
       toast({
-        title: 'Authentication Required',
-        description: 'Please sign in to add items to your cart.',
+        title: 'Error',
+        description: 'Failed to add item to cart.',
         variant: 'destructive',
       })
     }
@@ -112,91 +120,78 @@ export function CollectionsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-3xl font-sans font-extrabold tracking-tight text-foreground">Premium Collections</h1>
-          <span className="text-sm text-muted-foreground">· {shown.length} items found</span>
-        </div>
-        {searchQuery && (
-          <Badge variant="secondary" className="px-3 py-1 text-xs">
-            Search: "{searchQuery}"
-          </Badge>
-        )}
+      {/* Header */}
+      <div className="flex flex-col gap-2">
+        <Badge variant="secondary" className="w-fit gap-1 text-[11px] font-semibold uppercase tracking-wider px-3 py-1">
+          <SlidersHorizontal className="h-3 w-3" /> Catalog Directory
+        </Badge>
+        <h1 className="text-4xl font-sans font-extrabold text-foreground tracking-tight">
+          {searchQuery ? `Results for "${searchQuery}"` : 'Browse Grocery Products'}
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Showing {shown.length} verified grocery items with real-time stock status.
+        </p>
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[250px_1fr] items-start">
+      {/* Main Layout */}
+      <div className="mt-8 grid gap-8 lg:grid-cols-4">
         {/* Sidebar Filters */}
-        <aside className="sticky top-24 glass border border-white/5 rounded-3xl p-6 flex flex-col gap-8 shadow-sm">
-          {/* Categories */}
-          <div>
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">
-              Categories
-            </h3>
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => setCats([])}
-                className="flex items-center gap-2.5 text-left text-sm transition hover:text-foreground"
-              >
-                <span
-                  className={`grid h-5 w-5 place-items-center rounded-[5px] border transition ${
-                    cats.length === 0
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-black/20 text-transparent'
-                  }`}
-                >
-                  <Check className="h-3.5 w-3.5" />
-                </span>
-                <span className={cats.length === 0 ? 'text-foreground font-semibold' : 'text-muted-foreground'}>
-                  All Products
-                </span>
-              </button>
-
-              {categories?.map((c) => (
-                <FilterRow
-                  key={c.id}
-                  label={c.name}
-                  checked={cats.includes(c.id)}
-                  onToggle={() => toggle(cats, setCats, c.id)}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Price Filters */}
-          <div className="border-t border-black/[0.06] pt-6">
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-4">
-              Price Range
-            </h3>
-            <div className="flex flex-col gap-3">
-              {PRICE_FILTERS.map((f) => (
-                <FilterRow
-                  key={f.label}
-                  label={f.label}
-                  checked={prices.includes(f.label)}
-                  onToggle={() => toggle(prices, setPrices, f.label)}
-                />
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* Main Product Area */}
-        <div className="flex flex-col gap-6">
-          <div className="flex justify-between items-center bg-card/40 border border-border rounded-2xl px-6 py-4">
-            <span className="text-sm text-muted-foreground">Showing 1 - {shown.length} of {shown.length} results</span>
-            <div className="relative">
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="h-10 appearance-none rounded-xl border border-black/10 bg-card pl-3.5 pr-9 text-sm transition focus:border-primary/70 focus:outline-none focus:ring-2 focus:ring-primary/15 font-medium"
-              >
-                {SORTS.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
+        <div className="space-y-6 lg:col-span-1">
+          <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-6">
+            {/* Category Filter */}
+            <div>
+              <h3 className="font-bold text-foreground text-sm mb-3">Categories</h3>
+              <div className="space-y-2">
+                {categories?.map((c) => (
+                  <FilterRow
+                    key={c.id}
+                    label={c.name}
+                    checked={cats.includes(c.id)}
+                    onToggle={() => toggle(cats, setCats, c.id)}
+                  />
                 ))}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-60" />
+              </div>
+            </div>
+
+            {/* Price Filter */}
+            <div className="border-t border-black/[0.04] pt-6">
+              <h3 className="font-bold text-foreground text-sm mb-3">Price Range</h3>
+              <div className="space-y-2">
+                {PRICE_FILTERS.map((f) => (
+                  <FilterRow
+                    key={f.label}
+                    label={f.label}
+                    checked={prices.includes(f.label)}
+                    onToggle={() => toggle(prices, setPrices, f.label)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Product Grid & Sorting */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Controls Bar */}
+          <div className="flex justify-between items-center bg-card border border-border rounded-2xl px-5 py-3 shadow-sm">
+            <span className="text-xs font-semibold text-muted-foreground">
+              Showing Page {currentPage} of {totalPages} ({shown.length} Total Items)
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-foreground">Sort By:</span>
+              <div className="flex gap-1">
+                {SORTS.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => { setSort(s); setCurrentPage(1); }}
+                    className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition ${
+                      sort === s ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.04]'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -206,32 +201,72 @@ export function CollectionsPage() {
                 <div key={i} className="animate-pulse bg-card rounded-3xl p-4 border border-border h-96"></div>
               ))}
             </div>
-          ) : shown.length === 0 ? (
+          ) : paginatedProducts.length === 0 ? (
             <div className="text-center py-20 bg-card/20 rounded-3xl border border-dashed border-border flex flex-col items-center justify-center gap-4">
               <span className="text-4xl">🔎</span>
               <h3 className="text-lg font-bold text-foreground">No Products Found</h3>
               <p className="text-sm text-muted-foreground max-w-xs">
                 We couldn't find any products matching your filters or search query.
               </p>
-              <Button variant="secondary" onClick={() => { setCats([]); setPrices([]); }}>
+              <Button variant="secondary" onClick={() => { setCats([]); setPrices([]); setCurrentPage(1); }}>
                 Reset Filters
               </Button>
             </div>
           ) : (
             <>
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {shown.map((p, idx) => (
+                {paginatedProducts.map((p, idx) => (
                   <ProductCard key={p.id} p={p} index={idx} handleQuickAdd={handleQuickAdd} />
                 ))}
               </div>
-              {products && products.length >= limit && (
-                <div className="mt-12 flex justify-center">
+
+              {/* Page Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="mt-12 flex items-center justify-center gap-2 pt-6 border-t border-border">
                   <Button
-                    variant="secondary"
-                    onClick={() => setLimit((prev) => prev + 20)}
-                    className="rounded-2xl px-8 py-5 font-bold uppercase tracking-wider text-xs border border-primary/20 hover:bg-primary/5 transition-all shadow-md"
+                    variant="outline"
+                    size="sm"
+                    disabled={currentPage === 1}
+                    onClick={() => {
+                      setCurrentPage((p) => Math.max(1, p - 1))
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
+                    className="rounded-xl text-xs font-bold px-4 h-9"
                   >
-                    Load More Products
+                    Previous
+                  </Button>
+
+                  {Array.from({ length: totalPages }).map((_, i) => {
+                    const pageNum = i + 1
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => {
+                          setCurrentPage(pageNum)
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
+                        className={`h-9 w-9 text-xs font-bold rounded-xl transition-all ${
+                          currentPage === pageNum
+                            ? 'bg-primary text-primary-foreground shadow-md scale-105'
+                            : 'bg-card border border-border text-foreground hover:bg-black/[0.04]'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    )
+                  })}
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={currentPage === totalPages}
+                    onClick={() => {
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
+                    className="rounded-xl text-xs font-bold px-4 h-9"
+                  >
+                    Next
                   </Button>
                 </div>
               )}

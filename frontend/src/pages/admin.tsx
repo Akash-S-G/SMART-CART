@@ -12,6 +12,8 @@ import {
   Trash2,
   RefreshCw,
   Search,
+  Download,
+  FileSpreadsheet,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -29,6 +31,54 @@ export function AdminPage() {
 
   const [activeTab, setActiveTab] = useState<'inventory' | 'customers' | 'logs'>('inventory')
   const [showAddModal, setShowAddModal] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const exportInventoryCSV = () => {
+    if (!products?.length) {
+      toast({ title: 'No Data', description: 'Inventory catalog is empty.' })
+      return
+    }
+    const headers = ['Product ID', 'Name', 'SKU', 'Barcode', 'Stock', 'Price (INR)', 'Status']
+    const rows = products.map((p) => [
+      p.id,
+      `"${p.name.replace(/"/g, '""')}"`,
+      p.sku || '',
+      p.barcode || '',
+      p.stock ?? 0,
+      p.price ?? 0,
+      (p.stock || 0) < 20 ? 'Low Stock' : 'Optimal',
+    ])
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `smartcart_inventory_report_${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+    toast({ title: 'Inventory Report Exported', description: 'Downloaded CSV inventory report.' })
+  }
+
+  const exportAuditLogCSV = () => {
+    const headers = ['Event ID', 'Action', 'Detail', 'User', 'Timestamp', 'Severity']
+    const rows = logs.map((l) => [
+      l.id,
+      l.action,
+      `"${l.detail.replace(/"/g, '""')}"`,
+      l.user,
+      `"${l.time}"`,
+      l.severity,
+    ])
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `smartcart_audit_report_${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+    toast({ title: 'Audit Report Exported', description: 'Downloaded CSV audit log report.' })
+  }
 
   // Form state for creating a product
   const [formData, setFormData] = useState({
@@ -151,37 +201,57 @@ export function AdminPage() {
           <h1 className="text-3xl font-sans font-extrabold text-foreground">Admin Console</h1>
           <p className="text-xs text-muted-foreground mt-1">Supervise inventory stock parameters, client profiles, and system audit logs.</p>
         </div>
-        <Button variant="gradient" className="rounded-xl font-semibold uppercase text-xs tracking-widest py-5 px-5 gap-2" onClick={() => setShowAddModal(true)}>
-          <Plus className="h-4 w-4" /> Add New Product
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="rounded-xl font-semibold uppercase text-xs tracking-widest py-5 px-4 gap-2 border-border" onClick={exportInventoryCSV}>
+            <FileSpreadsheet className="h-4 w-4 text-emerald-600" /> Export Inventory CSV
+          </Button>
+          <Button variant="gradient" className="rounded-xl font-semibold uppercase text-xs tracking-widest py-5 px-5 gap-2" onClick={() => setShowAddModal(true)}>
+            <Plus className="h-4 w-4" /> Add New Product
+          </Button>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="mt-8 flex gap-3 border-b border-black/[0.04] pb-4">
-        <button
-          onClick={() => setActiveTab('inventory')}
-          className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${
-            activeTab === 'inventory' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'
-          }`}
-        >
-          <Boxes className="h-4 w-4" /> Inventory ({products?.length || 0})
-        </button>
-        <button
-          onClick={() => setActiveTab('customers')}
-          className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${
-            activeTab === 'customers' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'
-          }`}
-        >
-          <Users className="h-4 w-4" /> Customers ({customers.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('logs')}
-          className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${
-            activeTab === 'logs' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'
-          }`}
-        >
-          <ScrollText className="h-4 w-4" /> Security Log
-        </button>
+      <div className="mt-8 flex justify-between items-center flex-wrap gap-4 border-b border-black/[0.04] pb-4">
+        <div className="flex gap-3">
+          <button
+            onClick={() => setActiveTab('inventory')}
+            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${
+              activeTab === 'inventory' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'
+            }`}
+          >
+            <Boxes className="h-4 w-4" /> Inventory ({products?.length || 0})
+          </button>
+          <button
+            onClick={() => setActiveTab('customers')}
+            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${
+              activeTab === 'customers' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'
+            }`}
+          >
+            <Users className="h-4 w-4" /> Customers ({customers.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('logs')}
+            className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${
+              activeTab === 'logs' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'
+            }`}
+          >
+            <ScrollText className="h-4 w-4" /> Security Log
+          </button>
+        </div>
+
+        {activeTab === 'inventory' && (
+          <div className="relative min-w-[240px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search SKU or Product..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 text-xs h-9 rounded-xl border-border bg-background"
+            />
+          </div>
+        )}
       </div>
 
       {/* Tab Panels */}
@@ -206,7 +276,14 @@ export function AdminPage() {
                     <td colSpan={7} className="p-10 text-center text-muted-foreground">Loading inventory data...</td>
                   </tr>
                 ) : (
-                  products?.map((p) => {
+                  products
+                    ?.filter((p) =>
+                      searchQuery
+                        ? p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (p.sku && p.sku.toLowerCase().includes(searchQuery.toLowerCase()))
+                        : true
+                    )
+                    ?.map((p) => {
                     const isLow = (p.stock || 0) < 20
                     return (
                       <tr key={p.id} className="hover:bg-black/[0.01]">

@@ -33,11 +33,9 @@ async def lifespan(app: FastAPI):
         try:
             init_db()
             logger.info("Database schema initialized.")
-        except ProgrammingError as exc:
-            # If the DB user doesn't have privileges to create tables, keep the app running.
-            logger.error(
-                "Database schema auto-create failed due to insufficient privileges. "
-                "Continuing startup. Error=%s",
+        except Exception as exc:
+            logger.warning(
+                "Database schema initialization warning (continuing server startup): %s",
                 exc,
             )
     else:

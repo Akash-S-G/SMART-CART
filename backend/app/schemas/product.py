@@ -97,6 +97,29 @@ class ProductResponse(BaseModel):
             elif isinstance(raw_meta, str):
                 images_val.append(raw_meta)
 
+        if not images_val:
+            name_lower = (getattr(data, "name", "") or "").lower()
+            cat_name = ""
+            if getattr(data, "category", None) and hasattr(data.category, "name"):
+                cat_name = (data.category.name or "").lower()
+
+            if any(k in name_lower for k in ['parle', 'biscuit', 'cookie', 'marie', 'good day', 'oreo', 'monaco', '50-50', 'crackjack']):
+                images_val = ["https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&auto=format&fit=crop&q=80"]
+            elif any(k in name_lower for k in ['kitkat', 'dairy milk', 'chocolate', 'munch', 'perk', 'snickers', '5 star', 'silk', 'bournville']):
+                images_val = ["https://images.unsplash.com/photo-1511381939415-e44015466834?w=600&auto=format&fit=crop&q=80"]
+            elif any(k in name_lower for k in ['milk', 'butter', 'cheese', 'paneer', 'curd', 'dahi', 'ghee', 'cream']) or 'dairy' in cat_name:
+                images_val = ["https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600&auto=format&fit=crop&q=80"]
+            elif any(k in name_lower for k in ['apple', 'banana', 'orange', 'mango', 'grapes', 'strawberry', 'pomegranate']) or 'fruit' in cat_name:
+                images_val = ["https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=600&auto=format&fit=crop&q=80"]
+            elif any(k in name_lower for k in ['tomato', 'potato', 'onion', 'carrot', 'cucumber', 'spinach', 'chilli']) or 'veg' in cat_name:
+                images_val = ["https://images.unsplash.com/photo-1597362925123-77861d3fbac7?w=600&auto=format&fit=crop&q=80"]
+            elif any(k in name_lower for k in ['juice', 'coke', 'pepsi', 'sprite', 'fanta', 'thums', 'water', 'soda', 'tea', 'coffee']) or 'beverage' in cat_name or 'drink' in cat_name:
+                images_val = ["https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=600&auto=format&fit=crop&q=80"]
+            elif any(k in name_lower for k in ['chips', 'kurkure', 'lays', 'bingo', 'namkeen', 'bhujia', 'snack']) or 'snack' in cat_name:
+                images_val = ["https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600&auto=format&fit=crop&q=80"]
+            else:
+                images_val = ["https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80"]
+
         return {
             "id": data.id,
             "sku": data.sku,

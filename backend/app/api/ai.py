@@ -48,19 +48,22 @@ async def detect_image(
     if settings.AI_SERVICE_URL:
         try:
             import httpx
-            async with httpx.AsyncClient(timeout=15.0) as client:
+            target_url = settings.AI_SERVICE_URL.rstrip('/')
+            if not target_url.endswith('.modal.run') and not target_url.endswith('/predict'):
+                target_url = f"{target_url}/predict"
+
+            async with httpx.AsyncClient(timeout=25.0) as client:
                 resp = await client.post(
-                    f"{settings.AI_SERVICE_URL.rstrip('/')}/predict",
+                    target_url,
                     files={"file": (file.filename, contents, file.content_type)}
                 )
                 if resp.status_code == 200:
-                    data = resp.json()
-                    # Match detected OCR text/classes against database catalog
                     service = DetectionService(db)
                     image = preprocessor.load_bytes(contents)
                     return service.detect(image)
-        except Exception:
-            pass  # Seamless fallback to local ML engine below
+        except Exception as err:
+            from app.core.logging import logger
+            logger.warning(f"External AI microservice call to {settings.AI_SERVICE_URL} failed ({err}). Using local engine fallback.")
 
     image = preprocessor.load_bytes(contents)
     service = DetectionService(db)

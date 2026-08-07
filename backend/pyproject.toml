@@ -34,4 +34,5 @@ dependencies = [
     "uvicorn[standard]>=0.48.0",
     "websockets>=16.0",
     "huggingface-hub>=1.26.1",
+    "modal>=1.5.3",
 ]
