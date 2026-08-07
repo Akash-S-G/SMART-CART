@@ -61,7 +61,7 @@ export function CollectionsPage() {
     set(list.includes(v) ? list.filter((x) => x !== v) : [...list, v])
 
   const shown = useMemo(() => {
-    if (!products) return []
+    if (!products || !Array.isArray(products)) return []
     let result = [...products]
 
     // Category Filter

@@ -50,12 +50,24 @@ export const useCart = create<CartStore>((set, get) => ({
   },
 
   addItem: async (productId: string, quantity = 1) => {
+    const session = loadSession()
+    if (!session?.accessToken) {
+      const { openLogin } = await import('@/hooks/use-auth').then((m) => ({ openLogin: m.useAuth.getState().openLogin }))
+      openLogin()
+      const err = new Error('Please sign in to add items to your cart.')
+      set({ error: err.message, loading: false })
+      throw err
+    }
     set({ loading: true, error: null })
     try {
       const cart = await addToCartApi(productId, quantity)
       set({ cart, loading: false })
       return cart
     } catch (err: any) {
+      if (err.response?.status === 401) {
+        const { openLogin } = await import('@/hooks/use-auth').then((m) => ({ openLogin: m.useAuth.getState().openLogin }))
+        openLogin()
+      }
       set({ error: err.message || 'Failed to add item', loading: false })
       throw err
     }

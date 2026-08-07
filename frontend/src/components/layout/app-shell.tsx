@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Outlet, useSearchParams } from 'react-router-dom'
+import { Outlet, useSearchParams, useLocation } from 'react-router-dom'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
 import { AuthModal } from '@/components/auth/auth-modal'
@@ -14,12 +14,23 @@ import { Loader2 } from 'lucide-react'
 import { useRef } from 'react'
 
 export function AppShell() {
+  const { pathname } = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const [authChecking, setAuthChecking] = useState(false)
-  const { login } = useAuth()
+  const { login, isAuthenticated, user, fetchProfile } = useAuth()
   const { fetchCart } = useCart()
   const { toast } = useToast()
   const processedCodeRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
+
+  useEffect(() => {
+    if (isAuthenticated && !user) {
+      fetchProfile()
+    }
+  }, [isAuthenticated, user])
 
   useEffect(() => {
     const code = searchParams.get('code')

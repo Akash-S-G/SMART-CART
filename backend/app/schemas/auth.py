@@ -102,11 +102,12 @@ class CurrentUserResponse(BaseModel):
         if isinstance(data, dict):
             return data
         profile = getattr(data, "profile", None)
+        role_val = data.role.value if hasattr(data.role, "value") else str(data.role or "customer")
         return {
             "id": data.id,
             "username": data.username,
             "email": data.email,
-            "role": data.role,
+            "role": role_val,
             "is_active": data.is_active,
             "created_at": data.created_at,
             "first_name": profile.first_name if profile else None,

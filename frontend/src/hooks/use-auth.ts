@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { loadSession, clearSession as clearSessionHelper, type User } from '@/lib/session'
+import { loadSession, updateSessionUser, clearSession as clearSessionHelper, type User } from '@/lib/session'
+import { getProfileApi } from '@/lib/api'
 
 interface AuthStore {
   user: User | null
@@ -11,6 +12,7 @@ interface AuthStore {
   closeModal: () => void
   login: (user: User) => void
   logout: () => void
+  fetchProfile: () => Promise<User | null>
 }
 
 export const useAuth = create<AuthStore>((set) => {
@@ -29,6 +31,19 @@ export const useAuth = create<AuthStore>((set) => {
     logout: () => {
       clearSessionHelper()
       set({ user: null, isAuthenticated: false })
+    },
+
+    fetchProfile: async () => {
+      const s = loadSession()
+      if (!s?.accessToken) return null
+      try {
+        const u = await getProfileApi()
+        updateSessionUser(u)
+        set({ user: u, isAuthenticated: true })
+        return u
+      } catch {
+        return null
+      }
     },
   }
 })

@@ -49,15 +49,17 @@ export async function getProfileApi(): Promise<User> {
 
 export async function getCategoriesApi(): Promise<Category[]> {
   const res = await getJson<Category[]>('/products/categories')
-  return res
+  return Array.isArray(res) ? res : []
 }
 
 export async function listProductsApi(skip = 0, limit = 40): Promise<Product[]> {
-  return getJson<Product[]>(`/products?skip=${skip}&limit=${limit}`)
+  const res = await getJson<Product[]>(`/products?skip=${skip}&limit=${limit}`)
+  return Array.isArray(res) ? res : []
 }
 
 export async function searchProductsApi(keyword: string): Promise<Product[]> {
-  return getJson<Product[]>(`/products/search/?keyword=${encodeURIComponent(keyword)}`)
+  const res = await getJson<Product[]>(`/products/search/?keyword=${encodeURIComponent(keyword)}`)
+  return Array.isArray(res) ? res : []
 }
 
 export async function getProductApi(id: string): Promise<Product> {
@@ -170,7 +172,8 @@ export interface Review {
 }
 
 export async function getProductReviewsApi(productId: string, page = 1): Promise<Review[]> {
-  return getJson<Review[]>(`/products/${productId}/reviews?page=${page}&page_size=10`)
+  const res = await getJson<Review[]>(`/products/${productId}/reviews?page=${page}&page_size=10`)
+  return Array.isArray(res) ? res : []
 }
 
 export async function createReviewApi(
@@ -197,7 +200,8 @@ export async function cancelOrderApi(orderId: string): Promise<{ message: string
    ========================================================================== */
 
 export async function getWishlistApi(): Promise<Product[]> {
-  return getJson<Product[]>('/wishlist')
+  const res = await getJson<Product[]>('/wishlist')
+  return Array.isArray(res) ? res : []
 }
 
 export async function addWishlistApi(productId: string): Promise<any> {

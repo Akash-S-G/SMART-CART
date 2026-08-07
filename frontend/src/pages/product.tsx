@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
@@ -23,7 +23,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { getProductApi, addToCartApi, getCategoriesApi, getProductReviewsApi, createReviewApi, markReviewHelpfulApi } from '@/lib/api'
+import { getProductApi, addToCartApi, getCategoriesApi, getProductReviewsApi, createReviewApi, markReviewHelpfulApi, listProductsApi } from '@/lib/api'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
@@ -36,6 +36,7 @@ export function ProductPage() {
   const { addItem } = useCart()
   const { items: wishlistItems, toggleItem: toggleWishlist } = useWishlist()
   const { toast } = useToast()
+  const { user, openLogin, isAuthenticated } = useAuth()
 
   const [qty, setQty] = useState(1)
   const [activeTab, setActiveTab] = useState('specs')
@@ -43,8 +44,11 @@ export function ProductPage() {
   const [reviewRating, setReviewRating] = useState(5)
   const [reviewTitle, setReviewTitle] = useState('')
   const [reviewBody, setReviewBody] = useState('')
-  const { user } = useAuth()
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [id])
 
   const { data: p, isLoading, error } = useQuery({
     queryKey: ['product', id],
@@ -56,6 +60,15 @@ export function ProductPage() {
     queryKey: ['categories'],
     queryFn: getCategoriesApi,
   })
+
+  const { data: allProducts = [] } = useQuery({
+    queryKey: ['recommended-products'],
+    queryFn: () => listProductsApi({ limit: 20 }),
+  })
+
+  const recommendedList = useMemo(() => {
+    return allProducts.filter((item) => item.id !== id)
+  }, [allProducts, id])
 
   const { data: reviews = [], isLoading: reviewsLoading } = useQuery({
     queryKey: ['reviews', id],
@@ -88,6 +101,15 @@ export function ProductPage() {
 
   const handleAddToCart = async () => {
     if (!p) return
+    if (!isAuthenticated) {
+      openLogin()
+      toast({
+        title: 'Sign In Required',
+        description: 'Please sign in or create an account to add items to your cart.',
+        variant: 'destructive',
+      })
+      return
+    }
     try {
       await addItem(p.id, qty)
       toast({
@@ -95,6 +117,7 @@ export function ProductPage() {
         description: `Added ${qty}x ${p.name} to your shopping cart.`,
       })
     } catch (err: any) {
+      openLogin()
       toast({
         title: 'Authentication Required',
         description: 'Please sign in to add items to your cart.',
@@ -646,6 +669,73 @@ export function ProductPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Recommended Products Section */}
+      <div className="mt-16 pt-10 border-t border-border flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-2xl font-bold font-sans tracking-tight text-foreground">Recommended Products</h3>
+            <p className="text-sm text-muted-foreground mt-1">Discover other top-rated items curated for you</p>
+          </div>
+          <Button variant="ghost" onClick={() => navigate('/collections')} className="self-start sm:self-auto text-primary font-semibold hover:bg-primary/10">
+            View All Collections &rarr;
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {recommendedList.slice(0, 4).map((rec) => {
+            const recImg = rec.images && rec.images.length > 0 ? rec.images[0] : 'https://images.unsplash.com/photo-1505743614?auto=format&fit=crop&w=500&q=80'
+            const recInWishlist = wishlistItems.some((w) => w.product_id === rec.id)
+            return (
+              <div
+                key={rec.id}
+                onClick={() => navigate(`/product/${rec.id}`)}
+                className="group relative bg-card border border-border rounded-2xl p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition-all cursor-pointer"
+              >
+                <div>
+                  <div className="relative aspect-square w-full rounded-xl bg-muted overflow-hidden mb-3">
+                    <img src={recImg} alt={rec.name} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleWishlist(rec.id)
+                      }}
+                      className="absolute top-2 right-2 w-8 h-8 rounded-full bg-background/80 backdrop-blur-md flex items-center justify-center text-foreground hover:bg-background transition-colors"
+                    >
+                      <Heart className={cn('h-4 w-4', recInWishlist && 'fill-rose-500 text-rose-500')} />
+                    </button>
+                  </div>
+                  <h4 className="font-semibold text-sm text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+                    {rec.name}
+                  </h4>
+                  <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{rec.brand || 'SmartCart Essentials'}</p>
+                </div>
+
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
+                  <span className="font-bold text-sm text-foreground">₹{rec.price || 99}</span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (!isAuthenticated) {
+                        openLogin()
+                        toast({ title: 'Sign In Required', description: 'Please sign in to add items to your cart.', variant: 'destructive' })
+                        return
+                      }
+                      addItem(rec.id, 1)
+                      toast({ title: 'Added to Cart', description: `${rec.name} added to cart.` })
+                    }}
+                    className="h-8 text-xs font-semibold px-3 hover:bg-primary hover:text-primary-foreground transition-colors"
+                  >
+                    Add
+                  </Button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
     </div>
   )
 }
