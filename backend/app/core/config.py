@@ -25,9 +25,9 @@ class Settings(BaseSettings):
 
     APP_VERSION: str = "1.0.0"
 
-    ENVIRONMENT: str = "development"
+    ENVIRONMENT: str = "production"
 
-    DEBUG: bool = True
+    DEBUG: bool = False
 
     # =====================
     # Database
@@ -35,9 +35,8 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
 
-    # Auto-create DB schema in app startup (unsafe unless DB user has CREATE privileges)
-    # Enabled by default for local development to prevent "relation users does not exist" errors.
-    DB_AUTO_CREATE: bool = True
+    # Auto-create DB schema in app startup (disabled in production)
+    DB_AUTO_CREATE: bool = False
 
     # =====================
     # JWT

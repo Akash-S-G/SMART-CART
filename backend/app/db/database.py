@@ -10,6 +10,7 @@ if db_url.startswith("postgresql://"):
 engine = create_engine(
     db_url,
     pool_pre_ping=True,
+    connect_args={"prepare_threshold": None},
 )
 
 SessionLocal = sessionmaker(
