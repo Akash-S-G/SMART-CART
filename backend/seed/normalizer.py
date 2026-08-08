@@ -38,6 +38,10 @@ def is_plausible_product_name(name: str | None) -> bool:
     digits = sum(1 for ch in s if ch.isdigit())
     if digits > 6:
         return False
+    # skip barcode-ish / code-only names (open datasets use the EAN as the
+    # product_name when a contributor never filled the field in)
+    if not any(ch.isalpha() for ch in s):
+        return False
     return True
 
 

@@ -28,3 +28,37 @@ def get_dashboard_analytics(db: Session = Depends(get_db)):
         "detection_accuracy_percentage": round(float(avg_confidence) * 100, 1),
         "system_status": "Healthy",
     }
+
+
+@router.get("/customers")
+def get_real_customers(db: Session = Depends(get_db)):
+    users = db.query(User).limit(50).all()
+    result = []
+    for u in users:
+        order_count = db.query(func.count(Order.id)).filter(Order.user_id == u.id).scalar() or 0
+        total_spent = db.query(func.sum(Order.total_amount)).filter(Order.user_id == u.id).scalar() or 0.0
+        result.append({
+            "id": u.id,
+            "name": u.name or u.email.split("@")[0].title(),
+            "email": u.email,
+            "orders": order_count,
+            "spent": round(float(total_spent), 2),
+            "status": "vip" if total_spent > 5000 else "active",
+        })
+    return result
+
+
+@router.get("/logs")
+def get_real_system_logs(db: Session = Depends(get_db)):
+    recent_orders = db.query(Order).order_by(Order.created_at.desc()).limit(15).all()
+    logs = []
+    for o in recent_orders:
+        logs.append({
+            "id": f"ORD-{o.id[:6].upper()}",
+            "action": "ORDER_PLACED",
+            "detail": f"Order #{o.order_number} created with total ₹{float(o.total_amount):,.2f}",
+            "user": o.user_id[:8],
+            "time": o.created_at.strftime("%Y-%m-%d %H:%M"),
+            "severity": "info",
+        })
+    return logs

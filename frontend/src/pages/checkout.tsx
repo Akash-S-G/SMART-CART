@@ -529,17 +529,39 @@ function OrderSummary({
           <Input
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value)}
-            placeholder="SMART10"
-            className="text-xs rounded-xl bg-card/60"
+            placeholder="e.g. WELCOME50, SMART100"
+            className="text-xs rounded-xl bg-card/60 uppercase font-mono"
           />
           <Button size="sm" variant="outline" className="rounded-xl text-xs px-3 shrink-0" onClick={handleApplyPromo} disabled={promoLoading}>
             Apply
           </Button>
         </div>
+        
+        {/* Quick Promo Chips */}
+        <div className="mt-2.5 flex flex-wrap gap-1.5">
+          {[
+            { code: 'WELCOME50', label: '50% OFF' },
+            { code: 'SMART100', label: '₹100 OFF' },
+            { code: 'FREESHIP', label: 'Free Delivery' }
+          ].map(c => (
+            <button
+              key={c.code}
+              onClick={() => {
+                setPromoCode(c.code)
+                setDiscountAmount(c.code === 'WELCOME50' ? Math.round((summary?.subtotal || 0) * 0.5) : 100)
+                setAppliedCode(c.code)
+              }}
+              className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 transition"
+            >
+              {c.code} ({c.label})
+            </button>
+          ))}
+        </div>
+
         {appliedCode && (
-          <div className="mt-2 flex items-center justify-between text-[11px] text-success font-semibold bg-success/10 px-2.5 py-1 rounded-lg">
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-emerald-600 font-semibold bg-emerald-500/10 px-2.5 py-1.5 rounded-xl border border-emerald-500/20">
             <span>Promo applied: {appliedCode}</span>
-            <Sparkles className="h-3 w-3" />
+            <Sparkles className="h-3.5 w-3.5 text-amber-500" />
           </div>
         )}
       </div>

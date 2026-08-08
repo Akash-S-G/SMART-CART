@@ -13,6 +13,8 @@ import { Loader2 } from 'lucide-react'
 
 import { useRef } from 'react'
 
+import { AICopilot } from '@/components/ai/ai-copilot'
+
 export function AppShell() {
   const { pathname } = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -48,16 +50,16 @@ export function AppShell() {
           saveSession(tokens, null)
           const profile = await getProfileApi()
           saveSession(tokens, profile)
-          login(profile)
+          login(tokens, profile)
           fetchCart()
           toast({
-            title: 'Google Sign In Successful',
-            description: `Logged in as ${profile.username} (${profile.email})`,
+            title: 'Welcome Back!',
+            description: `Signed in as ${profile.name || profile.email}`,
           })
-        } catch (err: any) {
+        } catch {
           toast({
-            title: 'Google Auth Failed',
-            description: err.message || 'Unable to complete sign-in with Google.',
+            title: 'Google Login Failed',
+            description: 'Could not complete Google authentication.',
             variant: 'destructive',
           })
         } finally {
@@ -70,11 +72,11 @@ export function AppShell() {
 
   if (authChecking) {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-sm text-muted-foreground font-medium animate-pulse">
-          Completing Google Authentication...
-        </p>
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          <p className="text-sm font-semibold text-muted-foreground">Authenticating with Google...</p>
+        </div>
       </div>
     )
   }
@@ -87,6 +89,7 @@ export function AppShell() {
       </main>
       <Footer />
       <AuthModal />
+      <AICopilot />
     </div>
   )
 }

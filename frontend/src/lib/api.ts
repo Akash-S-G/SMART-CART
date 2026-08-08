@@ -220,6 +220,14 @@ export async function getDashboardAnalyticsApi(): Promise<any> {
   return getJson<any>('/analytics/dashboard')
 }
 
+export async function getRealCustomersApi(): Promise<any[]> {
+  return getJson<any[]>('/analytics/customers')
+}
+
+export async function getRealLogsApi(): Promise<any[]> {
+  return getJson<any[]>('/analytics/logs')
+}
+
 export async function restockProductApi(productId: string, quantity: number): Promise<Product> {
   return postJson<Product, { quantity: number }>(`/products/${productId}/restock`, { quantity })
 }

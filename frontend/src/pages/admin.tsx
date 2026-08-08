@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/hooks/use-auth'
-import { getCategoriesApi, listProductsApi, createProductApi } from '@/lib/api'
+import { getCategoriesApi, listProductsApi, createProductApi, getRealCustomersApi, getRealLogsApi } from '@/lib/api'
 import { useToast } from '@/components/ui/use-toast'
 
 export function AdminPage() {
@@ -178,21 +178,15 @@ export function AdminPage() {
     }))
   }
 
-  // Customers Mock Data
-  const customers = [
-    { id: '1', name: 'Aarav Mehta', email: 'aarav@gmail.com', orders: 12, spent: 14200, status: 'vip' },
-    { id: '2', name: 'Priya Sharma', email: 'priya@outlook.com', orders: 8, spent: 6850, status: 'active' },
-    { id: '3', name: 'Rohan Gupta', email: 'rohan.g@yahoo.com', orders: 2, spent: 980, status: 'new' },
-    { id: '4', name: 'Ananya Iyer', email: 'ananya@live.com', orders: 0, spent: 0, status: 'dormant' },
-  ]
+  const { data: customers = [] } = useQuery({
+    queryKey: ['admin-customers'],
+    queryFn: getRealCustomersApi,
+  })
 
-  // Audit Logs Mock Data
-  const logs = [
-    { id: 'EVT-482', action: 'CREATE_PRODUCT', detail: 'Added new SKU SC-ELC-091 to catalog', user: 'admin@smartcart.com', time: '10 mins ago', severity: 'info' },
-    { id: 'EVT-481', action: 'DB_SYNC', detail: 'Completed synchronization of OFF petfood schema', user: 'SYSTEM', time: '30 mins ago', severity: 'info' },
-    { id: 'EVT-480', action: 'LOW_INVENTORY', detail: 'SKU SC-FRU-00020 dropped below reorder level (12 remaining)', user: 'AUDIT', time: '1 hour ago', severity: 'warning' },
-    { id: 'EVT-479', action: 'SECURITY_AUTH', detail: 'Invalid login attempt detected from IP 192.168.1.45', user: 'GATEWAY', time: '4 hours ago', severity: 'critical' },
-  ]
+  const { data: logs = [] } = useQuery({
+    queryKey: ['admin-logs'],
+    queryFn: getRealLogsApi,
+  })
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">

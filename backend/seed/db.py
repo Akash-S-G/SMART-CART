@@ -61,7 +61,16 @@ def _resolve_url() -> str:
     return url
 
 
-ENGINE = create_engine(_resolve_url(), pool_pre_ping=True, future=True)
+ENGINE = create_engine(
+    _resolve_url(),
+    pool_pre_ping=True,
+    future=True,
+    # Hosted Postgres behind a transaction pooler (pgbouncer/Supabase) reuses
+    # server-side sessions, which makes psycopg's implicit prepared statements
+    # collide with "prepared statement _pg3_0 already exists".  Disabling the
+    # prepare cache keeps the seeder working on both pooled and direct URLs.
+    connect_args={"prepare_threshold": None},
+)
 SessionLocal = sessionmaker(bind=ENGINE, autoflush=False, autocommit=False)
 
 

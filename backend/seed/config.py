@@ -24,9 +24,17 @@ IMAGES_ROOT = STATIC_ROOT / "products"
 # --------------------------------------------------------------------------- #
 # Data sources (open / licensed)
 # --------------------------------------------------------------------------- #
-OFF_BASE = "https://world.openfoodfacts.org"
-OBF_BASE = "https://world.openbeautyfacts.org"
-OPFF_BASE = "https://world.openpetfoodfacts.org"
+# NOTE: we use the *India* country subdomains (in.*) instead of world.*.
+# Open*Facts serves a country-scoped view on these hosts, i.e. every product
+# returned already carries countries_tags=en:india.  This is what keeps the
+# catalog an *Indian* grocery catalog instead of a global (mostly French) dump.
+OFF_BASE = "https://in.openfoodfacts.org"
+OBF_BASE = "https://in.openbeautyfacts.org"
+OPFF_BASE = "https://in.openpetfoodfacts.org"
+# World-wide fallbacks, only used when the India view returns nothing at all.
+OFF_WORLD_BASE = "https://world.openfoodfacts.org"
+OBF_WORLD_BASE = "https://world.openbeautyfacts.org"
+OPFF_WORLD_BASE = "https://world.openpetfoodfacts.org"
 WIKI_API = "https://commons.wikimedia.org/w/api.php"
 # User agent required by the Open*Facts robots / API etiquette.
 USER_AGENT = "smartcart-ai-seeder/1.0 (educational demo; contact: dev@smartcart.example)"
@@ -35,6 +43,16 @@ USER_AGENT = "smartcart-ai-seeder/1.0 (educational demo; contact: dev@smartcart.
 # falling back to generated inventory to reach the target count.  High enough
 # that after quality filtering (premium min-dim) we still hit >=50 good items.
 API_PER_CATEGORY_CAP = 260
+
+# --------------------------------------------------------------------------- #
+# Indian-market scoping
+# --------------------------------------------------------------------------- #
+# Only keep products that are actually sold in India.  The in.* Open*Facts
+# subdomains already scope by country, but a few records leak through with a
+# different countries_tags, so we re-verify per candidate.
+INDIA_ONLY = True
+INDIA_COUNTRY_TAGS = {"en:india", "india", "en:in", "inde", "भारत"}
+
 
 # Rate limiting between API/HTTP requests (seconds).
 REQUEST_DELAY = 0.15
@@ -85,57 +103,110 @@ CATEGORY_PLAN: list[CategoryPlan] = [
     CategoryPlan(
         name="Fruits", target=60, source="off",
         off_tag="en:fruits",
+        alt_off_tags=["en:dried-fruits", "en:fruit-purees"],
         subcategories=["Fresh Fruits", "Tropical Fruits", "Berries", "Citrus"],
         description="Fresh seasonal fruits sourced from verified open food databases.",
     ),
     CategoryPlan(
         name="Vegetables", target=60, source="off",
         off_tag="en:vegetables",
+        alt_off_tags=["en:legumes", "en:canned-vegetables"],
         subcategories=["Leafy Vegetables", "Root Vegetables", "Gourds", "Healthy Salads"],
         description="Fresh vegetables and greens for everyday cooking.",
     ),
     CategoryPlan(
         name="Dairy", target=55, source="off",
         off_tag="en:dairies",
-        subcategories=["Milk", "Cheese", "Butter", "Yogurt", "Curd"],
-        description="Milk, cheese, butter and cultured dairy products.",
+        alt_off_tags=["en:milks", "en:cheeses", "en:butters", "en:yogurts", "en:paneers"],
+        subcategories=["Milk", "Cheese", "Butter", "Yogurt", "Curd", "Paneer"],
+        description="Milk, cheese, paneer, butter and cultured dairy products.",
     ),
     CategoryPlan(
         name="Bakery", target=50, source="off",
         off_tag="en:breads",
-        subcategories=["Bread", "Buns", "Biscuits", "Cakes"],
-        description="Bakery staples including bread, biscuits and cakes.",
+        alt_off_tags=["en:cakes", "en:biscuits"],
+        subcategories=["Bread", "Buns", "Biscuits", "Cakes", "Rusk"],
+        description="Bakery staples including bread, rusk, biscuits and cakes.",
     ),
     CategoryPlan(
         name="Snacks", target=80, source="off",
         off_tag="en:snacks",
+        alt_off_tags=["en:salty-snacks", "en:crisps", "en:nuts", "en:chocolates"],
         subcategories=["Chips", "Namkeen", "Cookies", "Chocolates", "Nuts"],
         description="Packaged snacks, chips, namkeen and confectionery.",
     ),
     CategoryPlan(
         name="Beverages", target=65, source="off",
         off_tag="en:beverages",
+        alt_off_tags=["en:sodas", "en:fruit-juices", "en:waters", "en:energy-drinks"],
         subcategories=["Soft Drinks", "Juices", "Tea", "Coffee", "Water", "Energy Drinks"],
         description="Drinks ranging from water and juice to tea and coffee.",
     ),
     CategoryPlan(
         name="Frozen Foods", target=50, source="off",
         off_tag="en:frozen-foods",
+        alt_off_tags=["en:ice-creams"],
         subcategories=["Frozen Vegetables", "Ice Cream", "Frozen Meals", "Frozen Snacks"],
         description="Frozen vegetables, desserts and ready-to-cook meals.",
     ),
     CategoryPlan(
         name="Instant Foods", target=55, source="off",
         off_tag="en:instant-noodles",
+        alt_off_tags=["en:noodles", "en:pasta"],
         subcategories=["Noodles", "Pasta", "Soups", "Ready Meals"],
         description="Instant noodles, pasta, soups and quick meals.",
     ),
     CategoryPlan(
         name="Breakfast", target=55, source="off",
         off_tag="en:breakfasts",
+        alt_off_tags=["en:breakfast-cereals", "en:jams", "en:honeys"],
         subcategories=["Cereal", "Muesli", "Oats", "Spreads", "Cornflakes"],
         description="Breakfast cereals, oats, muesli and spreads.",
     ),
+    # ---------------- Indian kirana / grocery staples ---------------- #
+    CategoryPlan(
+        name="Atta, Rice & Dal", target=60, source="off",
+        off_tag="en:wheat-flours",
+        alt_off_tags=["en:flours", "en:rices", "en:legumes"],
+        subcategories=["Atta", "Rice", "Dal", "Besan", "Sooji", "Poha"],
+        description="Wheat atta, basmati and everyday rice, dals and milling staples.",
+    ),
+    CategoryPlan(
+        name="Masala & Spices", target=55, source="off",
+        off_tag="en:spices",
+        alt_off_tags=["en:salts", "en:condiments"],
+        subcategories=["Whole Spices", "Ground Masala", "Blended Masala", "Salt"],
+        description="Whole and ground Indian masalas, spice blends and salt.",
+    ),
+    CategoryPlan(
+        name="Oil & Ghee", target=50, source="off",
+        off_tag="en:vegetable-oils",
+        alt_off_tags=["en:ghees"],
+        subcategories=["Sunflower Oil", "Mustard Oil", "Groundnut Oil", "Ghee", "Refined Oil"],
+        description="Cooking oils and desi ghee used in everyday Indian kitchens.",
+    ),
+    CategoryPlan(
+        name="Tea & Coffee", target=50, source="off",
+        off_tag="en:teas",
+        alt_off_tags=["en:coffees"],
+        subcategories=["Black Tea", "Green Tea", "Masala Chai", "Instant Coffee", "Filter Coffee"],
+        description="Chai, green tea and coffee from Indian and open catalogues.",
+    ),
+    CategoryPlan(
+        name="Pickles & Papad", target=45, source="off",
+        off_tag="en:pickles",
+        alt_off_tags=["en:papadums", "en:sauces"],
+        subcategories=["Mango Pickle", "Mixed Pickle", "Papad", "Chutney", "Sauces"],
+        description="Achaar, papad, chutneys and table sauces.",
+    ),
+    CategoryPlan(
+        name="Sweeteners & Dry Fruits", target=50, source="off",
+        off_tag="en:sugars",
+        alt_off_tags=["en:sweeteners", "en:dried-fruits", "en:nuts"],
+        subcategories=["Sugar", "Jaggery", "Honey", "Cashew", "Almond", "Raisins"],
+        description="Sugar, jaggery, honey and dry fruits.",
+    ),
+    # ---------------- Non-food categories ---------------- #
     CategoryPlan(
         name="Personal Care", target=55, source="obf",
         off_tag="en:hygiene",

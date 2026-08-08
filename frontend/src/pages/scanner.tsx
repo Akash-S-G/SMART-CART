@@ -16,6 +16,8 @@ import {
   Plus,
   Minus,
   ArrowLeft,
+  Camera,
+  Video,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -29,9 +31,12 @@ export function ScannerPage() {
   const { addItem } = useCart()
   const { toast } = useToast()
 
+  const [scanMode, setScanMode] = useState<'upload' | 'camera'>('upload')
   const [file, setFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [scanning, setScanning] = useState(false)
+  const [isCameraActive, setIsCameraActive] = useState(false)
+
   const [results, setResults] = useState<{
     detections: DetectionResult[]
     imageWidth: number
@@ -43,6 +48,62 @@ export function ScannerPage() {
 
   const [hoveredBoxIdx, setHoveredBoxIdx] = useState<number | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const streamRef = useRef<MediaStream | null>(null)
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
+      })
+      streamRef.current = stream
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+      }
+      setIsCameraActive(true)
+      toast({ title: 'Live Camera Active', description: 'Point your camera at groceries to scan.' })
+    } catch {
+      toast({
+        title: 'Camera Access Denied',
+        description: 'Unable to access WebCam. Please use photo upload mode.',
+        variant: 'destructive',
+      })
+      setScanMode('upload')
+    }
+  }
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop())
+      streamRef.current = null
+    }
+    setIsCameraActive(false)
+  }
+
+  const captureFrame = () => {
+    if (!videoRef.current) return
+    const video = videoRef.current
+    const canvas = document.createElement('canvas')
+    canvas.width = video.videoWidth || 640
+    canvas.height = video.videoHeight || 480
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const frameFile = new File([blob], 'camera_snapshot.jpg', { type: 'image/jpeg' })
+          setImagePreview(canvas.toDataURL('image/jpeg'))
+          triggerScan(frameFile)
+        }
+      }, 'image/jpeg')
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      stopCamera()
+    }
+  }, [])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0]
@@ -62,28 +123,13 @@ export function ScannerPage() {
       let finalDetections = data.detections || []
 
       if (finalDetections.length === 0) {
-        // Fallback: load random products from DB to simulate cart scan
-        const catalog = await listProductsApi(0, 5)
-        if (catalog && catalog.length > 0) {
-          const randProducts = [...catalog].sort(() => 0.5 - Math.random()).slice(0, 2)
-          finalDetections = randProducts.map((p, idx) => ({
-            request_id: 'simulated-' + idx,
-            object_type: p.name,
-            confidence: Math.round((0.85 + Math.random() * 0.14) * 100) / 100,
-            bbox: {
-              label: p.name,
-              confidence: 0.9,
-              x: 100 + idx * 150,
-              y: 120 + idx * 80,
-              width: 120,
-              height: 120,
-            },
-            matched_product: p,
-          }))
-        }
+        toast({
+          title: 'No Objects Detected',
+          description: 'No grocery products were recognized in this image. Try uploading a clearer photo.',
+          variant: 'default',
+        })
       }
 
-      // Initialize quantities to 1
       const initialQtys: Record<number, number> = {}
       finalDetections.forEach((_, idx) => {
         initialQtys[idx] = 1
@@ -96,44 +142,17 @@ export function ScannerPage() {
         imageHeight: data.image_height || 480,
       })
 
-      toast({
-        title: 'Scan Complete',
-        description: `Successfully identified ${finalDetections.length} product(s).`,
-      })
+      if (finalDetections.length > 0) {
+        toast({
+          title: 'Scan Complete',
+          description: `Successfully identified ${finalDetections.length} product(s) from real vision model.`,
+        })
+      }
     } catch (err: any) {
       toast({
-        title: 'Scanner Notice',
-        description: 'No matching products identified in scan. Simulating demo results.',
-        variant: 'default',
-      })
-      // Simulating demo results if server is not fully initialized with YOLO model weights
-      const catalog = await listProductsApi(0, 5)
-      const demoProducts = catalog.length > 0 ? catalog.slice(0, 2) : []
-      const simulated: DetectionResult[] = demoProducts.map((p, idx) => ({
-        request_id: 'sim-' + idx,
-        object_type: p.name,
-        confidence: 0.94,
-        bbox: {
-          label: p.name,
-          confidence: 0.94,
-          x: 150 + idx * 120,
-          y: 100 + idx * 80,
-          width: 140,
-          height: 160,
-        },
-        matched_product: p,
-      }))
-
-      const initialQtys: Record<number, number> = {}
-      simulated.forEach((_, idx) => {
-        initialQtys[idx] = 1
-      })
-      setDetectedQtys(initialQtys)
-
-      setResults({
-        detections: simulated,
-        imageWidth: 640,
-        imageHeight: 480,
+        title: 'Scan Failed',
+        description: err?.message || 'Unable to connect to AI vision server.',
+        variant: 'destructive',
       })
     } finally {
       setScanning(false)
@@ -244,16 +263,56 @@ export function ScannerPage() {
         <h1 className="mt-4 text-4xl font-sans font-extrabold tracking-tight text-foreground">
           Computer Vision Checkout
         </h1>
-        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-          Skip barcode search. Drag & drop your basket snapshot below. Our YOLO vision network will segment, localize, and map products directly into your digital cart.
-        </p>
+        <div className="flex justify-between items-end flex-wrap gap-4 mt-6">
+          <div className="flex gap-2 bg-black/[0.04] p-1.5 rounded-2xl border border-border">
+            <button
+              onClick={() => {
+                setScanMode('upload')
+                stopCamera()
+              }}
+              className={`flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl transition ${
+                scanMode === 'upload' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Upload className="h-3.5 w-3.5" /> Upload Snapshot
+            </button>
+            <button
+              onClick={() => {
+                setScanMode('camera')
+                startCamera()
+              }}
+              className={`flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl transition ${
+                scanMode === 'camera' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Camera className="h-3.5 w-3.5" /> Live WebCam Stream
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_400px]">
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_400px]">
         {/* Left: Scanner Visualizer */}
         <div className="flex flex-col gap-6">
           <div className="relative rounded-3xl border border-border bg-card/40 p-4 shadow-sm flex items-center justify-center min-h-[380px] overflow-hidden group">
-            {imagePreview ? (
+            {scanMode === 'camera' ? (
+              <div className="relative w-full max-w-full overflow-hidden rounded-2xl border border-black/10 flex flex-col items-center">
+                <video ref={videoRef} autoPlay playsInline muted className="w-full max-h-[480px] object-cover rounded-2xl" />
+                <div className="absolute top-4 left-4 z-10">
+                  <Badge variant="ai" className="gap-1.5 px-3 py-1 bg-red-600/90 text-white border-none animate-pulse">
+                    <Video className="h-3.5 w-3.5" /> Live Camera
+                  </Badge>
+                </div>
+                <div className="absolute bottom-4 inset-x-0 flex justify-center gap-3 z-10">
+                  <Button variant="gradient" onClick={captureFrame} disabled={scanning} className="rounded-2xl shadow-xl font-bold uppercase text-xs px-6 py-5 gap-2">
+                    <ScanLine className="h-4 w-4" /> Snap & Analyze Basket
+                  </Button>
+                  <Button variant="secondary" onClick={stopCamera} className="rounded-2xl font-bold uppercase text-xs px-4 py-5">
+                    Stop Stream
+                  </Button>
+                </div>
+              </div>
+            ) : imagePreview ? (
               <div className="relative max-w-full max-h-[500px] overflow-hidden rounded-2xl border border-black/10">
                 <img src={imagePreview} alt="Basket Snapshot" className="max-w-full max-h-[500px] object-contain" />
 

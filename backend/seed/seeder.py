@@ -132,6 +132,13 @@ def seed(
         seq = 1
 
         for i, cand in enumerate(candidates, start=1):
+            # Respect the category's target size.  Without this the seeder wrote
+            # every candidate it could fetch (Fruits ended up with 235 rows for
+            # a target of 60) and starved the run of time for later categories.
+            if (inserted + updated) >= plan.target:
+                progress.step(f"reached target {plan.target} for {plan.name}")
+                break
+
             raw_name = normalize_name(cand.get("name"))
             if not raw_name or not is_plausible_product_name(raw_name):
                 skipped += 1

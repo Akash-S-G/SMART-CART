@@ -142,8 +142,36 @@ function OrderCard({ order }: { order: any }) {
       {/* Expanded detail */}
       {expanded && (
         <div className="border-t border-white/10 p-5 space-y-4">
-          {/* Tracking */}
-          <TrackingTimeline status={order.status} />
+          {/* Live Delivery Driver Simulation Card */}
+          {['confirmed', 'processing', 'shipped', 'delivered'].includes(order.status) && (
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-4 mt-4">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center font-bold text-primary text-base">
+                    🚴
+                  </div>
+                  <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-card" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold text-foreground text-sm">Rahul Sharma</span>
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0.5">⭐ 4.9</Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">SmartCart Express EV-302 · Live GPS Active</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Estimated Arrival</span>
+                  <span className="text-sm font-black text-emerald-600 font-mono">18 Mins</span>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => alert('Dialing Driver: +91 98765 43210')} className="rounded-xl text-xs h-8 px-3 font-semibold">
+                  Call Driver
+                </Button>
+              </div>
+            </div>
+          )}
 
           {/* Items */}
           {order.items && order.items.length > 0 && (
