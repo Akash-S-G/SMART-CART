@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { getCategoriesApi, listProductsApi, searchProductsApi } from '@/lib/api'
+import { getCategoriesApi, listAllProductsApi, searchProductsApi } from '@/lib/api'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useToast } from '@/components/ui/use-toast'
@@ -25,6 +25,23 @@ const PRICE_FILTERS = [
   { label: 'Over ₹1500', min: 1500, max: 999999 },
 ]
 const SORTS = ['Recommended', 'Price: Low to High', 'Price: High to Low', 'Top Rated']
+
+function getPageItems(current: number, total: number, window: number = 1): (number | '…')[] {
+  if (total <= 2 + window * 2) return Array.from({ length: total }, (_, i) => i + 1)
+  const pages: (number | '…')[] = []
+  const start = Math.max(1, current - window)
+  const end = Math.min(total, current + window)
+  if (start > 1) {
+    pages.push(1)
+    if (start > 2) pages.push('…')
+  }
+  for (let i = start; i <= end; i++) pages.push(i)
+  if (end < total) {
+    if (end < total - 1) pages.push('…')
+    pages.push(total)
+  }
+  return pages
+}
 
 export function CollectionsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -53,7 +70,7 @@ export function CollectionsPage() {
 
   const { data: products, isLoading } = useQuery({
     queryKey: ['products', searchQuery],
-    queryFn: () => (searchQuery ? searchProductsApi(searchQuery) : listProductsApi(0, 100)),
+    queryFn: () => (searchQuery ? searchProductsApi(searchQuery) : listAllProductsApi()),
     placeholderData: keepPreviousData,
   })
 
@@ -137,7 +154,7 @@ export function CollectionsPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-4">
         {/* Sidebar Filters */}
         <div className="space-y-6 lg:col-span-1">
-          <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-6">
+          <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
             {/* Category Filter */}
             <div>
               <h3 className="font-bold text-foreground text-sm mb-3">Categories</h3>
@@ -236,9 +253,12 @@ export function CollectionsPage() {
                     Previous
                   </Button>
 
-                  {Array.from({ length: totalPages }).map((_, i) => {
-                    const pageNum = i + 1
-                    return (
+                  {getPageItems(currentPage, totalPages).map((pageNum, i) =>
+                    pageNum === '…' ? (
+                      <span key={`ellipsis-${i}`} className="h-9 w-9 grid place-items-center text-xs font-bold text-muted-foreground">
+                        …
+                      </span>
+                    ) : (
                       <button
                         key={pageNum}
                         onClick={() => {
@@ -254,7 +274,7 @@ export function CollectionsPage() {
                         {pageNum}
                       </button>
                     )
-                  })}
+                  )}
 
                   <Button
                     variant="outline"

@@ -57,6 +57,20 @@ export async function listProductsApi(skip = 0, limit = 40): Promise<Product[]> 
   return Array.isArray(res) ? res : []
 }
 
+export async function listAllProductsApi(): Promise<Product[]> {
+  const pageSize = 500
+  const all: Product[] = []
+  let skip = 0
+  while (true) {
+    const batch = await listProductsApi(skip, pageSize)
+    if (!batch.length) break
+    all.push(...batch)
+    if (batch.length < pageSize) break
+    skip += pageSize
+  }
+  return all
+}
+
 export async function searchProductsApi(keyword: string): Promise<Product[]> {
   const res = await getJson<Product[]>(`/products/search/?keyword=${encodeURIComponent(keyword)}`)
   return Array.isArray(res) ? res : []
