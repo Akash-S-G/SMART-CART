@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import {
@@ -26,23 +26,6 @@ const PRICE_FILTERS = [
 ]
 const SORTS = ['Recommended', 'Price: Low to High', 'Price: High to Low', 'Top Rated']
 
-function getPageItems(current: number, total: number, window: number = 1): (number | '…')[] {
-  if (total <= 2 + window * 2) return Array.from({ length: total }, (_, i) => i + 1)
-  const pages: (number | '…')[] = []
-  const start = Math.max(1, current - window)
-  const end = Math.min(total, current + window)
-  if (start > 1) {
-    pages.push(1)
-    if (start > 2) pages.push('…')
-  }
-  for (let i = start; i <= end; i++) pages.push(i)
-  if (end < total) {
-    if (end < total - 1) pages.push('…')
-    pages.push(total)
-  }
-  return pages
-}
-
 export function CollectionsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('search') || ''
@@ -54,14 +37,20 @@ export function CollectionsPage() {
   const [cats, setCats] = useState<string[]>(() => categoryParam ? [categoryParam] : [])
   const [prices, setPrices] = useState<string[]>([])
   const [sort, setSort] = useState('Recommended')
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 12
+  const BATCH = 12
+  const [visibleCount, setVisibleCount] = useState(BATCH)
+  const sentinelRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (categoryParam && !cats.includes(categoryParam)) {
       setCats([categoryParam])
     }
+    setVisibleCount(BATCH)
   }, [categoryParam])
+
+  useEffect(() => {
+    setVisibleCount(BATCH)
+  }, [searchQuery])
 
   const { data: categories } = useQuery({
     queryKey: ['categories'],
@@ -75,7 +64,7 @@ export function CollectionsPage() {
   })
 
   const toggle = (list: string[], set: (v: string[]) => void, v: string) => {
-    setCurrentPage(1)
+    setVisibleCount(BATCH)
     set(list.includes(v) ? list.filter((x) => x !== v) : [...list, v])
   }
 
@@ -112,11 +101,23 @@ export function CollectionsPage() {
     return result
   }, [products, cats, prices, sort])
 
-  const totalPages = Math.max(1, Math.ceil(shown.length / itemsPerPage))
-  const paginatedProducts = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage
-    return shown.slice(start, start + itemsPerPage)
-  }, [shown, currentPage])
+  const visibleProducts = useMemo(() => shown.slice(0, Math.min(visibleCount, shown.length)), [shown, visibleCount])
+  const hasMore = visibleProducts.length < shown.length
+
+  useEffect(() => {
+    const node = sentinelRef.current
+    if (!node) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setVisibleCount((v) => v + BATCH)
+        }
+      },
+      { rootMargin: '400px' },
+    )
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [hasMore, BATCH])
 
   const handleQuickAdd = async (e: React.MouseEvent, productId: string, name: string) => {
     e.preventDefault()
@@ -192,7 +193,7 @@ export function CollectionsPage() {
           {/* Controls Bar */}
           <div className="flex justify-between items-center bg-card border border-border rounded-2xl px-5 py-3 shadow-sm">
             <span className="text-xs font-semibold text-muted-foreground">
-              Showing Page {currentPage} of {totalPages} ({shown.length} Total Items)
+              Showing {visibleProducts.length} of {shown.length} items
             </span>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-foreground">Sort By:</span>
@@ -200,7 +201,7 @@ export function CollectionsPage() {
                 {SORTS.map((s) => (
                   <button
                     key={s}
-                    onClick={() => { setSort(s); setCurrentPage(1); }}
+                    onClick={() => { setSort(s); setVisibleCount(BATCH); }}
                     className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition ${
                       sort === s ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.04]'
                     }`}
@@ -218,76 +219,34 @@ export function CollectionsPage() {
                 <div key={i} className="animate-pulse bg-card rounded-3xl p-4 border border-border h-96"></div>
               ))}
             </div>
-          ) : paginatedProducts.length === 0 ? (
+          ) : visibleProducts.length === 0 ? (
             <div className="text-center py-20 bg-card/20 rounded-3xl border border-dashed border-border flex flex-col items-center justify-center gap-4">
               <span className="text-4xl">🔎</span>
               <h3 className="text-lg font-bold text-foreground">No Products Found</h3>
               <p className="text-sm text-muted-foreground max-w-xs">
                 We couldn't find any products matching your filters or search query.
               </p>
-              <Button variant="secondary" onClick={() => { setCats([]); setPrices([]); setCurrentPage(1); }}>
+              <Button variant="secondary" onClick={() => { setCats([]); setPrices([]); }}>
                 Reset Filters
               </Button>
             </div>
           ) : (
             <>
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {paginatedProducts.map((p, idx) => (
+                {visibleProducts.map((p, idx) => (
                   <ProductCard key={p.id} p={p} index={idx} handleQuickAdd={handleQuickAdd} />
                 ))}
               </div>
 
               {/* Page Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="mt-12 flex items-center justify-center gap-2 pt-6 border-t border-border">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={currentPage === 1}
-                    onClick={() => {
-                      setCurrentPage((p) => Math.max(1, p - 1))
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
-                    }}
-                    className="rounded-xl text-xs font-bold px-4 h-9"
-                  >
-                    Previous
-                  </Button>
-
-                  {getPageItems(currentPage, totalPages).map((pageNum, i) =>
-                    pageNum === '…' ? (
-                      <span key={`ellipsis-${i}`} className="h-9 w-9 grid place-items-center text-xs font-bold text-muted-foreground">
-                        …
-                      </span>
-                    ) : (
-                      <button
-                        key={pageNum}
-                        onClick={() => {
-                          setCurrentPage(pageNum)
-                          window.scrollTo({ top: 0, behavior: 'smooth' })
-                        }}
-                        className={`h-9 w-9 text-xs font-bold rounded-xl transition-all ${
-                          currentPage === pageNum
-                            ? 'bg-primary text-primary-foreground shadow-md scale-105'
-                            : 'bg-card border border-border text-foreground hover:bg-black/[0.04]'
-                        }`}
-                      >
-                        {pageNum}
-                      </button>
-                    )
-                  )}
-
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={currentPage === totalPages}
-                    onClick={() => {
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
-                    }}
-                    className="rounded-xl text-xs font-bold px-4 h-9"
-                  >
-                    Next
-                  </Button>
+              <div ref={sentinelRef} className={hasMore ? 'flex h-16 items-center justify-center' : undefined}>
+                {hasMore && <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />}
+              </div>
+              {!hasMore && (
+                <div className="mt-4 pt-6 border-t border-border text-center">
+                  <p className="text-xs font-semibold text-muted-foreground">
+                    You've reached the end — {shown.length} products shown.
+                  </p>
                 </div>
               )}
             </>
