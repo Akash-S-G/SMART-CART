@@ -56,9 +56,12 @@ def main():
                 
             class_idx = class_map[p.id]
             
-            # Download up to 3 images per product
+            # Download or copy up to 3 images per product
             for img_idx, img_obj in enumerate(p.images[:3]):
-                img_url = img_obj.image_url
+                img_url = getattr(img_obj, 'image_url', str(img_obj)) if hasattr(img_obj, 'image_url') else str(img_obj)
+                if not img_url:
+                    continue
+                    
                 try:
                     # Determine split: 85% train, 15% validation
                     is_val = (idx % 7 == 0)
@@ -69,14 +72,27 @@ def main():
                     img_path = img_dir / file_name
                     lbl_path = lbl_dir / f"prod_{p.sku}_{img_idx}.txt"
                     
-                    # Download image
+                    # Fetch or copy image
                     if not img_path.exists():
-                        res = requests.get(img_url, timeout=10)
-                        if res.status_code == 200:
-                            with open(img_path, "wb") as f:
-                                f.write(res.content)
+                        if img_url.startswith("/static/"):
+                            local_file = backend_dir / img_url.lstrip("/")
+                            if local_file.exists():
+                                import shutil
+                                shutil.copy2(local_file, img_path)
+                            else:
+                                res = requests.get(f"http://localhost:8000{img_url}", timeout=10)
+                                if res.status_code == 200:
+                                    with open(img_path, "wb") as f:
+                                        f.write(res.content)
+                                else:
+                                    continue
                         else:
-                            continue
+                            res = requests.get(img_url, timeout=10, headers={'User-Agent': 'SmartCartAI/1.0'})
+                            if res.status_code == 200:
+                                with open(img_path, "wb") as f:
+                                    f.write(res.content)
+                            else:
+                                continue
                             
                     # Write YOLO label: centered bounding box covering 90% of image
                     # Format: class_index x_center y_center width height
@@ -84,7 +100,7 @@ def main():
                         f.write(f"{class_idx} 0.5 0.5 0.9 0.9\n")
                         
                     success_count += 1
-                except Exception as e:
+                except Exception:
                     # Skip download failures gracefully
                     continue
                     

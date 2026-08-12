@@ -17,7 +17,7 @@ def get_dashboard_analytics(db: Session = Depends(get_db)):
     total_products = db.query(func.count(Product.id)).scalar() or 0
     total_customers = db.query(func.count(User.id)).scalar() or 0
     
-    avg_confidence = db.query(func.avg(ProductDetection.confidence_score)).scalar() or 0.94
+    avg_confidence = db.query(func.avg(ProductDetection.confidence_threshold)).scalar() or 0.94
     
     return {
         "total_orders": total_orders,
@@ -37,9 +37,16 @@ def get_real_customers(db: Session = Depends(get_db)):
     for u in users:
         order_count = db.query(func.count(Order.id)).filter(Order.user_id == u.id).scalar() or 0
         total_spent = db.query(func.sum(Order.total_amount)).filter(Order.user_id == u.id).scalar() or 0.0
+        display_name = u.username or u.email.split("@")[0].title()
+        if hasattr(u, 'profile') and u.profile:
+            fname = getattr(u.profile, 'first_name', '') or ''
+            lname = getattr(u.profile, 'last_name', '') or ''
+            if fname or lname:
+                display_name = f"{fname} {lname}".strip()
+
         result.append({
-            "id": u.id,
-            "name": u.name or u.email.split("@")[0].title(),
+            "id": str(u.id),
+            "name": display_name,
             "email": u.email,
             "orders": order_count,
             "spent": round(float(total_spent), 2),
@@ -53,12 +60,15 @@ def get_real_system_logs(db: Session = Depends(get_db)):
     recent_orders = db.query(Order).order_by(Order.created_at.desc()).limit(15).all()
     logs = []
     for o in recent_orders:
+        order_id_str = str(o.id)
+        user_id_str = str(o.user_id) if o.user_id else "system"
+        time_str = o.created_at.strftime("%Y-%m-%d %H:%M") if o.created_at else "N/A"
         logs.append({
-            "id": f"ORD-{o.id[:6].upper()}",
+            "id": f"ORD-{order_id_str[:6].upper()}",
             "action": "ORDER_PLACED",
             "detail": f"Order #{o.order_number} created with total ₹{float(o.total_amount):,.2f}",
-            "user": o.user_id[:8],
-            "time": o.created_at.strftime("%Y-%m-%d %H:%M"),
+            "user": user_id_str[:8],
+            "time": time_str,
             "severity": "info",
         })
     return logs

@@ -20,6 +20,12 @@ class ProductUpdate(BaseModel):
     description: str | None = None
     brand: str | None = Field(default=None, max_length=100)
     category_id: str | None = None
+    barcode: str | None = Field(default=None, max_length=50)
+    price: float | None = Field(default=None, ge=0.0)
+    stock: int | None = Field(default=None, ge=0)
+    is_active: bool | None = None
+    # Image handling: if image_url is provided the product image is replaced with it.
+    image_url: str | None = None
 
 
 class ProductResponse(BaseModel):
@@ -145,3 +151,14 @@ class CategoryResponse(BaseModel):
     description: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class BarcodeResponse(BaseModel):
+    barcode: str
+    image: str  # data URI (SVG) of the rendered barcode
+
+
+class BulkUploadResult(BaseModel):
+    created: int
+    failed: int
+    errors: list[str]

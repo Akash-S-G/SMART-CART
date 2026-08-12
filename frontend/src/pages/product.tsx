@@ -19,11 +19,25 @@ import {
   ArrowLeft,
   Loader2,
   CheckCircle,
+  ShieldAlert,
+  Upload,
+  Pencil,
+  Trash2,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-import { getProductApi, addToCartApi, getCategoriesApi, getProductReviewsApi, createReviewApi, markReviewHelpfulApi, listProductsApi } from '@/lib/api'
+import {
+  getProductApi,
+  addToCartApi,
+  getCategoriesApi,
+  getProductReviewsApi,
+  createReviewApi,
+  markReviewHelpfulApi,
+  listProductsApi,
+  uploadProductImageApi,
+  updateProductApi,
+} from '@/lib/api'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
@@ -44,6 +58,64 @@ export function ProductPage() {
   const [reviewRating, setReviewRating] = useState(5)
   const [reviewTitle, setReviewTitle] = useState('')
   const [reviewBody, setReviewBody] = useState('')
+
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
+  const [isUpdatingProduct, setIsUpdatingProduct] = useState(false)
+  const [showEditUrlModal, setShowEditUrlModal] = useState(false)
+  const [customImageUrl, setCustomImageUrl] = useState('')
+
+  const handleAdminUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !id) return
+    setIsUploadingImage(true)
+    try {
+      const { image_url } = await uploadProductImageApi(file)
+      await updateProductApi(id, { image_url })
+      queryClient.invalidateQueries({ queryKey: ['product', id] })
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      queryClient.invalidateQueries({ queryKey: ['recommended-products'] })
+      toast({ title: 'Image uploaded successfully!', description: 'Product image updated.' })
+    } catch (err: any) {
+      toast({ title: 'Upload failed', description: err?.message || 'Could not upload image.', variant: 'destructive' })
+    } finally {
+      setIsUploadingImage(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleAdminSaveImageUrl = async () => {
+    if (!id) return
+    setIsUpdatingProduct(true)
+    try {
+      await updateProductApi(id, { image_url: customImageUrl })
+      queryClient.invalidateQueries({ queryKey: ['product', id] })
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      queryClient.invalidateQueries({ queryKey: ['recommended-products'] })
+      setShowEditUrlModal(false)
+      toast({ title: 'Image URL updated!', description: 'Product image URL saved.' })
+    } catch (err: any) {
+      toast({ title: 'Update failed', description: err?.message || 'Could not update image URL.', variant: 'destructive' })
+    } finally {
+      setIsUpdatingProduct(false)
+    }
+  }
+
+  const handleAdminDeleteImage = async () => {
+    if (!id) return
+    if (!confirm('Are you sure you want to delete this product image?')) return
+    setIsUpdatingProduct(true)
+    try {
+      await updateProductApi(id, { image_url: '' })
+      queryClient.invalidateQueries({ queryKey: ['product', id] })
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      queryClient.invalidateQueries({ queryKey: ['recommended-products'] })
+      toast({ title: 'Image deleted', description: 'The product image has been removed.' })
+    } catch (err: any) {
+      toast({ title: 'Delete failed', description: err?.message || 'Could not delete image.', variant: 'destructive' })
+    } finally {
+      setIsUpdatingProduct(false)
+    }
+  }
   const queryClient = useQueryClient()
 
   useEffect(() => {
@@ -63,7 +135,7 @@ export function ProductPage() {
 
   const { data: allProducts = [] } = useQuery({
     queryKey: ['recommended-products'],
-    queryFn: () => listProductsApi({ limit: 20 }),
+    queryFn: () => listProductsApi(0, 20),
   })
 
   const recommendedList = useMemo(() => {
@@ -370,6 +442,61 @@ export function ProductPage() {
       <div className="mt-6 grid gap-10 lg:grid-cols-2 items-start">
         {/* Left Column: Image Gallery */}
         <div className="flex flex-col gap-4">
+          {/* Admin Image Controls Bar */}
+          {user?.role === 'admin' && (
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex flex-col gap-3 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider">
+                  <ShieldAlert className="h-4 w-4" /> Admin Image Controls
+                </div>
+                <Badge variant="warning" className="text-[10px]">Admin Only</Badge>
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-1">
+                {/* Upload Image Button with hidden file input */}
+                <label className="cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleAdminUploadImage}
+                    disabled={isUploadingImage || isUpdatingProduct}
+                  />
+                  <span className="inline-flex items-center justify-center rounded-xl text-xs gap-1.5 h-8 font-semibold border border-amber-500/40 hover:bg-amber-500/20 text-foreground px-3 bg-background shadow-xs transition">
+                    {isUploadingImage ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+                    Upload Image
+                  </span>
+                </label>
+
+                {/* Edit Image URL Button */}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="rounded-xl text-xs gap-1.5 h-8 font-semibold border-amber-500/40 hover:bg-amber-500/20 text-foreground"
+                  onClick={() => {
+                    setCustomImageUrl(images[activeImageIndex] || '')
+                    setShowEditUrlModal(true)
+                  }}
+                  disabled={isUploadingImage || isUpdatingProduct}
+                >
+                  <Pencil className="h-3.5 w-3.5" /> Edit URL
+                </Button>
+
+                {/* Delete Image Button */}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="rounded-xl text-xs gap-1.5 h-8 font-semibold text-destructive border-destructive/30 hover:bg-destructive/10"
+                  onClick={handleAdminDeleteImage}
+                  disabled={isUploadingImage || isUpdatingProduct}
+                >
+                  {isUpdatingProduct ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                  Delete Image
+                </Button>
+              </div>
+            </div>
+          )}
+
           <div className="aspect-square rounded-2xl overflow-hidden bg-card border border-border relative group shadow-sm flex items-center justify-center p-4">
             <img
               src={images[activeImageIndex]}
@@ -736,6 +863,31 @@ export function ProductPage() {
           })}
         </div>
       </div>
+
+      {showEditUrlModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="glass border border-white/10 max-w-md w-full rounded-3xl p-6 shadow-2xl space-y-4 bg-card">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-bold text-foreground">Edit Product Image URL</h3>
+              <Button variant="ghost" size="icon" className="rounded-full h-8 w-8" onClick={() => setShowEditUrlModal(false)}>✕</Button>
+            </div>
+            <p className="text-xs text-muted-foreground">Enter an image URL (HTTPS) to set as the primary product image:</p>
+            <input
+              type="url"
+              value={customImageUrl}
+              onChange={(e) => setCustomImageUrl(e.target.value)}
+              placeholder="https://images.unsplash.com/photo-..."
+              className="w-full bg-background border border-border rounded-xl p-3 text-xs outline-none text-foreground font-mono"
+            />
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="ghost" size="sm" onClick={() => setShowEditUrlModal(false)}>Cancel</Button>
+              <Button variant="gradient" size="sm" onClick={handleAdminSaveImageUrl} disabled={isUpdatingProduct}>
+                {isUpdatingProduct ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Save Image URL'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -29,8 +29,9 @@ export function AppShell() {
   }, [pathname])
 
   useEffect(() => {
-    if (isAuthenticated && !user) {
-      fetchProfile()
+    if (isAuthenticated) {
+      if (!user) fetchProfile()
+      fetchCart()
     }
   }, [isAuthenticated, user])
 

@@ -30,16 +30,7 @@ export function Navbar() {
   const { isDark, toggle: toggleTheme } = useTheme()
   const { lang, toggleLanguage, t } = useLanguage()
 
-  const isCheckout = location.pathname.startsWith('/checkout')
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchCart()
-    }
-  }, [isAuthenticated])
-
-  if (isCheckout) return null
-
+  // Cart item count calculation
   const cartCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0
 
   return (

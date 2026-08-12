@@ -52,8 +52,30 @@ export async function getCategoriesApi(): Promise<Category[]> {
   return Array.isArray(res) ? res : []
 }
 
+export interface ProductQuery {
+  skip?: number
+  limit?: number
+  category_id?: string
+  min_price?: number
+  max_price?: number
+  sort?: string
+  search?: string
+}
+
 export async function listProductsApi(skip = 0, limit = 40): Promise<Product[]> {
   const res = await getJson<Product[]>(`/products?skip=${skip}&limit=${limit}`)
+  return Array.isArray(res) ? res : []
+}
+
+export async function fetchProductsPageApi(query: ProductQuery): Promise<Product[]> {
+  const params = new URLSearchParams()
+  params.set('skip', String(query.skip ?? 0))
+  params.set('limit', String(query.limit ?? 24))
+  if (query.category_id) params.set('category_id', query.category_id)
+  if (typeof query.min_price === 'number') params.set('min_price', String(query.min_price))
+  if (typeof query.max_price === 'number') params.set('max_price', String(query.max_price))
+  if (query.sort) params.set('sort', query.sort)
+  const res = await getJson<Product[]>(`/products?${params.toString()}`)
   return Array.isArray(res) ? res : []
 }
 
@@ -166,6 +188,54 @@ export async function detectAndAddApi(file: File): Promise<DetectionResult> {
 
 export async function createProductApi(body: any): Promise<Product> {
   return postJson<Product, any>('/products', body)
+}
+
+export async function updateProductApi(productId: string, body: any): Promise<Product> {
+  return putJson<Product, any>(`/products/${productId}`, body)
+}
+
+export async function deleteProductApi(productId: string): Promise<void> {
+  return deleteJson<void>(`/products/${productId}`)
+}
+
+export async function uploadProductImageApi(file: File): Promise<{ image_url: string }> {
+  const formData = new FormData()
+  formData.append('file', file)
+  const response = await http.post<{ image_url: string }>('/products/upload-image', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return response.data
+}
+
+export async function bulkUploadProductsApi(file: File): Promise<{ created: number; failed: number; errors: string[] }> {
+  const formData = new FormData()
+  formData.append('file', file)
+  const response = await http.post<{ created: number; failed: number; errors: string[] }>(
+    '/products/bulk',
+    formData,
+    { headers: { 'Content-Type': 'multipart/form-data' } },
+  )
+  return response.data
+}
+
+export async function generateBarcodeApi(existing?: string): Promise<{ barcode: string; image: string }> {
+  const qs = existing ? `?existing=${encodeURIComponent(existing)}` : ''
+  return getJson<{ barcode: string; image: string }>(`/products/generate-barcode${qs}`)
+}
+
+export async function getOrderSlipApi(orderId: string): Promise<void> {
+  const response = await http.get(`/orders/${orderId}/slip`, { responseType: 'blob' })
+  const blob = response.data as Blob
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `slip_${orderId}.pdf`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+export async function listAdminOrdersApi(page = 1, pageSize = 20): Promise<any> {
+  return getJson<any>(`/orders/admin?page=${page}&page_size=${pageSize}`)
 }
 
 /* ==========================================================================

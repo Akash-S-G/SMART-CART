@@ -31,16 +31,9 @@ logs/
 *.pb
 *.weights
 
-# Dataset images (downloaded at runtime)
-vision-dataset-factory/storage/exports/combined_groceries/train/
-vision-dataset-factory/storage/exports/combined_groceries/valid/
-vision-dataset-factory/storage/raw/
-vision-dataset-factory/storage/normalized/
-vision-dataset-factory/storage/candidate_images/
-vision-dataset-factory/storage/downloads/
-vision-dataset-factory/storage/duplicates/
-vision-dataset-factory/storage/rejected/
-vision-dataset-factory/storage/temp/
+# Dataset images and models (downloaded/generated at runtime)
+vision-dataset-factory/storage/
+
 
 # SQLite databases
 *.db

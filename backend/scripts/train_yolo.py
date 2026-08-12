@@ -29,13 +29,23 @@ def main():
         return 1
 
     print(f"[info] Dataset: {dataset_yaml}")
-    print(f"[info] Initializing YOLO11n model with random weights (from scratch)...")
-    model = YOLO("yolo11n.yaml")
+    
+    # Check for existing pretrained weights for transfer learning
+    pretrained_weights = backend_dir / "models" / "yolo11n.pt"
+    if not pretrained_weights.exists():
+        pretrained_weights = backend_dir / "yolo11n.pt"
+        
+    if pretrained_weights.exists():
+        print(f"[info] Initializing YOLO11n with pretrained weights from {pretrained_weights}...")
+        model = YOLO(str(pretrained_weights))
+    else:
+        print("[info] Initializing YOLO11n with standard pretrained weights (yolo11n.pt)...")
+        model = YOLO("yolo11n.pt")
 
-    print(f"[info] Starting training on combined_groceries dataset (30 epochs)...")
+    print("[info] Starting training on local DB products dataset (15 epochs)...")
     model.train(
         data=str(dataset_yaml),
-        epochs=30,
+        epochs=15,
         imgsz=640,
         device="cpu",
         batch=8,
@@ -44,14 +54,14 @@ def main():
         ),
         name="combined_groceries_run",
         exist_ok=True,
-        patience=10,
+        patience=5,
         lr0=0.01,
         lrf=0.01,
-        warmup_epochs=3,
-        close_mosaic=5,
+        warmup_epochs=2,
+        close_mosaic=3,
     )
 
-    print(">>> Training complete! Copying best weights to active production folder...")
+    print(">>> Training complete! Copying best weights to production folders...")
     best_weights = (
         root_dir
         / "vision-dataset-factory"
@@ -61,11 +71,16 @@ def main():
         / "weights"
         / "best.pt"
     )
-    prod_path = backend_dir / "models" / "yolo11n.pt"
 
     if best_weights.exists():
-        shutil.copy2(best_weights, prod_path)
-        print(f"[done] Successfully updated production model at: {prod_path}")
+        for dest in [
+            backend_dir / "models" / "yolo11n.pt",
+            backend_dir / "yolo11n.pt",
+            root_dir / "vision-dataset-factory" / "yolo11n.pt",
+        ]:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(best_weights, dest)
+            print(f"[done] Updated production model weights at: {dest}")
     else:
         print("[ERROR] Trained weights file best.pt not found!")
         return 1

@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Plus,
   Search,
+  ShoppingCart,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -207,35 +208,45 @@ export function LandingPage() {
                 <Link
                   to={`/product/${p.id}`}
                   key={p.id}
-                  className="group flex flex-col gap-4 cursor-pointer bg-card p-4 rounded-3xl border border-border hover:border-primary/40 hover:shadow-xl transition-all duration-300"
+                  className="group flex flex-col justify-between cursor-pointer bg-card p-4 rounded-3xl border border-border hover:border-primary/40 hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="relative w-full aspect-[4/5] bg-card overflow-hidden rounded-2xl">
+                  <div className="relative w-full aspect-[4/5] bg-card overflow-hidden rounded-2xl border border-black/5 shrink-0">
                     <img
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       src={p.images?.[0] || 'https://images.unsplash.com/photo-1505743614?auto=format&fit=crop&w=900&q=80'}
                       alt={p.name}
                     />
-                    {i === 0 && (
-                      <div className="absolute top-4 left-4 bg-primary/95 text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm text-xs font-semibold">
-                        <Sparkles className="h-3.5 w-3.5" /> Best Seller
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4">
-                      <button
-                        onClick={(e) => handleQuickAdd(e, p.id, p.name)}
-                        className="bg-primary text-primary-foreground px-6 py-2.5 rounded-full font-semibold text-xs uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform shadow-lg hover:bg-secondary"
-                      >
-                        Quick Add
-                      </button>
-                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1 px-1">
-                    <div className="flex justify-between items-start gap-4">
-                      <h3 className="text-base font-bold text-foreground truncate group-hover:text-primary transition-colors">{p.name}</h3>
-                      <span className="text-base font-bold text-foreground">₹{p.price}</span>
+                  <div className="flex flex-col gap-2 pt-3 px-1 flex-1 justify-between">
+                    <div className="flex items-center justify-between gap-2 min-h-[22px]">
+                      {i === 0 ? (
+                        <Badge variant="ai" className="gap-1 text-[10px] font-semibold py-0.5 px-2">
+                          <Sparkles className="h-3 w-3 text-secondary" /> Best Seller
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="text-[10px] font-semibold py-0.5 px-2">
+                          Featured
+                        </Badge>
+                      )}
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">{p.brand || 'Premium Selection'}</p>
+
+                    <div>
+                      <h3 className="text-base font-bold text-foreground truncate group-hover:text-primary transition-colors">{p.name}</h3>
+                      <p className="text-xs text-muted-foreground truncate">{p.brand || 'SmartCart Essentials'}</p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-border/60 mt-1">
+                      <span className="text-lg font-extrabold text-foreground">₹{p.price}</span>
+                      <Button
+                        size="sm"
+                        variant="gradient"
+                        onClick={(e) => handleQuickAdd(e, p.id, p.name)}
+                        className="rounded-xl text-xs font-bold uppercase tracking-wider h-8 px-3 gap-1 shadow-xs"
+                      >
+                        <ShoppingCart className="h-3.5 w-3.5" /> Add
+                      </Button>
+                    </div>
                   </div>
                 </Link>
               ))

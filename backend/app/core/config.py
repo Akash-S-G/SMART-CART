@@ -75,9 +75,11 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str | None = None
     GOOGLE_CLIENT_SECRET: str | None = None
     # =====================
-    # AI Microservice URL (Hugging Face / Modal / Remote GPU)
+    # Default Admin (seeded on startup if none exists)
     # =====================
-    AI_SERVICE_URL: str | None = None
+    DEFAULT_ADMIN_EMAIL: str = "admin@smartcart.ai"
+    DEFAULT_ADMIN_USERNAME: str = "admin"
+    DEFAULT_ADMIN_PASSWORD: str = "SmartCart@123"
 
 
     def validate_secrets(self) -> None:

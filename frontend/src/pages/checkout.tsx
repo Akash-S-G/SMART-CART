@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Sparkles,
   ShoppingBag,
+  Loader2,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,24 +35,24 @@ const STEPS = ['Shipping', 'Payment', 'Review']
 
 export function CheckoutPage() {
   const navigate = useNavigate()
-  const { isAuthenticated, openLogin } = useAuth()
-  const { cart, fetchCart, updateItem, removeItem, setCart } = useCart()
+  const { isAuthenticated, user, openLogin } = useAuth()
+  const { cart, fetchCart, updateItem, removeItem, setCart, loading: cartLoading } = useCart()
   const { toast } = useToast()
 
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null)
 
-  // Form states
+  // Form states pre-filled with user info if available
   const [shippingForm, setShippingForm] = useState({
-    firstName: '',
-    lastName: '',
+    firstName: user?.first_name || user?.username || '',
+    lastName: user?.last_name || '',
     address: '',
     city: '',
     state: '',
     zip: '',
     country: 'India',
-    email: '',
+    email: user?.email || '',
     phone: '',
   })
 
@@ -61,11 +62,25 @@ export function CheckoutPage() {
   const [cardName, setCardName] = useState('')
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>('card')
 
+  // Derived cart summary used by the order-summary sidebar.
+  const summary = cart?.summary
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchCart()
     }
   }, [isAuthenticated])
+
+  useEffect(() => {
+    if (user) {
+      setShippingForm((f) => ({
+        ...f,
+        firstName: f.firstName || user.first_name || user.username || '',
+        lastName: f.lastName || user.last_name || '',
+        email: f.email || user.email || '',
+      }))
+    }
+  }, [user])
 
   if (!isAuthenticated) {
     return (
@@ -86,6 +101,16 @@ export function CheckoutPage() {
 
   if (completedOrder) {
     return <OrderConfirmationScreen order={completedOrder} address={shippingForm} />
+  }
+
+  // If cart is currently loading, show loading screen instead of premature empty cart
+  if (cartLoading && !cart) {
+    return (
+      <div className="mx-auto max-w-md px-6 py-24 text-center flex flex-col items-center justify-center gap-4">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        <p className="text-sm font-semibold text-muted-foreground">Loading your shopping cart…</p>
+      </div>
+    )
   }
 
   const items = cart?.items || []
@@ -217,6 +242,7 @@ export function CheckoutPage() {
         {/* Order Summary Sidebar */}
         <OrderSummary
           cart={cart}
+          summary={summary}
           step={step}
           updateItem={updateItem}
           removeItem={removeItem}
@@ -462,19 +488,31 @@ function StepReview({
 /* Sidebar Order Summary */
 function OrderSummary({
   cart,
+  summary,
   step,
   updateItem,
   removeItem,
 }: {
   cart: any
+  summary: any
   step: number
   updateItem: (productId: string, qty: number) => Promise<any>
-  removeItem: (productId: string) => Promise<any>
+  removeItem: (productId: string, qty: number) => Promise<any>
 }) {
+  const items = cart?.items || []
   const [promoCode, setPromoCode] = useState('')
   const [discountAmount, setDiscountAmount] = useState(0)
   const [appliedCode, setAppliedCode] = useState('')
   const [promoLoading, setPromoLoading] = useState(false)
+
+  const handleQtyChange = async (productId: string, currentQty: number, delta: number) => {
+    const newQty = currentQty + delta
+    if (newQty <= 0) {
+      await removeItem(productId, currentQty)
+    } else {
+      await updateItem(productId, newQty)
+    }
+  }
 
   const handleApplyPromo = async () => {
     if (!promoCode.trim()) return

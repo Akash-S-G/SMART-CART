@@ -27,18 +27,18 @@ from app.core.config import settings
 app = FastAPI(lifespan=lifespan)
 
 # CORS configuration
-origins = settings.BACKEND_CORS_ORIGINS or [
+# Always allow the standard local dev origins, and union them with any
+# explicitly configured origins (e.g. the Vercel deploy URL) so local dev
+# never breaks even if BACKEND_CORS_ORIGINS omits localhost.
+DEV_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+configured = settings.BACKEND_CORS_ORIGINS or []
+origins = list(dict.fromkeys([*configured, *DEV_ORIGINS]))  # preserve order, dedupe
 app.add_middleware(SecurityHeadersMiddleware)
 
 # Serve seeded product images locally (backend/static -> /static).
@@ -52,6 +52,18 @@ register_exception_handlers(app)
 
 app.add_middleware(LoggingMiddleware)
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
+
+# CORS must be the OUTERMOST middleware. Wrapping CORSMiddleware inside
+# BaseHTTPMiddleware (SecurityHeaders/Logging/RateLimit) breaks preflight
+# handling and ACAO injection, so it is added last (Starlette runs the last
+# added middleware first).
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 from app.api.health import router as health_router

@@ -35,7 +35,7 @@ class ProductService:
                 "SKU already exists."
             )
 
-        if self.products.exists_by_barcode(
+        if request.barcode and self.products.exists_by_barcode(
             request.barcode
         ):
             raise ValueError(
@@ -76,7 +76,6 @@ class ProductService:
         price_row = ProductPrice(
             product_id=product.id,
             price=request.price,
-            currency="INR"
         )
         self.db.add(price_row)
 
@@ -126,11 +125,19 @@ class ProductService:
         self,
         skip: int = 0,
         limit: int = 20,
+        category_id: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        sort: str | None = None,
     ):
 
         return self.products.list_products(
             skip=skip,
             limit=limit,
+            category_id=category_id,
+            min_price=min_price,
+            max_price=max_price,
+            sort=sort,
         )
 
     # =====================================================
@@ -172,6 +179,16 @@ class ProductService:
         if request.brand is not None:
             product.brand = request.brand
 
+        if request.barcode is not None:
+            if request.barcode and self.products.exists_by_barcode(request.barcode):
+                existing = self.products.get_by_barcode(request.barcode)
+                if existing and existing.id != product.id:
+                    raise ValueError("Barcode already exists.")
+            product.barcode = request.barcode or None
+
+        if request.is_active is not None:
+            product.is_active = request.is_active
+
         if request.category_id is not None:
 
             category = self.products.get_category(
@@ -185,7 +202,51 @@ class ProductService:
 
             product.category_id = request.category_id
 
-        return self.products.update(product)
+        # Price
+        if request.price is not None:
+            from app.models.products.product_price import ProductPrice
+            price_row = self.db.query(ProductPrice).filter(
+                ProductPrice.product_id == product.id
+            ).first()
+            if price_row is None:
+                price_row = ProductPrice(product_id=product.id, price=request.price, currency="INR")
+                self.db.add(price_row)
+            else:
+                price_row.price = request.price
+
+        # Stock (inventory)
+        if request.stock is not None:
+            from app.models.products.inventory import Inventory
+            inv = self.db.query(Inventory).filter(
+                Inventory.product_id == product.id
+            ).first()
+            if inv is None:
+                inv = Inventory(product_id=product.id, quantity=request.stock)
+                self.db.add(inv)
+            else:
+                inv.quantity = request.stock
+
+        # Image replacement — client sends an already-uploaded URL
+        # (via POST /products/upload-image), keeps the existing one, or sends "" to delete.
+        if request.image_url is not None:
+            from app.models.products.product_image import ProductImage
+            img_row = self.db.query(ProductImage).filter(
+                ProductImage.product_id == product.id
+            ).first()
+            if not request.image_url.strip():
+                if img_row is not None:
+                    self.db.delete(img_row)
+            else:
+                if img_row is None:
+                    img_row = ProductImage(product_id=product.id, image_url=request.image_url.strip())
+                    self.db.add(img_row)
+                else:
+                    img_row.image_url = request.image_url.strip()
+
+        self.db.commit()
+        self.db.refresh(product)
+
+        return product
 
     # =====================================================
     # DELETE

@@ -80,7 +80,13 @@ class ProductRepository:
         self,
         skip: int = 0,
         limit: int = 20,
+        category_id: str | None = None,
+        min_price: float | None = None,
+        max_price: float | None = None,
+        sort: str | None = None,
     ) -> list[Product]:
+
+        from app.models.products.product_price import ProductPrice
 
         stmt = (
             select(Product)
@@ -90,9 +96,30 @@ class ProductRepository:
                 joinedload(Product.images),
                 joinedload(Product.price),
             )
-            .offset(skip)
-            .limit(limit)
         )
+
+        if category_id:
+            stmt = stmt.where(Product.category_id == category_id)
+
+        if min_price is not None or max_price is not None:
+            stmt = stmt.join(ProductPrice, ProductPrice.product_id == Product.id)
+            if min_price is not None:
+                stmt = stmt.where(ProductPrice.price >= min_price)
+            if max_price is not None:
+                stmt = stmt.where(ProductPrice.price <= max_price)
+
+        if sort == "price_asc":
+            stmt = stmt.join(ProductPrice, ProductPrice.product_id == Product.id).order_by(ProductPrice.price.asc())
+        elif sort == "price_desc":
+            stmt = stmt.join(ProductPrice, ProductPrice.product_id == Product.id).order_by(ProductPrice.price.desc())
+        elif sort == "name_asc":
+            stmt = stmt.order_by(Product.name.asc())
+        elif sort == "rating_desc":
+            # rating lives in metadata_ JSON; sort best-effort in Python if many rows,
+            # but for pagination we approximate by created_at desc (newest first).
+            stmt = stmt.order_by(Product.created_at.desc())
+
+        stmt = stmt.offset(skip).limit(limit)
 
         return list(self.db.execute(stmt).unique().scalars().all())
 

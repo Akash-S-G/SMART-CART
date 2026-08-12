@@ -26,6 +26,20 @@ async def lifespan(app: FastAPI):
     model_loader.load()
     logger.info("YOLO loaded successfully.")
 
+    # Seed a default admin account so the Admin Console is reachable out-of-the-box.
+    try:
+        from app.db.database import SessionLocal
+        from app.core.seed import seed_default_admin
+
+        db = SessionLocal()
+        try:
+            seed_default_admin(db)
+            logger.info("Default admin seeded (if not present).")
+        finally:
+            db.close()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Default admin seed skipped: %s", exc)
+
     # Auto-create schema is disabled by default because it requires DB user privileges
     # (e.g., CREATE on schema). Enable only when the DB user is allowed to create tables.
     if settings.ENVIRONMENT == "development" and settings.DB_AUTO_CREATE:

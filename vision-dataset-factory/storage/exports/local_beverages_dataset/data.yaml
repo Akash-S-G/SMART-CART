@@ -1,7 +1,0 @@
-names:
-  0: Milk Carton
-  1: Soda Can
-path: /home/akash/Desktop/Smart cart/vision-dataset-factory/storage/exports/local_beverages_dataset
-test: test/images
-train: train/images
-val: valid/images
