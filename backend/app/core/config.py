@@ -73,7 +73,12 @@ class Settings(BaseSettings):
     # Google OAuth
     # =====================
     GOOGLE_CLIENT_ID: str | None = None
-    GOOGLE_CLIENT_SECRET: str | None = None
+    # =====================
+    # AI Microservice
+    # =====================
+    AI_SERVICE_URL: str | None = None
+    AI_MODEL_PATH: str | None = None
+
     # =====================
     # Default Admin (seeded on startup if none exists)
     # =====================

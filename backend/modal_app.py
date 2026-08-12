@@ -5,6 +5,7 @@ Deploy serverless GPU/CPU AI inference to Modal with 1-command:
   modal deploy modal_app.py
 """
 
+import os
 import modal
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,6 +25,7 @@ image = (
         "pydantic",
         "python-multipart"
     )
+    .add_local_file("best.pt", remote_path="/root/best.pt")
 )
 
 app = modal.App("smartcart-ai-vision", image=image)
@@ -44,8 +46,9 @@ class ModelContainer:
         from ultralytics import YOLO
         import easyocr
 
-        print("[info] Modal container starting up. Loading YOLO & EasyOCR...")
-        self.yolo = YOLO("yolo11n.pt")
+        model_path = "/root/best.pt" if os.path.exists("/root/best.pt") else "yolo11n.pt"
+        print(f"[info] Modal container starting up. Loading YOLO ({model_path}) & EasyOCR...")
+        self.yolo = YOLO(model_path)
         self.ocr = easyocr.Reader(['en'], gpu=torch.cuda.is_available())
         print("[info] Models loaded successfully on Modal.")
 
