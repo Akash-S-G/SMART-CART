@@ -88,17 +88,53 @@ export function Navbar() {
     }
 
     navigator.geolocation.getCurrentPosition(
-      () => {
-        // Detected area
-        const gpsLoc = { area: 'Indiranagar Central', city: 'Bengaluru', pincode: '560038' }
-        handleSelectLocation(gpsLoc)
+      async (position) => {
+        const { latitude, longitude } = position.coords
+        try {
+          // Live reverse geocoding via OpenStreetMap Nominatim API
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+          )
+          const data = await res.json()
+          const addr = data.address || {}
+
+          const area =
+            addr.suburb ||
+            addr.neighbourhood ||
+            addr.residential ||
+            addr.subdistrict ||
+            addr.quarter ||
+            addr.town ||
+            addr.city_district ||
+            addr.city ||
+            'Detected Location'
+
+          const city = addr.city || addr.town || addr.state_district || addr.state || 'Bengaluru'
+          const pincode = addr.postcode || '560038'
+
+          const detectedLoc = { area, city, pincode }
+          handleSelectLocation(detectedLoc)
+          toast({
+            title: 'GPS Location Updated',
+            description: `Detected: ${area}, ${city} (${pincode})`,
+          })
+        } catch {
+          const fallbackLoc = { area: `Lat ${latitude.toFixed(2)}, Lon ${longitude.toFixed(2)}`, city: 'Bengaluru', pincode: '560038' }
+          handleSelectLocation(fallbackLoc)
+        } finally {
+          setDetectingGps(false)
+        }
+      },
+      (error) => {
+        let msg = 'Unable to fetch GPS coordinates.'
+        if (error.code === error.PERMISSION_DENIED) msg = 'GPS permission denied. Please allow location access in browser.'
+        else if (error.code === error.POSITION_UNAVAILABLE) msg = 'Location signal unavailable.'
+        else if (error.code === error.TIMEOUT) msg = 'GPS request timed out.'
+
+        toast({ title: 'GPS Error', description: msg, variant: 'destructive' })
         setDetectingGps(false)
       },
-      () => {
-        toast({ title: 'GPS Permission Denied', description: 'Using default area Indiranagar, Bengaluru.', variant: 'destructive' })
-        setDetectingGps(false)
-      },
-      { timeout: 5000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     )
   }
 
