@@ -51,11 +51,11 @@ export function AppShell() {
           saveSession(tokens, null)
           const profile = await getProfileApi()
           saveSession(tokens, profile)
-          login(tokens, profile)
+          login(profile)
           fetchCart()
           toast({
             title: 'Welcome Back!',
-            description: `Signed in as ${profile.name || profile.email}`,
+            description: `Signed in as ${profile.first_name || profile.username || profile.email}`,
           })
         } catch {
           toast({

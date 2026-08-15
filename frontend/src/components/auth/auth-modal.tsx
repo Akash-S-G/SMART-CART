@@ -111,18 +111,6 @@ export function AuthModal() {
     }
   }
 
-  const handleFillDemoAdmin = () => {
-    loginForm.setValue('email', 'admin@smartcart.ai')
-    loginForm.setValue('password', 'SmartCart@123')
-    onLogin({ email: 'admin@smartcart.ai', password: 'SmartCart@123' })
-  }
-
-  const handleFillDemoCustomer = () => {
-    loginForm.setValue('email', 'customer@smartcart.ai')
-    loginForm.setValue('password', 'SmartCart@123')
-    onLogin({ email: 'customer@smartcart.ai', password: 'SmartCart@123' })
-  }
-
   const handleGoogleSignIn = () => {
     const clientId = '599957931306-9m17h4k22onovs62rhd2tg9flkuruhsh.apps.googleusercontent.com'
     const redirectUri = window.location.origin
@@ -131,53 +119,9 @@ export function AuthModal() {
     window.location.href = authUrl
   }
 
-  const handleMockGoogleSignIn = async () => {
-    setLoading(true)
-    try {
-      const googleUsers = [
-        {
-          email: 'admin.google@gmail.com', // Starts with admin -> assigns admin role!
-          username: 'admin_google_dev',
-          first_name: 'Admin Google',
-          last_name: 'Developer',
-          profile_image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-        {
-          email: 'alex.google@gmail.com',
-          username: 'alex_google_shopper',
-          first_name: 'Alex',
-          last_name: 'Mercer',
-          profile_image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80',
-        },
-      ]
-
-      const selectedGoogleUser = googleUsers[Math.floor(Math.random() * googleUsers.length)]
-
-      const tokens = await googleLoginApi(selectedGoogleUser)
-      saveSession(tokens, null)
-      const profile = await getProfileApi()
-      saveSession(tokens, profile)
-      login(profile)
-      fetchCart()
-      toast({
-        title: 'Mock Google Sign In Successful',
-        description: `Logged in as ${profile.username} (${profile.email})`,
-      })
-      closeModal()
-    } catch (err: any) {
-      toast({
-        title: 'Google Auth Failed',
-        description: err.message || 'Unable to connect to Google.',
-        variant: 'destructive',
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <Dialog open={isModalOpen} onOpenChange={(open) => !open && closeModal()}>
-      <DialogContent className="glass max-w-[420px] rounded-3xl border border-white/10 shadow-2xl p-6">
+      <DialogContent className="glass max-w-[420px] rounded-3xl border border-white/10 shadow-2xl p-6 bg-card">
         <DialogHeader className="text-center">
           <DialogTitle className="text-2xl font-bold tracking-tight text-foreground">
             SmartCart AI
@@ -188,11 +132,11 @@ export function AuthModal() {
         </DialogHeader>
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as any)} className="w-full mt-6">
-          <TabsList className="grid grid-cols-2 bg-black/[0.04] p-1 rounded-xl">
-            <TabsTrigger value="login" className="rounded-lg py-2 text-sm font-medium">
+          <TabsList className="grid grid-cols-2 bg-muted p-1 rounded-xl">
+            <TabsTrigger value="login" className="rounded-lg py-2 text-sm font-semibold">
               Sign In
             </TabsTrigger>
-            <TabsTrigger value="register" className="rounded-lg py-2 text-sm font-medium">
+            <TabsTrigger value="register" className="rounded-lg py-2 text-sm font-semibold">
               Sign Up
             </TabsTrigger>
           </TabsList>
@@ -207,7 +151,7 @@ export function AuthModal() {
                   id="login-email"
                   type="email"
                   placeholder="name@example.com"
-                  className="mt-1.5 bg-card/50 border border-black/10 rounded-xl py-5"
+                  className="mt-1.5 bg-background border border-border rounded-xl py-5"
                   {...loginForm.register('email')}
                 />
                 {loginForm.formState.errors.email && (
@@ -220,15 +164,12 @@ export function AuthModal() {
                   <Label htmlFor="login-pass" className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
                     Password
                   </Label>
-                  <button type="button" className="text-xs text-secondary font-semibold hover:underline">
-                    Forgot?
-                  </button>
                 </div>
                 <Input
                   id="login-pass"
                   type="password"
                   placeholder="••••••••"
-                  className="mt-1.5 bg-card/50 border border-black/10 rounded-xl py-5"
+                  className="mt-1.5 bg-background border border-border rounded-xl py-5"
                   {...loginForm.register('password')}
                 />
                 {loginForm.formState.errors.password && (
@@ -236,53 +177,27 @@ export function AuthModal() {
                 )}
               </div>
 
-              <Button type="submit" variant="gradient" className="w-full mt-6 py-5 rounded-xl text-sm uppercase tracking-widest font-semibold" disabled={loading}>
+              <Button type="submit" variant="default" className="w-full mt-6 py-5 rounded-xl text-sm uppercase tracking-wider font-bold" disabled={loading}>
                 {loading ? 'Signing In...' : 'Sign In'}
               </Button>
-
-              {/* Quick Demo Fill Buttons */}
-              <div className="pt-2 flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleFillDemoCustomer}
-                  className="flex-1 py-2 px-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-xl text-[11px] font-bold transition text-center cursor-pointer"
-                >
-                  ⚡ Fill Customer Demo
-                </button>
-                <button
-                  type="button"
-                  onClick={handleFillDemoAdmin}
-                  className="flex-1 py-2 px-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-xl text-[11px] font-bold transition text-center cursor-pointer"
-                >
-                  ⚡ Fill Admin Demo
-                </button>
-              </div>
             </form>
 
             <div className="relative flex py-4 items-center">
-              <div className="flex-grow border-t border-black/[0.06]"></div>
+              <div className="flex-grow border-t border-border"></div>
               <span className="flex-shrink mx-4 text-muted-foreground text-[10px] uppercase font-bold tracking-wider">or continue with</span>
-              <div className="flex-grow border-t border-black/[0.06]"></div>
+              <div className="flex-grow border-t border-border"></div>
             </div>
 
             <Button
               type="button"
               variant="outline"
               onClick={handleGoogleSignIn}
-              className="w-full py-5 rounded-xl border border-black/10 hover:bg-black/[0.02] text-xs font-semibold gap-2"
+              className="w-full py-5 rounded-xl border border-border hover:bg-muted text-xs font-semibold gap-2"
               disabled={loading}
             >
               <GoogleIcon className="h-4 w-4" />
               Sign in with Google
             </Button>
-            <button
-              type="button"
-              onClick={handleMockGoogleSignIn}
-              className="w-full mt-2 text-center text-[11px] text-muted-foreground hover:text-foreground hover:underline font-semibold"
-              disabled={loading}
-            >
-              Bypass with Mock Google Account
-            </button>
           </TabsContent>
 
           <TabsContent value="register" className="mt-4">
