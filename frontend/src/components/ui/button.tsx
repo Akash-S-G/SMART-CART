@@ -4,24 +4,24 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:opacity-90 hover:-translate-y-[1px]',
+          'bg-primary text-primary-foreground shadow-xs hover:opacity-90 active:scale-[0.98]',
         gradient:
-          'bg-[linear-gradient(180deg,#4f8cff_0%,#3b70d6_100%)] text-white shadow-lg shadow-primary/30 hover:opacity-95 hover:-translate-y-[1px]',
+          'bg-primary text-primary-foreground shadow-xs hover:opacity-90 active:scale-[0.98]',
         secondary:
-          'bg-black/[0.06] text-foreground border border-black/10 backdrop-blur hover:bg-black/[0.1] hover:border-black/20',
+          'bg-muted text-foreground border border-border hover:bg-muted/80',
         outline:
-          'border border-border bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
-        ghost: 'text-muted-foreground hover:bg-black/[0.06] hover:text-foreground',
+          'border border-border bg-background text-foreground hover:bg-muted hover:text-foreground',
+        ghost: 'text-muted-foreground hover:bg-muted hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-lg shadow-destructive/20 hover:opacity-90',
-        success: 'bg-success/15 text-success border border-success/25 hover:bg-success/25',
-        ai: 'bg-secondary/10 text-secondary border border-secondary/30 hover:bg-secondary/20 shadow-lg shadow-secondary/10',
+          'bg-destructive text-destructive-foreground shadow-xs hover:opacity-90',
+        success: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20',
+        ai: 'bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20',
       },
       size: {
         default: 'h-10 px-5 py-2',

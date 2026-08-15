@@ -393,7 +393,7 @@ function ProductCard({
 
           <Button
             size="sm"
-            variant={p.stock === 0 ? "outline" : "gradient"}
+            variant={p.stock === 0 ? "outline" : "default"}
             disabled={p.stock === 0}
             onClick={(e) => handleQuickAdd(e, p.id, p.name)}
             className="rounded-xl text-xs font-bold uppercase tracking-wider h-8 px-3 gap-1 shadow-xs"

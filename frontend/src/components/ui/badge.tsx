@@ -3,18 +3,18 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-[0.08em] font-mono transition-colors',
+  'inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider transition-colors',
   {
     variants: {
       variant: {
-        default: 'border-primary/30 bg-primary/10 text-primary',
-        secondary: 'border-secondary/30 bg-secondary/10 text-secondary',
-        outline: 'border-black/10 bg-transparent text-muted-foreground',
-        success: 'border-success/30 bg-success/10 text-success',
-        warning: 'border-warning/30 bg-warning/10 text-warning',
-        destructive: 'border-destructive/30 bg-destructive/10 text-destructive',
-        violet: 'border-violet-500/30 bg-violet-500/10 text-violet-300',
-        ai: 'border-secondary/40 bg-secondary/15 text-secondary shadow-[0_0_12px_rgba(103,232,249,0.15)]',
+        default: 'border-primary/20 bg-primary/10 text-primary',
+        secondary: 'border-border bg-muted text-foreground',
+        outline: 'border-border bg-background text-muted-foreground',
+        success: 'border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+        warning: 'border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400',
+        destructive: 'border-destructive/20 bg-destructive/10 text-destructive',
+        violet: 'border-violet-500/20 bg-violet-500/10 text-violet-600 dark:text-violet-400',
+        ai: 'border-primary/20 bg-primary/10 text-primary',
       },
     },
     defaultVariants: {

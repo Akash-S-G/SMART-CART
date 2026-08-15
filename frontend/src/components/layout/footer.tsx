@@ -1,14 +1,35 @@
 import { Link, useLocation } from 'react-router-dom'
 import { Logo } from '@/components/logo'
+import { ShieldCheck, Truck, Clock, RefreshCw } from 'lucide-react'
 
 const COLUMNS = [
   {
-    title: 'Platform',
-    links: ['Vision API', 'Edge SDKs', 'Retail Analytics', 'Hardware Integration'],
+    title: 'Categories',
+    links: [
+      { name: 'Dairy, Bread & Eggs', path: '/collections?category=Dairy' },
+      { name: 'Atta, Rice & Dal', path: '/collections?category=Staples' },
+      { name: 'Snacks & Munchies', path: '/collections?category=Snacks' },
+      { name: 'Cold Drinks & Juices', path: '/collections?category=Beverages' },
+      { name: 'Fresh Fruits & Veggies', path: '/collections?category=Produce' },
+    ],
   },
   {
-    title: 'Company',
-    links: ['About Us', 'Careers', 'Blog', 'Contact'],
+    title: 'Smart Features',
+    links: [
+      { name: 'AI Vision Camera Scanner', path: '/scanner' },
+      { name: 'Instant Automated Cart', path: '/checkout' },
+      { name: 'Live Driver Simulation', path: '/orders' },
+      { name: 'Store Analytics Dashboard', path: '/analytics' },
+    ],
+  },
+  {
+    title: 'Customer Service',
+    links: [
+      { name: 'My Profile & Address', path: '/profile' },
+      { name: 'Order History & Receipts', path: '/orders' },
+      { name: 'Instant Refunds & Help', path: '/profile' },
+      { name: 'Terms & Conditions', path: '/collections' },
+    ],
   },
 ]
 
@@ -17,74 +38,97 @@ export function Footer() {
   if (location.pathname.startsWith('/checkout')) return null
 
   return (
-    <footer className="border-t border-black/[0.06]">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
+    <footer className="border-t border-border bg-card/60">
+      {/* Service Highlights Bar */}
+      <div className="border-b border-border bg-muted/30 py-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <Clock className="h-5 w-5" />
+            </div>
+            <div>
+              <h5 className="text-xs font-bold text-foreground">10-Minute Delivery</h5>
+              <p className="text-[11px] text-muted-foreground">Express store fulfillment</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <div>
+              <h5 className="text-xs font-bold text-foreground">100% Fresh & Genuine</h5>
+              <p className="text-[11px] text-muted-foreground">Direct from trusted suppliers</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <Truck className="h-5 w-5" />
+            </div>
+            <div>
+              <h5 className="text-xs font-bold text-foreground">Free Delivery</h5>
+              <p className="text-[11px] text-muted-foreground">On orders over ₹299</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <RefreshCw className="h-5 w-5" />
+            </div>
+            <div>
+              <h5 className="text-xs font-bold text-foreground">Easy Returns</h5>
+              <p className="text-[11px] text-muted-foreground">Instant refund upon report</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Link to="/">
               <Logo />
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Building the future of frictionless commerce through advanced computer vision and
-              neural networks.
+            <p className="mt-4 max-w-xs text-xs leading-relaxed text-muted-foreground">
+              India's fastest AI-powered grocery shopping platform. Scan items directly with your camera or get instant 10-minute doorstep delivery.
             </p>
+            <div className="mt-4 flex items-center gap-2 text-[11px] text-muted-foreground font-semibold">
+              <span>Accepted Payments:</span>
+              <span className="px-2 py-0.5 bg-muted rounded border border-border">UPI</span>
+              <span className="px-2 py-0.5 bg-muted rounded border border-border">GPay</span>
+              <span className="px-2 py-0.5 bg-muted rounded border border-border">Cards</span>
+              <span className="px-2 py-0.5 bg-muted rounded border border-border">COD</span>
+            </div>
           </div>
 
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h4 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-foreground">
                 {col.title}
               </h4>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-4 space-y-2">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.name}>
                     <Link
-                      to="/collections"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      to={link.path}
+                      className="text-xs text-muted-foreground transition-colors hover:text-primary"
                     >
-                      {link}
+                      {link.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
-
-          <div>
-            <h4 className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
-              Stay Updated
-            </h4>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Subscribe to our newsletter for the latest AI retail insights.
-            </p>
-            <form
-              className="mt-4 flex gap-2"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                placeholder="you@example.com"
-                className="h-10 w-full min-w-0 flex-1 rounded-lg border border-input/80 bg-black/[0.03] px-3.5 text-sm placeholder:text-muted-foreground/60 focus:border-primary/70 focus:outline-none focus:ring-4 focus:ring-primary/15"
-              />
-              <button
-                type="submit"
-                className="h-10 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition hover:opacity-90"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-black/[0.06] pt-6 text-xs text-muted-foreground sm:flex-row">
-          <p>© 2026 SmartCart AI Inc. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link to="/collections" className="transition-colors hover:text-foreground">
-              Privacy Policy
-            </Link>
-            <Link to="/collections" className="transition-colors hover:text-foreground">
-              Terms of Service
-            </Link>
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row">
+          <p>© 2026 SmartCart AI. All rights reserved. Express Grocery & AI Vision Platform.</p>
+          <div className="flex gap-6 text-xs font-medium">
+            <Link to="/collections" className="hover:text-primary">Privacy Policy</Link>
+            <Link to="/collections" className="hover:text-primary">Terms of Service</Link>
+            <Link to="/analytics" className="hover:text-primary">Store Health</Link>
           </div>
         </div>
       </div>
