@@ -559,7 +559,7 @@ function ProductModal({ editing, categories, onClose, onDone }: {
       price: Number(form.price) || 0,
       stock: Number(form.stock) || 0,
       is_active: form.is_active,
-      image_url: form.image_url || null,
+      image_url: form.image_url ?? '',
     }
     try {
       if (editing) {
@@ -576,34 +576,72 @@ function ProductModal({ editing, categories, onClose, onDone }: {
   }
 
   return (
-    <ModalShell title={editing ? 'Edit Product' : 'Add Product'} onClose={onClose}>
+    <ModalShell title={editing ? 'Edit Product' : 'Add New Product'} onClose={onClose}>
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Product Name"><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Product name" /></Field>
-        <Field label="SKU"><Input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} placeholder="SC-ELC-001" /></Field>
-        <Field label="Brand"><Input value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} placeholder="Brand" /></Field>
-        <Field label="Barcode">
-          <div className="flex gap-2">
-            <Input value={form.barcode} onChange={(e) => setForm({ ...form, barcode: e.target.value })} placeholder="890123456789" />
-            <Button variant="outline" size="sm" onClick={onGenerateBarcode} disabled={genBc}>{genBc ? <Loader2 className="h-3 w-3 animate-spin" /> : <Barcode className="h-3 w-3" />}</Button>
-          </div>
+        <Field label="Product Name">
+          <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="bg-card border-black/10" placeholder="e.g. Organic Almond Milk 1L" />
         </Field>
-        <Field label="Price (INR)"><Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} /></Field>
-        <Field label="Stock"><Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} /></Field>
-        <Field label="Category" full>
-          <select value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })} className="w-full h-11 bg-card border border-black/10 rounded-xl px-3 outline-none text-sm">
-            <option value="">Select Category</option>
-            {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+        <Field label="Category">
+          <select
+            value={form.category_id}
+            onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+            className="w-full bg-card border border-black/10 rounded-xl px-3 py-2 text-sm text-foreground outline-none"
+          >
+            <option value="">Select category…</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
           </select>
         </Field>
-        <Field label="Image (upload)" full>
-          <div className="flex items-center gap-3">
-            <div className="w-16 h-16 rounded-xl border overflow-hidden bg-black/[0.03]">
+        <Field label="SKU">
+          <Input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} className="bg-card border-black/10 font-mono text-xs" placeholder="SKU-12345" />
+        </Field>
+        <Field label="Barcode">
+          <div className="flex gap-2">
+            <Input value={form.barcode} onChange={(e) => setForm({ ...form, barcode: e.target.value })} className="bg-card border-black/10 font-mono text-xs" placeholder="890123456789" />
+            <Button variant="outline" size="sm" type="button" onClick={onGenerateBarcode} disabled={genBc}>
+              {genBc ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Gen'}
+            </Button>
+          </div>
+        </Field>
+        <Field label="Price (₹)">
+          <Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="bg-card border-black/10" />
+        </Field>
+        <Field label="Stock Quantity">
+          <Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} className="bg-card border-black/10" />
+        </Field>
+        <Field label="Brand">
+          <Input value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} className="bg-card border-black/10" placeholder="e.g. Amul / Nestlé" />
+        </Field>
+        <Field label="Image URL">
+          <Input value={form.image_url} onChange={(e) => { setForm({ ...form, image_url: e.target.value }); setImgPreview(e.target.value) }} className="bg-card border-black/10 text-xs font-mono" placeholder="https://..." />
+        </Field>
+        <Field label="Image File / Preview" full>
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 rounded-xl border overflow-hidden bg-black/[0.03] shrink-0">
               {imgPreview ? <img src={imgPreview} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground"><ImageIcon className="h-5 w-5" /></div>}
             </div>
-            <div>
-              <input type="file" accept="image/*" onChange={onFile} className="block text-xs" />
-              {uploading && <p className="text-[11px] text-muted-foreground mt-1">Uploading…</p>}
-              <p className="text-[10px] text-muted-foreground mt-1">Uploads to CDN, replaces URL field.</p>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <input type="file" accept="image/*" onChange={onFile} className="block text-xs" />
+                {imgPreview && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="text-xs text-destructive hover:bg-destructive/10 h-7 px-2"
+                    onClick={() => {
+                      setForm((f) => ({ ...f, image_url: '' }))
+                      setImgPreview('')
+                      toast({ title: 'Image removed from form' })
+                    }}
+                  >
+                    Remove Image
+                  </Button>
+                )}
+              </div>
+              {uploading && <p className="text-[11px] text-muted-foreground">Uploading…</p>}
+              <p className="text-[10px] text-muted-foreground">Uploads to CDN or enter URL directly. Click Save to delete image from product.</p>
             </div>
           </div>
         </Field>

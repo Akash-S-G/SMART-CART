@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
@@ -15,13 +15,13 @@ import { useCart } from '@/hooks/use-cart'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  password: z.string().min(1, 'Password is required'),
 })
 
 const registerSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -33,6 +33,14 @@ export function AuthModal() {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [tab, setTab] = useState<'login' | 'register'>(modalTab)
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setTab(modalTab)
+      loginForm.reset()
+      registerForm.reset()
+    }
+  }, [isModalOpen, modalTab])
 
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

@@ -16,6 +16,10 @@ image = (
     .apt_install("libgl1-mesa-glx", "libglib2.0-0", "libgomp1")
     .pip_install(
         "fastapi[standard]",
+        "transformers",
+        "huggingface-hub",
+        "timm",
+        "supervision",
         "ultralytics",
         "easyocr",
         "torch",
@@ -29,7 +33,7 @@ image = (
 )
 
 app = modal.App("smartcart-ai-vision", image=image)
-web_app = FastAPI(title="SmartCart AI Vision Microservice")
+web_app = FastAPI(title="SmartCart AI Vision Grounding DINO + SAM2 Microservice")
 
 web_app.add_middleware(
     CORSMiddleware,
@@ -45,9 +49,23 @@ class ModelContainer:
         import torch
         from ultralytics import YOLO
         import easyocr
+        from transformers import AutoProcessor, AutoModelForZeroShotObjectDetection
+
+        print("[info] Modal container starting up. Loading Grounding DINO, YOLO & EasyOCR...")
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        # Load Grounding DINO
+        try:
+            dino_id = "IDEA-Research/grounding-dino-tiny"
+            self.dino_processor = AutoProcessor.from_pretrained(dino_id)
+            self.dino_model = AutoModelForZeroShotObjectDetection.from_pretrained(dino_id).to(self.device)
+            self.dino_model.eval()
+            print(f"[info] Grounding DINO ({dino_id}) loaded on {self.device}.")
+        except Exception as e:
+            print(f"[warn] Grounding DINO load failed: {e}")
+            self.dino_model = None
 
         model_path = "/root/best.pt" if os.path.exists("/root/best.pt") else "yolo11n.pt"
-        print(f"[info] Modal container starting up. Loading YOLO ({model_path}) & EasyOCR...")
         self.yolo = YOLO(model_path)
         self.ocr = easyocr.Reader(['en'], gpu=torch.cuda.is_available())
         print("[info] Models loaded successfully on Modal.")

@@ -230,13 +230,18 @@ class ProductService:
         # (via POST /products/upload-image), keeps the existing one, or sends "" to delete.
         if request.image_url is not None:
             from app.models.products.product_image import ProductImage
-            img_row = self.db.query(ProductImage).filter(
-                ProductImage.product_id == product.id
-            ).first()
             if not request.image_url.strip():
-                if img_row is not None:
-                    self.db.delete(img_row)
+                self.db.query(ProductImage).filter(
+                    ProductImage.product_id == product.id
+                ).delete()
+                if product.metadata_ and "images" in product.metadata_:
+                    meta = dict(product.metadata_)
+                    meta.pop("images", None)
+                    product.metadata_ = meta
             else:
+                img_row = self.db.query(ProductImage).filter(
+                    ProductImage.product_id == product.id
+                ).first()
                 if img_row is None:
                     img_row = ProductImage(product_id=product.id, image_url=request.image_url.strip())
                     self.db.add(img_row)
