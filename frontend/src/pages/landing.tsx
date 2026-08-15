@@ -185,7 +185,7 @@ export function LandingPage() {
                 {/* Bounding box mock label */}
                 <div className="absolute bottom-3 left-3 bg-zinc-900/90 text-white border border-emerald-500/40 text-[11px] font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1.5 backdrop-blur-xs">
                   <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span>Detected: Amul Taaza Milk 1L • 99.8%</span>
+                  <span>Detected: Fresh Farm Tomatoes & Capsicum • 99.4%</span>
                 </div>
               </div>
 
