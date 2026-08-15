@@ -54,8 +54,12 @@ export function AuthModal() {
 
   const onLogin = async (data: LoginFormValues) => {
     setLoading(true)
+    const payload = {
+      email: data.email.trim().toLowerCase(),
+      password: data.password,
+    }
     try {
-      const tokens = await loginApi(data)
+      const tokens = await loginApi(payload)
       saveSession(tokens, null)
       const profile = await getProfileApi()
       saveSession(tokens, profile)
@@ -79,8 +83,13 @@ export function AuthModal() {
 
   const onRegister = async (data: RegisterFormValues) => {
     setLoading(true)
+    const payload = {
+      username: data.username.trim(),
+      email: data.email.trim().toLowerCase(),
+      password: data.password,
+    }
     try {
-      const tokens = await registerApi(data)
+      const tokens = await registerApi(payload)
       saveSession(tokens, null)
       const profile = await getProfileApi()
       saveSession(tokens, profile)
@@ -94,12 +103,24 @@ export function AuthModal() {
     } catch (err: any) {
       toast({
         title: 'Registration Failed',
-        description: err.message || 'Account already exists.',
+        description: err.message || 'Account already exists or invalid details.',
         variant: 'destructive',
       })
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleFillDemoAdmin = () => {
+    loginForm.setValue('email', 'admin@smartcart.ai')
+    loginForm.setValue('password', 'SmartCart@123')
+    onLogin({ email: 'admin@smartcart.ai', password: 'SmartCart@123' })
+  }
+
+  const handleFillDemoCustomer = () => {
+    loginForm.setValue('email', 'customer@smartcart.ai')
+    loginForm.setValue('password', 'SmartCart@123')
+    onLogin({ email: 'customer@smartcart.ai', password: 'SmartCart@123' })
   }
 
   const handleGoogleSignIn = () => {
@@ -218,6 +239,24 @@ export function AuthModal() {
               <Button type="submit" variant="gradient" className="w-full mt-6 py-5 rounded-xl text-sm uppercase tracking-widest font-semibold" disabled={loading}>
                 {loading ? 'Signing In...' : 'Sign In'}
               </Button>
+
+              {/* Quick Demo Fill Buttons */}
+              <div className="pt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleFillDemoCustomer}
+                  className="flex-1 py-2 px-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-xl text-[11px] font-bold transition text-center cursor-pointer"
+                >
+                  ⚡ Fill Customer Demo
+                </button>
+                <button
+                  type="button"
+                  onClick={handleFillDemoAdmin}
+                  className="flex-1 py-2 px-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-xl text-[11px] font-bold transition text-center cursor-pointer"
+                >
+                  ⚡ Fill Admin Demo
+                </button>
+              </div>
             </form>
 
             <div className="relative flex py-4 items-center">
