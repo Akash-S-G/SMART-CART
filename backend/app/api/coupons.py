@@ -16,11 +16,13 @@ class CouponValidateResponse(BaseModel):
     discount_amount: float
     message: str
 
-# Pre-seeded default coupons
+# Pre-seeded default coupons — aligned with frontend chips
 DEFAULT_COUPONS = {
     "SMART10": {"discount_percentage": 10.0, "max_discount": 500.0, "min_order_amount": 200.0},
     "WELCOME20": {"discount_percentage": 20.0, "max_discount": 1000.0, "min_order_amount": 500.0},
-    "FREESHIP": {"discount_percentage": 100.0, "max_discount": 100.0, "min_order_amount": 0.0},
+    "WELCOME50": {"discount_percentage": 50.0, "max_discount": 500.0, "min_order_amount": 200.0},
+    "SMART100": {"discount_percentage": 0, "max_discount": 100.0, "min_order_amount": 200.0, "flat": 100.0},
+    "FREESHIP": {"discount_percentage": 0, "max_discount": 40.0, "min_order_amount": 0.0, "flat": 40.0},
 }
 
 @router.post("/validate", response_model=CouponValidateResponse)
@@ -56,8 +58,19 @@ def validate_coupon(
             detail=f"Order amount must be at least ₹{coupon.min_order_amount:.2f} for this coupon."
         )
 
-    raw_discount = (request.order_amount * coupon.discount_percentage) / 100.0
-    discount_amount = min(raw_discount, coupon.max_discount) if coupon.max_discount else raw_discount
+    # Support flat-amount coupons (SMART100, FREESHIP) — stored as flat key
+    flat = getattr(coupon, "flat_amount", None) if hasattr(coupon, "flat_amount") else None
+    # Fallback: check DEFAULT_COUPONS flat
+    if flat is None and request.code.strip().upper() in DEFAULT_COUPONS:
+        flat = DEFAULT_COUPONS[request.code.strip().upper()].get("flat")
+    if flat is not None:
+        discount_amount = float(flat)
+        # flat coupons also respect max_discount cap if present
+        if coupon.max_discount and discount_amount > coupon.max_discount:
+            discount_amount = coupon.max_discount
+    else:
+        raw_discount = (request.order_amount * coupon.discount_percentage) / 100.0
+        discount_amount = min(raw_discount, coupon.max_discount) if coupon.max_discount else raw_discount
 
     return CouponValidateResponse(
         code=coupon.code,

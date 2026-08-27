@@ -99,6 +99,50 @@ def list_orders(
 
 
 # =====================================================
+# Admin: all orders (for slip generation) — MUST be before /{order_id}
+# =====================================================
+
+@router.get(
+    "/admin",
+    response_model=OrderListResponse,
+)
+def list_all_orders_admin(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    current_user: User = Depends(get_current_admin),
+    db: Session = Depends(get_db),
+):
+    from app.models.order.order import Order
+    from app.schemas.order import OrderSummary
+
+    total = db.query(Order).count()
+    items = (
+        db.query(Order)
+        .order_by(Order.created_at.desc())
+        .offset((page - 1) * page_size)
+        .limit(page_size)
+        .all()
+    )
+    summaries = [
+        OrderSummary(
+            id=o.id,
+            order_number=o.order_number,
+            status=o.status,
+            total_amount=o.total_amount,
+            created_at=o.created_at,
+        )
+        for o in items
+    ]
+    return OrderListResponse(
+        items=summaries,
+        page=page,
+        page_size=page_size,
+        total_items=total,
+        total_pages=max(1, (total + page_size - 1) // page_size),
+    )
+
+
+# =====================================================
 # Get Order
 # =====================================================
 
@@ -176,94 +220,14 @@ class UpdateOrderStatusRequest(BaseModel):
 def update_order_status(
     order_id: str,
     request: UpdateOrderStatusRequest,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin),
-):
-    from app.models.order.order import Order
-    order = db.query(Order).filter(Order.id == order_id).first()
-    if not order:
-        raise HTTPException(status_code=404, detail="Order not found")
-
-    status_upper = request.status.upper()
-    order.status = status_upper
-    db.commit()
-    service = OrderService(db)
-    return service.get_order(user_id=str(current_user.id), order_id=order_id, is_admin=True)
-
-
-# =====================================================
-# Update Status (Admin)
-# =====================================================
-
-@router.patch(
-    "/{order_id}/status",
-    response_model=OrderResponse,
-)
-def update_status(
-    order_id: str,
-    request: UpdateOrderStatusRequest,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db),
 ):
     service = OrderService(db)
-
     try:
-
-        return service.update_status(
-            order_id=order_id,
-            status=request.status,
-        )
-
+        return service.update_status(order_id=order_id, status=request.status)
     except ValueError as exc:
-
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(exc),
-        )
-
-
-# =====================================================
-# Admin: all orders (for slip generation)
-# =====================================================
-
-@router.get(
-    "/admin",
-    response_model=OrderListResponse,
-)
-def list_all_orders_admin(
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
-    current_user: User = Depends(get_current_admin),
-    db: Session = Depends(get_db),
-):
-    from app.models.order.order import Order
-    from app.schemas.order import OrderSummary
-
-    total = db.query(Order).count()
-    items = (
-        db.query(Order)
-        .order_by(Order.created_at.desc())
-        .offset((page - 1) * page_size)
-        .limit(page_size)
-        .all()
-    )
-    summaries = [
-        OrderSummary(
-            id=o.id,
-            order_number=o.order_number,
-            status=o.status,
-            total_amount=o.total_amount,
-            created_at=o.created_at,
-        )
-        for o in items
-    ]
-    return OrderListResponse(
-        items=summaries,
-        page=page,
-        page_size=page_size,
-        total_items=total,
-        total_pages=max(1, (total + page_size - 1) // page_size),
-    )
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 
 
 # =====================================================
