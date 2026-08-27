@@ -188,7 +188,7 @@ export function AdminPage() {
         </div>
       </div>
 
-      <div className="mt-8 flex justify-between items-center flex-wrap gap-4 border-b border-black/[0.04] pb-4">
+      <div className="mt-8 flex justify-between items-center flex-wrap gap-4 border-b border-border pb-4">
         <div className="flex gap-3">
           <TabBtn active={activeTab === 'inventory'} onClick={() => setActiveTab('inventory')} icon={<Boxes className="h-4 w-4" />} label={`Inventory (${products.length})`} />
           <TabBtn active={activeTab === 'orders'} onClick={() => setActiveTab('orders')} icon={<ScrollText className="h-4 w-4" />} label="Orders & Slips" />
@@ -233,7 +233,7 @@ export function AdminPage() {
 
 function TabBtn({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
   return (
-    <button onClick={onClick} className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${active ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.03] hover:text-foreground'}`}>
+    <button onClick={onClick} className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-xl transition ${active ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-muted/40 hover:text-foreground'}`}>
       {icon} {label}
     </button>
   )
@@ -339,7 +339,7 @@ function InventoryDashboardView({
             <div className="border border-border rounded-2xl overflow-hidden bg-background">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
+                  <tr className="bg-muted/30 border-b text-muted-foreground font-bold">
                     <th className="p-3">Product Name</th>
                     <th className="p-3">SKU</th>
                     <th className="p-3">Barcode</th>
@@ -348,9 +348,9 @@ function InventoryDashboardView({
                     <th className="p-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-black/[0.04]">
+                <tbody className="divide-y divide-border">
                   {searchedProducts.map((p) => (
-                    <tr key={p.id} className="hover:bg-black/[0.01]">
+                    <tr key={p.id} className="hover:bg-muted/50">
                       <td className="p-3 font-bold text-foreground">{p.name}</td>
                       <td className="p-3 font-mono text-muted-foreground">{p.sku}</td>
                       <td className="p-3 font-mono text-muted-foreground">{p.barcode || '—'}</td>
@@ -396,7 +396,7 @@ function InventoryDashboardView({
           <div className="border border-border rounded-2xl overflow-hidden bg-background">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
+                <tr className="bg-muted/30 border-b text-muted-foreground font-bold">
                   <th className="p-3">Product Name</th>
                   <th className="p-3">SKU</th>
                   <th className="p-3">Current Stock</th>
@@ -405,11 +405,11 @@ function InventoryDashboardView({
                   <th className="p-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-black/[0.04]">
+              <tbody className="divide-y divide-border">
                 {[...outOfStockProducts, ...lowStockProducts].map((p) => {
                   const isZero = (p.stock ?? 0) === 0
                   return (
-                    <tr key={p.id} className="hover:bg-black/[0.01]">
+                    <tr key={p.id} className="hover:bg-muted/50">
                       <td className="p-3 font-bold text-foreground">{p.name}</td>
                       <td className="p-3 font-mono text-muted-foreground">{p.sku}</td>
                       <td className="p-3 font-bold text-foreground">{p.stock ?? 0}</td>
@@ -448,13 +448,13 @@ function CustomersTable({ rows }: { rows: any[] }) {
   return (
     <div className="overflow-x-auto w-full">
       <table className="w-full text-left text-xs border-collapse">
-        <thead><tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
+        <thead><tr className="bg-muted/30 border-b text-muted-foreground font-bold">
           <th className="p-4 uppercase tracking-wider">Name</th><th className="p-4 uppercase tracking-wider">Email</th>
           <th className="p-4 uppercase tracking-wider">Orders</th><th className="p-4 uppercase tracking-wider">Spent</th><th className="p-4 uppercase tracking-wider">Segment</th>
         </tr></thead>
-        <tbody className="divide-y divide-black/[0.04]">
+        <tbody className="divide-y divide-border">
           {rows.map((c) => (
-            <tr key={c.id} className="hover:bg-black/[0.01]">
+            <tr key={c.id} className="hover:bg-muted/50">
               <td className="p-4 font-bold text-foreground">{c.name}</td>
               <td className="p-4 text-muted-foreground">{c.email}</td>
               <td className="p-4 font-bold text-foreground">{c.orders}</td>
@@ -475,13 +475,13 @@ function LogsTable({ rows, onExport }: { rows: any[]; onExport: () => void }) {
         <Button variant="outline" size="sm" className="rounded-lg text-[11px]" onClick={onExport}><Download className="h-3 w-3 mr-1" /> Export</Button>
       </div>
       <table className="w-full text-left text-xs border-collapse">
-        <thead><tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
+        <thead><tr className="bg-muted/30 border-b text-muted-foreground font-bold">
           <th className="p-4 uppercase tracking-wider">Event</th><th className="p-4 uppercase tracking-wider">Action</th>
           <th className="p-4 uppercase tracking-wider">Detail</th><th className="p-4 uppercase tracking-wider">Actor</th><th className="p-4 uppercase tracking-wider">Time</th>
         </tr></thead>
-        <tbody className="divide-y divide-black/[0.04]">
+        <tbody className="divide-y divide-border">
           {rows.map((l) => (
-            <tr key={l.id} className="hover:bg-black/[0.01]">
+            <tr key={l.id} className="hover:bg-muted/50">
               <td className="p-4 font-mono font-semibold text-foreground">{l.id}</td>
               <td className="p-4 font-bold text-foreground">{l.action}</td>
               <td className="p-4 text-muted-foreground max-w-sm truncate">{l.detail}</td>
@@ -579,13 +579,13 @@ function ProductModal({ editing, categories, onClose, onDone }: {
     <ModalShell title={editing ? 'Edit Product' : 'Add New Product'} onClose={onClose}>
       <div className="grid grid-cols-2 gap-4">
         <Field label="Product Name">
-          <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="bg-card border-black/10" placeholder="e.g. Organic Almond Milk 1L" />
+          <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="bg-card border-border" placeholder="e.g. Organic Almond Milk 1L" />
         </Field>
         <Field label="Category">
           <select
             value={form.category_id}
             onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-            className="w-full bg-card border border-black/10 rounded-xl px-3 py-2 text-sm text-foreground outline-none"
+            className="w-full bg-card border border-border rounded-xl px-3 py-2 text-sm text-foreground outline-none"
           >
             <option value="">Select category…</option>
             {categories.map((c) => (
@@ -594,31 +594,31 @@ function ProductModal({ editing, categories, onClose, onDone }: {
           </select>
         </Field>
         <Field label="SKU">
-          <Input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} className="bg-card border-black/10 font-mono text-xs" placeholder="SKU-12345" />
+          <Input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} className="bg-card border-border font-mono text-xs" placeholder="SKU-12345" />
         </Field>
         <Field label="Barcode">
           <div className="flex gap-2">
-            <Input value={form.barcode} onChange={(e) => setForm({ ...form, barcode: e.target.value })} className="bg-card border-black/10 font-mono text-xs" placeholder="890123456789" />
+            <Input value={form.barcode} onChange={(e) => setForm({ ...form, barcode: e.target.value })} className="bg-card border-border font-mono text-xs" placeholder="890123456789" />
             <Button variant="outline" size="sm" type="button" onClick={onGenerateBarcode} disabled={genBc}>
               {genBc ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Gen'}
             </Button>
           </div>
         </Field>
         <Field label="Price (₹)">
-          <Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="bg-card border-black/10" />
+          <Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="bg-card border-border" />
         </Field>
         <Field label="Stock Quantity">
-          <Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} className="bg-card border-black/10" />
+          <Input type="number" value={form.stock} onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })} className="bg-card border-border" />
         </Field>
         <Field label="Brand">
-          <Input value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} className="bg-card border-black/10" placeholder="e.g. Amul / Nestlé" />
+          <Input value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} className="bg-card border-border" placeholder="e.g. Amul / Nestlé" />
         </Field>
         <Field label="Image URL">
-          <Input value={form.image_url} onChange={(e) => { setForm({ ...form, image_url: e.target.value }); setImgPreview(e.target.value) }} className="bg-card border-black/10 text-xs font-mono" placeholder="https://..." />
+          <Input value={form.image_url} onChange={(e) => { setForm({ ...form, image_url: e.target.value }); setImgPreview(e.target.value) }} className="bg-card border-border text-xs font-mono" placeholder="https://..." />
         </Field>
         <Field label="Image File / Preview" full>
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-xl border overflow-hidden bg-black/[0.03] shrink-0">
+            <div className="w-16 h-16 rounded-xl border overflow-hidden bg-muted/40 shrink-0">
               {imgPreview ? <img src={imgPreview} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground"><ImageIcon className="h-5 w-5" /></div>}
             </div>
             <div className="space-y-1">
@@ -646,7 +646,7 @@ function ProductModal({ editing, categories, onClose, onDone }: {
           </div>
         </Field>
         <Field label="Description" full>
-          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full bg-card border border-black/10 rounded-xl p-3 text-sm outline-none" />
+          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full bg-card border border-border rounded-xl p-3 text-sm outline-none" />
         </Field>
         <label className="col-span-2 flex items-center gap-2 text-xs">
           <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} /> Active (visible to customers)
@@ -710,7 +710,7 @@ function BulkModal({ onClose, onDone, onTemplate }: { onClose: () => void; onDon
         <Button variant="outline" size="sm" onClick={onTemplate}>Download Template</Button>
       </div>
       {result && (
-        <div className="mt-3 text-xs rounded-xl border border-black/10 p-3 bg-black/[0.02]">
+        <div className="mt-3 text-xs rounded-xl border border-border p-3 bg-muted/30">
           <p>Created: <b>{result.created}</b> · Failed: <b>{result.failed}</b></p>
           {result.errors.length > 0 && <ul className="mt-1 list-disc pl-4 text-destructive">{result.errors.slice(0, 5).map((e, i) => <li key={i}>{e}</li>)}</ul>}
         </div>
@@ -741,13 +741,13 @@ function OrdersSlipsTab() {
   return (
     <div className="overflow-x-auto w-full">
       <table className="w-full text-left text-xs border-collapse">
-        <thead><tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
+        <thead><tr className="bg-muted/30 border-b text-muted-foreground font-bold">
           <th className="p-4 uppercase tracking-wider">Order #</th><th className="p-4 uppercase tracking-wider">Status</th>
           <th className="p-4 uppercase tracking-wider">Total</th><th className="p-4 uppercase tracking-wider text-right">Slip</th>
         </tr></thead>
-        <tbody className="divide-y divide-black/[0.04]">
+        <tbody className="divide-y divide-border">
           {orders.map((o: any) => (
-            <tr key={o.id} className="hover:bg-black/[0.01]">
+            <tr key={o.id} className="hover:bg-muted/50">
               <td className="p-4 font-mono font-semibold text-foreground">{o.order_number}</td>
               <td className="p-4"><Badge success className="text-[10px] uppercase">{o.status}</Badge></td>
               <td className="p-4 font-bold text-foreground">₹{o.total_amount}</td>

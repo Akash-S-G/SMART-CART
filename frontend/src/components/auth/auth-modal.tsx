@@ -209,7 +209,7 @@ export function AuthModal() {
                 <Input
                   id="reg-name"
                   placeholder="alexmercer"
-                  className="mt-1.5 bg-card/50 border border-black/10 rounded-xl py-5"
+                  className="mt-1.5 bg-card/50 border border-border rounded-xl py-5"
                   {...registerForm.register('username')}
                 />
                 {registerForm.formState.errors.username && (
@@ -225,7 +225,7 @@ export function AuthModal() {
                   id="reg-email"
                   type="email"
                   placeholder="name@example.com"
-                  className="mt-1.5 bg-card/50 border border-black/10 rounded-xl py-5"
+                  className="mt-1.5 bg-card/50 border border-border rounded-xl py-5"
                   {...registerForm.register('email')}
                 />
                 {registerForm.formState.errors.email && (
@@ -241,7 +241,7 @@ export function AuthModal() {
                   id="reg-pass"
                   type="password"
                   placeholder="Min. 8 characters"
-                  className="mt-1.5 bg-card/50 border border-black/10 rounded-xl py-5"
+                  className="mt-1.5 bg-card/50 border border-border rounded-xl py-5"
                   {...registerForm.register('password')}
                 />
                 {registerForm.formState.errors.password && (
@@ -255,16 +255,16 @@ export function AuthModal() {
             </form>
 
             <div className="relative flex py-4 items-center">
-              <div className="flex-grow border-t border-black/[0.06]"></div>
+              <div className="flex-grow border-t border-border"></div>
               <span className="flex-shrink mx-4 text-muted-foreground text-[10px] uppercase font-bold tracking-wider">or continue with</span>
-              <div className="flex-grow border-t border-black/[0.06]"></div>
+              <div className="flex-grow border-t border-border"></div>
             </div>
 
             <Button
               type="button"
               variant="outline"
               onClick={handleGoogleSignIn}
-              className="w-full py-5 rounded-xl border border-black/10 hover:bg-black/[0.02] text-xs font-semibold gap-2"
+              className="w-full py-5 rounded-xl border border-border hover:bg-muted/30 text-xs font-semibold gap-2"
               disabled={loading}
             >
               <GoogleIcon className="h-4 w-4" />

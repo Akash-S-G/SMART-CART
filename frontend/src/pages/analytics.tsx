@@ -176,12 +176,12 @@ export function AnalyticsPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {/* Latency & Volume Chart */}
         <div className="lg:col-span-2 bg-card border border-border rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-          <div className="flex justify-between items-center flex-wrap gap-4 border-b border-black/[0.04] pb-4">
+          <div className="flex justify-between items-center flex-wrap gap-4 border-b border-border pb-4">
             <div>
               <h3 className="font-bold text-foreground text-base">Inference Speed & Scan Volume</h3>
               <p className="text-xs text-muted-foreground">Correlation between concurrent users and GPU latencies</p>
             </div>
-            <div className="flex gap-1.5 bg-black/[0.04] p-1 rounded-xl">
+            <div className="flex gap-1.5 bg-muted p-1 rounded-xl">
               {(['24h', '7d', '30d'] as const).map((r) => (
                 <button
                   key={r}
@@ -219,7 +219,7 @@ export function AnalyticsPage() {
 
         {/* Category Share Donut */}
         <div className="bg-card border border-border rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-          <div className="border-b border-black/[0.04] pb-4">
+          <div className="border-b border-border pb-4">
             <h3 className="font-bold text-foreground text-base">Catalog segment distribution</h3>
             <p className="text-xs text-muted-foreground">Percentage shares of registered supermarket categories</p>
           </div>
@@ -263,7 +263,7 @@ export function AnalyticsPage() {
 
       {/* Detection logs table */}
       <div className="mt-8 bg-card border border-border rounded-3xl shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-black/[0.04]">
+        <div className="p-6 border-b border-border">
           <h3 className="font-bold text-foreground text-base">Real-time Vision Detection Logs</h3>
           <p className="text-xs text-muted-foreground">Live inferencing requests logs mapped by computer vision nodes</p>
         </div>
@@ -271,7 +271,7 @@ export function AnalyticsPage() {
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-black/[0.02] border-b text-muted-foreground font-bold">
+              <tr className="bg-muted/30 border-b text-muted-foreground font-bold">
                 <th className="p-4 uppercase tracking-wider">Log ID</th>
                 <th className="p-4 uppercase tracking-wider">Timestamp</th>
                 <th className="p-4 uppercase tracking-wider">Detected Product</th>
@@ -280,9 +280,9 @@ export function AnalyticsPage() {
                 <th className="p-4 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/[0.04]">
+            <tbody className="divide-y divide-border">
               {liveLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-black/[0.01]">
+                <tr key={log.id} className="hover:bg-muted/50">
                   <td className="p-4 font-mono font-semibold text-foreground">{log.id}</td>
                   <td className="p-4 text-muted-foreground">{log.timestamp}</td>
                   <td className="p-4 font-bold text-foreground">{log.item}</td>

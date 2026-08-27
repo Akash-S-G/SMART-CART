@@ -117,7 +117,7 @@ export function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-md px-6 py-24 text-center flex flex-col items-center justify-center gap-6">
-        <div className="w-16 h-16 bg-black/[0.04] text-muted-foreground rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 bg-muted text-muted-foreground rounded-full flex items-center justify-center">
           <ShoppingBag className="h-6 w-6" />
         </div>
         <h2 className="text-2xl font-bold text-foreground">Your Cart is Empty</h2>
@@ -187,7 +187,7 @@ export function CheckoutPage() {
                   ? 'border-primary bg-primary text-primary-foreground'
                   : i === step
                     ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-black/10 text-muted-foreground',
+                    : 'border-border text-muted-foreground',
               )}
             >
               {i < step ? <Check className="h-4 w-4" /> : i + 1}
@@ -299,7 +299,7 @@ function StepShipping({
         </div>
       </section>
 
-      <section className="border-t border-black/[0.06] pt-6">
+      <section className="border-t border-border pt-6">
         <h2 className="flex items-center gap-2 text-xl font-bold text-foreground">
           <Mail className="h-5 w-5 text-primary" /> Contact details
         </h2>
@@ -364,7 +364,7 @@ function StepPayment({
       </div>
 
       {selectedMethod === 'card' && (
-        <div className="rounded-3xl border border-black/[0.08] bg-card p-6 gap-4 flex flex-col shadow-sm">
+        <div className="rounded-3xl border border-border bg-card p-6 gap-4 flex flex-col shadow-sm">
           <div>
             <Label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">Card Number</Label>
             <Input
@@ -457,7 +457,7 @@ function StepReview({
         />
       </div>
 
-      <div className="border-t border-black/[0.06] pt-6 mt-6">
+      <div className="border-t border-border pt-6 mt-6">
         <h3 className="font-bold text-sm text-foreground uppercase tracking-wider mb-4">Cart List Summary</h3>
         <div className="space-y-3">
           {items.map((i: any) => (
@@ -473,7 +473,7 @@ function StepReview({
         </div>
       </div>
 
-      <div className="flex gap-4 pt-4 border-t border-black/[0.06]">
+      <div className="flex gap-4 pt-4 border-t border-border">
         <Button variant="secondary" size="lg" className="rounded-xl font-semibold uppercase text-xs tracking-widest gap-1.5 px-6" onClick={onBack} disabled={loading}>
           <ArrowLeft className="h-4 w-4" /> Back
         </Button>
@@ -533,7 +533,7 @@ function OrderSummary({
 
   return (
     <aside className="glass border border-white/5 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-      <h3 className="font-bold text-foreground text-sm uppercase tracking-wider border-b border-black/[0.06] pb-3">Order Summary</h3>
+      <h3 className="font-bold text-foreground text-sm uppercase tracking-wider border-b border-border pb-3">Order Summary</h3>
 
       <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1">
         {items.map((i: any) => (
@@ -544,7 +544,7 @@ function OrderSummary({
               <p className="text-[10px] text-muted-foreground">₹{i.unit_price} each</p>
             </div>
             {step === 0 && (
-              <div className="flex items-center bg-black/[0.03] p-0.5 rounded-lg border">
+              <div className="flex items-center bg-muted/40 p-0.5 rounded-lg border">
                 <Button variant="ghost" size="icon-sm" className="h-6 w-6" onClick={() => handleQtyChange(i.product_id, i.quantity, -1)}>
                   <Minus className="h-3 w-3" />
                 </Button>
@@ -561,7 +561,7 @@ function OrderSummary({
       </div>
 
       {/* Promo Code Box */}
-      <div className="border-t border-black/[0.06] pt-4">
+      <div className="border-t border-border pt-4">
         <label className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 block">Promo Code</label>
         <div className="flex gap-2">
           <Input
@@ -584,12 +584,22 @@ function OrderSummary({
           ].map(c => (
             <button
               key={c.code}
-              onClick={() => {
+              onClick={async () => {
                 setPromoCode(c.code)
-                setDiscountAmount(c.code === 'WELCOME50' ? Math.round((summary?.subtotal || 0) * 0.5) : 100)
-                setAppliedCode(c.code)
+                setPromoLoading(true)
+                try {
+                  const { validateCouponApi } = await import('@/lib/api')
+                  const res = await validateCouponApi(c.code, summary?.subtotal || 0)
+                  setDiscountAmount(res.discount_amount)
+                  setAppliedCode(res.code)
+                } catch {
+                  // fallback to optimistic
+                  setDiscountAmount(c.code === 'WELCOME50' ? Math.round((summary?.subtotal || 0) * 0.5) : c.code === 'FREESHIP' ? 40 : 100)
+                  setAppliedCode(c.code)
+                } finally { setPromoLoading(false) }
               }}
-              className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 transition"
+              className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg border border-primary/20 bg-primary/5 text-primary hover:bg-primary/10 transition disabled:opacity-50"
+              disabled={promoLoading}
             >
               {c.code} ({c.label})
             </button>
@@ -604,7 +614,7 @@ function OrderSummary({
         )}
       </div>
 
-      <div className="border-t border-black/[0.06] pt-4 flex flex-col gap-2.5 text-xs">
+      <div className="border-t border-border pt-4 flex flex-col gap-2.5 text-xs">
         <SummaryRow label="Subtotal" value={`₹${summary?.subtotal || 0}`} />
         <SummaryRow label="Shipping" value="Free Delivery" />
         <SummaryRow label="Estimated Tax (18% GST)" value={`₹${summary?.tax || 0}`} />
@@ -614,7 +624,7 @@ function OrderSummary({
             <span>-₹{discountAmount}</span>
           </div>
         )}
-        <div className="flex justify-between border-t border-black/[0.06] pt-3 text-sm font-black text-foreground">
+        <div className="flex justify-between border-t border-border pt-3 text-sm font-black text-foreground">
           <span>Total</span>
           <span>₹{finalTotal.toFixed(2)}</span>
         </div>
@@ -632,7 +642,7 @@ function Field({ label, className, ...props }: ComponentProps<typeof Input> & { 
   return (
     <div className={className}>
       <Label className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</Label>
-      <Input {...props} className="mt-1.5 bg-card/50 border border-black/10 rounded-xl py-5 text-sm" />
+      <Input {...props} className="mt-1.5 bg-card/50 border border-border rounded-xl py-5 text-sm" />
     </div>
   )
 }
@@ -643,7 +653,7 @@ function PaymentOption({ icon, label, active, onClick }: { icon: any; label: str
       onClick={onClick}
       className={cn(
         'flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-xs font-semibold transition uppercase tracking-wider',
-        active ? 'border-primary bg-primary/5 text-primary' : 'border-black/10 bg-card hover:bg-black/[0.02] text-muted-foreground',
+        active ? 'border-primary bg-primary/5 text-primary' : 'border-border bg-card hover:bg-muted/30 text-muted-foreground',
       )}
     >
       {icon} {label}

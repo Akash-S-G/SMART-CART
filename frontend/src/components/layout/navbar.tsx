@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { ShoppingCart, User, LogOut, LayoutDashboard, Sun, Moon, Package, Camera, MapPin, Search, Navigation, Check, X, Loader2 } from 'lucide-react'
+import { ShoppingCart, User, LogOut, LayoutDashboard, Sun, Moon, Package, Camera, MapPin, Search, Navigation, Check, X, Loader2, Menu } from 'lucide-react'
 import { Logo } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/cn'
@@ -46,6 +46,7 @@ export function Navbar() {
   const [showLocationModal, setShowLocationModal] = useState(false)
   const [locSearch, setLocSearch] = useState('')
   const [detectingGps, setDetectingGps] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   // Location state with localStorage persistence
   const [currentLoc, setCurrentLoc] = useState(() => {
@@ -144,18 +145,31 @@ export function Navbar() {
     l.pincode.includes(locSearch)
   )
 
+  // body scroll lock + Esc for modal
+  useEffect(() => {
+    if (!showLocationModal) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowLocationModal(false) }
+    window.addEventListener('keydown', onEsc)
+    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onEsc) }
+  }, [showLocationModal])
+
+  // close mobile drawer on route change
+  useEffect(() => { setMobileOpen(false) }, [location.pathname])
+
   return (
-    <div className="sticky top-0 z-40 w-full shadow-xs">
+    <div className="sticky top-0 z-40 w-full">
       {/* Top Banner */}
       <div className="bg-primary text-primary-foreground text-xs font-semibold py-1.5 px-4 text-center flex items-center justify-center gap-2">
-        <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full text-[11px] font-bold">
+        <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full text-[11px] font-bold ring-1 ring-white/20">
           ⚡ 10 MINS
         </span>
         <span>Express Delivery in {currentLoc.city} • Free Shipping over ₹299!</span>
       </div>
 
-      <header className="border-b border-border bg-background/95 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <header className="border-b border-border bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70 shadow-sm">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 lg:px-8">
           {/* Logo & Interactive Location */}
           <div className="flex items-center gap-4 shrink-0">
             <Link to="/" aria-label="SmartCart home">
@@ -224,8 +238,17 @@ export function Navbar() {
             )}
           </nav>
 
+          {/* Mobile hamburger */}
+          <button
+            aria-label="Open menu"
+            className="xl:hidden h-9 w-9 inline-flex items-center justify-center rounded-xl border border-border hover:bg-muted text-muted-foreground"
+            onClick={() => setMobileOpen(v => !v)}
+          >
+            <Menu className="h-4 w-4" />
+          </button>
+
           {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             {/* Language toggle */}
             <Button
               variant="ghost"
@@ -321,10 +344,41 @@ export function Navbar() {
         </div>
       </header>
 
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="xl:hidden border-b border-border bg-card">
+          <div className="mx-auto max-w-7xl px-4 py-3 flex flex-col gap-2">
+            <form onSubmit={handleNavSearch} className="relative">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                value={navSearch} onChange={e => setNavSearch(e.target.value)}
+                placeholder="Search groceries…"
+                className="w-full h-10 pl-9 pr-4 text-sm bg-muted/50 border border-border rounded-xl text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary"
+              />
+            </form>
+            <nav className="flex flex-wrap gap-1.5 pt-1">
+              {NAV_LINKS.map(link => (
+                <NavLink key={link.to} to={link.to} className={({isActive})=> cn('rounded-full px-3 py-1.5 text-xs font-bold border', isActive ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted text-foreground border-border') }>
+                  {link.label}
+                </NavLink>
+              ))}
+              {user?.role==='admin' && (<NavLink to="/admin" className={({isActive})=> cn('rounded-full px-3 py-1.5 text-xs font-bold border', isActive ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted text-foreground border-border')}>Admin</NavLink>)}
+            </nav>
+          </div>
+        </div>
+      )}
+
       {/* Interactive Location Selection Modal */}
       {showLocationModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-card border border-border max-w-md w-full rounded-3xl p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
+        <div
+          role="dialog" aria-modal="true" aria-label="Select delivery location"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowLocationModal(false)}
+        >
+          <div
+            className="bg-card border border-border max-w-md w-full rounded-3xl p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200"
+            onClick={e => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-base font-extrabold text-foreground flex items-center gap-2">

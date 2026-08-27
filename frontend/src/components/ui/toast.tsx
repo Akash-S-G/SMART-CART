@@ -11,7 +11,7 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-black/10 bg-popover/95 text-popover-foreground backdrop-blur-xl',
+        default: 'border-border bg-popover/95 text-popover-foreground backdrop-blur-xl',
         success: 'border-success/30 bg-popover/95 text-popover-foreground backdrop-blur-xl',
         destructive: 'border-destructive/40 bg-popover/95 text-popover-foreground backdrop-blur-xl',
         ai: 'border-secondary/40 bg-popover/95 text-popover-foreground backdrop-blur-xl',
@@ -37,7 +37,7 @@ function Toast({
 function ToastAction({ className, ...props }: React.ComponentProps<typeof ToastPrimitive.Action>) {
   return (
     <ToastPrimitive.Action
-      className={cn('inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-black/10 bg-black/5 px-3 text-sm font-medium transition-colors hover:bg-black/10', className)}
+      className={cn('inline-flex h-8 shrink-0 items-center justify-center rounded-md border border-border bg-muted px-3 text-sm font-medium transition-colors hover:bg-muted', className)}
       {...props}
     />
   )

@@ -83,9 +83,13 @@ export function AppShell() {
   }
 
   return (
-    <div className="noise relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-background">
+      {/* Skip link for a11y */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground focus:text-sm">
+        Skip to content
+      </a>
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <Outlet />
       </main>
       <Footer />

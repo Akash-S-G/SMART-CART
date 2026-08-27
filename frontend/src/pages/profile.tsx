@@ -159,13 +159,13 @@ export function ProfilePage() {
 
         {/* Loyalty Quick Stats */}
         <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
-          <div className="bg-black/[0.02] border border-black/[0.04] p-4 rounded-2xl flex flex-col justify-center min-w-[120px]">
+          <div className="bg-muted/30 border border-border p-4 rounded-2xl flex flex-col justify-center min-w-[120px]">
             <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider flex items-center gap-1">
               <Award className="h-3.5 w-3.5 text-secondary" /> Loyalty Points
             </span>
             <span className="text-xl font-black text-foreground mt-1">{loyaltyPoints}</span>
           </div>
-          <div className="bg-black/[0.02] border border-black/[0.04] p-4 rounded-2xl flex flex-col justify-center min-w-[120px]">
+          <div className="bg-muted/30 border border-border p-4 rounded-2xl flex flex-col justify-center min-w-[120px]">
             <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider flex items-center gap-1">
               <ShoppingBag className="h-3.5 w-3.5 text-primary" /> Total Spent
             </span>
@@ -193,7 +193,7 @@ export function ProfilePage() {
           <div className="grid gap-6 md:grid-cols-3">
             {/* Info details */}
             <div className="md:col-span-2 bg-card border border-border p-6 rounded-2xl shadow-sm flex flex-col gap-6">
-              <h3 className="font-bold text-foreground text-base border-b border-black/[0.04] pb-3">Contact Profile Info</h3>
+              <h3 className="font-bold text-foreground text-base border-b border-border pb-3">Contact Profile Info</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Username</label>
@@ -225,7 +225,7 @@ export function ProfilePage() {
                   Earn points on every checkout scan! You are currently saving 5% extra on delivery fees.
                 </p>
               </div>
-              <div className="border-t border-black/[0.04] pt-4 flex justify-between items-center text-xs">
+              <div className="border-t border-border pt-4 flex justify-between items-center text-xs">
                 <span className="text-muted-foreground">Next Tier: Platinum</span>
                 <span className="font-bold text-foreground">350 pts needed</span>
               </div>
@@ -252,7 +252,7 @@ export function ProfilePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-black/[0.02] border-b border-border text-xs uppercase tracking-wider text-muted-foreground font-bold">
+                    <tr className="bg-muted/30 border-b border-border text-xs uppercase tracking-wider text-muted-foreground font-bold">
                       <th className="px-6 py-4">Order Code</th>
                       <th className="px-6 py-4">Date</th>
                       <th className="px-6 py-4">Amount</th>
@@ -262,7 +262,7 @@ export function ProfilePage() {
                   </thead>
                   <tbody className="divide-y divide-border text-sm">
                     {orders.map((o) => (
-                      <tr key={o.id} className="hover:bg-black/[0.01] transition-colors">
+                      <tr key={o.id} className="hover:bg-muted/50 transition-colors">
                         <td className="px-6 py-4 font-mono font-bold text-primary">{o.order_number}</td>
                         <td className="px-6 py-4 text-muted-foreground">
                           {o.created_at ? new Date(o.created_at).toLocaleDateString() : 'Recently'}

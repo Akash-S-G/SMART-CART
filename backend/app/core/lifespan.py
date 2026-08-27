@@ -23,8 +23,11 @@ async def lifespan(app: FastAPI):
 
 
     logger.info("Loading YOLO model...")
-    model_loader.load()
-    logger.info("YOLO loaded successfully.")
+    try:
+        model_loader.load()
+        logger.info("YOLO loaded successfully.")
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("YOLO load skipped: %s", exc)
 
     # Seed a default admin account so the Admin Console is reachable out-of-the-box.
     try:

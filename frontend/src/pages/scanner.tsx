@@ -264,7 +264,7 @@ export function ScannerPage() {
           Computer Vision Checkout
         </h1>
         <div className="flex justify-between items-end flex-wrap gap-4 mt-6">
-          <div className="flex gap-2 bg-black/[0.04] p-1.5 rounded-2xl border border-border">
+          <div className="flex gap-2 bg-muted p-1.5 rounded-2xl border border-border">
             <button
               onClick={() => {
                 setScanMode('upload')
@@ -296,7 +296,7 @@ export function ScannerPage() {
         <div className="flex flex-col gap-6">
           <div className="relative rounded-3xl border border-border bg-card/40 p-4 shadow-sm flex items-center justify-center min-h-[380px] overflow-hidden group">
             {scanMode === 'camera' ? (
-              <div className="relative w-full max-w-full overflow-hidden rounded-2xl border border-black/10 flex flex-col items-center">
+              <div className="relative w-full max-w-full overflow-hidden rounded-2xl border border-border flex flex-col items-center">
                 <video ref={videoRef} autoPlay playsInline muted className="w-full max-h-[480px] object-cover rounded-2xl" />
                 <div className="absolute top-4 left-4 z-10">
                   <Badge variant="ai" className="gap-1.5 px-3 py-1 bg-red-600/90 text-white border-none animate-pulse">
@@ -313,7 +313,7 @@ export function ScannerPage() {
                 </div>
               </div>
             ) : imagePreview ? (
-              <div className="relative max-w-full max-h-[500px] overflow-hidden rounded-2xl border border-black/10">
+              <div className="relative max-w-full max-h-[500px] overflow-hidden rounded-2xl border border-border">
                 <img src={imagePreview} alt="Basket Snapshot" className="max-w-full max-h-[500px] object-contain" />
 
                 {scanning && (
@@ -375,7 +375,7 @@ export function ScannerPage() {
                 onClick={() => fileInputRef.current?.click()}
                 className="flex flex-col items-center justify-center py-20 text-center cursor-pointer w-full"
               >
-                <div className="w-16 h-16 bg-black/[0.03] text-muted-foreground flex items-center justify-center rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-300">
+                <div className="w-16 h-16 bg-muted/40 text-muted-foreground flex items-center justify-center rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-300">
                   <Upload className="h-6 w-6" />
                 </div>
                 <h3 className="font-bold text-foreground text-base">Select image files to analyze</h3>
@@ -425,7 +425,7 @@ export function ScannerPage() {
         {/* Right: Detected Products Summary */}
         <div className="flex flex-col gap-6">
           <div className="glass border border-white/5 rounded-3xl p-6 shadow-sm">
-            <div className="flex justify-between items-center mb-6 border-b border-black/[0.06] pb-4">
+            <div className="flex justify-between items-center mb-6 border-b border-border pb-4">
               <div className="flex items-center gap-2">
                 <Badge success className="px-2.5 py-0.5">
                   <Verified className="h-3 w-3" /> Identified
@@ -445,17 +445,17 @@ export function ScannerPage() {
                 <span>Upload an image to display neural prediction matches.</span>
               </div>
             ) : (
-              <ul className="divide-y divide-black/[0.04] max-h-[350px] overflow-y-auto pr-2">
+              <ul className="divide-y divide-border max-h-[350px] overflow-y-auto pr-2">
                 {detectedItems.map((item) => (
                   <li
                     key={item.index}
                     onMouseEnter={() => setHoveredBoxIdx(item.index)}
                     onMouseLeave={() => setHoveredBoxIdx(null)}
                     className={`flex items-center gap-4 py-3.5 transition-colors rounded-xl px-2 ${
-                      hoveredBoxIdx === item.index ? 'bg-black/[0.03]' : ''
+                      hoveredBoxIdx === item.index ? 'bg-muted/40' : ''
                     }`}
                   >
-                    <img src={item.thumbnail} alt={item.name} className="w-12 h-12 rounded-xl object-cover border border-black/5" />
+                    <img src={item.thumbnail} alt={item.name} className="w-12 h-12 rounded-xl object-cover border border-border/50" />
                     <div className="min-w-0 flex-1">
                       <p className="font-bold text-sm text-foreground truncate">{item.name}</p>
                       <div className="flex items-center gap-2 mt-1">
@@ -466,7 +466,7 @@ export function ScannerPage() {
                         <span className="text-muted-foreground/30">·</span>
                         
                         {/* Interactive Quantity Adjuster */}
-                        <div className="flex items-center bg-black/[0.03] p-0.5 rounded-lg border">
+                        <div className="flex items-center bg-muted/40 p-0.5 rounded-lg border">
                           <button
                             type="button"
                             onClick={() => handleQtyChange(item.index, -1)}
@@ -498,7 +498,7 @@ export function ScannerPage() {
               </ul>
             )}
 
-            <div className="border-t border-black/[0.06] pt-4 mt-6 flex justify-between items-center text-sm">
+            <div className="border-t border-border pt-4 mt-6 flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Subtotal Estimate</span>
               <span className="font-black text-lg text-foreground">₹{totalAmount.toFixed(2)}</span>
             </div>
@@ -514,7 +514,7 @@ export function ScannerPage() {
             <ShoppingCart className="h-4 w-4" /> Add All to Cart <ArrowRight className="h-4 w-4" />
           </Button>
 
-          <div className="rounded-2xl border border-black/[0.08] bg-card/50 p-5 flex gap-3.5 items-start">
+          <div className="rounded-2xl border border-border bg-card/50 p-5 flex gap-3.5 items-start">
             <Info className="h-5 w-5 text-warning shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h5 className="font-bold text-foreground text-xs uppercase tracking-wider">Analysis notes</h5>

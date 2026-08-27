@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
 
     # Auto-create DB schema in app startup (disabled in production)
-    DB_AUTO_CREATE: bool = False
+    DB_AUTO_CREATE: bool = True
 
     # =====================
     # JWT

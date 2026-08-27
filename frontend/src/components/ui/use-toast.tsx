@@ -125,7 +125,7 @@ const ToastPrimitiveClose = ToastPrimitive.Close
 const ToastPrimitiveRoot = ToastPrimitive.Root
 
 export function ToastAction({ className, ...props }: React.ComponentProps<typeof ToastPrimitiveAction>) {
-  return <ToastPrimitiveAction className={cn('inline-flex h-8 items-center justify-center rounded-md border border-black/10 bg-black/5 px-3 text-sm font-medium transition-colors hover:bg-black/10', className)} {...props} />
+  return <ToastPrimitiveAction className={cn('inline-flex h-8 items-center justify-center rounded-md border border-border bg-muted px-3 text-sm font-medium transition-colors hover:bg-muted', className)} {...props} />
 }
 
 export function ToastClose({ className, ...props }: React.ComponentProps<typeof ToastPrimitiveClose>) {

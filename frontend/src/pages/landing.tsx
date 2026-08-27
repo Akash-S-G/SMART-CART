@@ -117,7 +117,7 @@ export function LandingPage() {
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
                 placeholder="Search products, brands, or categories (e.g., Amul, Atta, Milk)..."
-                className="w-full h-13 pl-12 pr-28 text-sm bg-card border border-border rounded-2xl shadow-xs text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                className="w-full h-[52px] pl-12 pr-28 text-sm bg-card border border-border rounded-2xl shadow-xs text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
               />
               <Button
                 type="submit"
@@ -274,7 +274,7 @@ export function LandingPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {isLoading
               ? Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="h-72 rounded-2xl bg-card border border-border animate-pulse"></div>
+                  <div key={i} className="h-72 rounded-2xl border border-border shimmer"></div>
                 ))
               : featuredProducts?.map((p) => {
                   const qty = getItemQuantity(p.id)

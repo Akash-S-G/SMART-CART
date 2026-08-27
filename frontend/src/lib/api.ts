@@ -1,4 +1,4 @@
-import { getJson, postJson, patchJson, deleteJson, http } from '@/lib/http'
+import { getJson, postJson, putJson, patchJson, deleteJson, http } from '@/lib/http'
 import type {
   LoginRequest,
   RegisterRequest,

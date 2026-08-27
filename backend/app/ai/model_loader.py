@@ -3,9 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 from threading import Lock
 
-from ultralytics import YOLO
-
 from app.ai.config import MODEL_PATH
+
+try:
+    from ultralytics import YOLO  # type: ignore
+except ImportError:
+    YOLO = None  # lazy / optional for dev without torch
 
 
 class ModelLoader:
@@ -53,11 +56,21 @@ class ModelLoader:
         else:
             target_path = "yolo11n.pt"
 
+        if YOLO is None:
+            print("[warn] ultralytics not installed — YOLO disabled (dev fallback)")
+            self._model = None
+            self._loaded = True
+            return
         try:
             self._model = YOLO(target_path)
         except Exception as e:
             print(f"[warn] Failed to load YOLO from {target_path}: {e}")
-            self._model = YOLO("yolo11n.pt")
+            if YOLO is not None:
+                try:
+                    self._model = YOLO("yolo11n.pt")
+                except Exception as e2:
+                    print(f"[warn] YOLO fallback failed: {e2}")
+                    self._model = None
 
         self._loaded = True
 

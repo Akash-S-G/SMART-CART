@@ -183,10 +183,18 @@ export function AICopilot() {
 
       {/* Slide-over Drawer Backdrop */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="relative w-full max-w-md bg-card border-l border-border h-full flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-right duration-300">
+        <div
+          role="dialog" aria-modal="true" aria-label="AI Recipe Copilot"
+          className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+          onClick={() => setIsOpen(false)}
+          onKeyDown={e => { if (e.key === 'Escape') setIsOpen(false) }}
+        >
+          <div
+            className="relative w-full max-w-md bg-card border-l border-border h-full flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-right duration-300"
+            onClick={e => e.stopPropagation()}
+          >
             {/* Header */}
-            <div className="p-6 border-b border-border bg-black/[0.02] flex justify-between items-center">
+            <div className="p-6 border-b border-border bg-muted/30 flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <div className="p-2.5 bg-primary/10 text-primary rounded-2xl">
                   <ChefHat className="h-6 w-6" />
@@ -237,7 +245,7 @@ export function AICopilot() {
                       className={`p-3.5 rounded-2xl border text-left transition-all ${
                         activeRecipe?.id === r.id
                           ? 'border-primary bg-primary/5 shadow-sm'
-                          : 'border-border bg-background hover:border-black/20'
+                          : 'border-border bg-background hover:border-border'
                       }`}
                     >
                       <div className="text-xl mb-1">{r.emoji}</div>
@@ -283,7 +291,7 @@ export function AICopilot() {
             </div>
 
             {/* Footer Action Bar */}
-            <div className="p-6 border-t border-border bg-black/[0.02] space-y-3">
+            <div className="p-6 border-t border-border bg-muted/30 space-y-3">
               <div className="flex justify-between items-center text-xs font-bold text-foreground">
                 <span>Ingredient Subtotal:</span>
                 <span className="text-base text-primary font-black">₹{recipeTotal.toLocaleString()}</span>

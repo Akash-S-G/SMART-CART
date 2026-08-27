@@ -165,7 +165,7 @@ export function CollectionsPage() {
             </div>
 
             {/* Price Filter */}
-            <div className="border-t border-black/[0.04] pt-6">
+            <div className="border-t border-border pt-6">
               <h3 className="font-bold text-foreground text-sm mb-3">Price Range</h3>
               <div className="space-y-2">
                 {PRICE_FILTERS.map((f) => (
@@ -184,19 +184,20 @@ export function CollectionsPage() {
         {/* Product Grid & Sorting */}
         <div className="lg:col-span-3 space-y-6">
           {/* Controls Bar */}
-          <div className="flex justify-between items-center bg-card border border-border rounded-2xl px-5 py-3 shadow-sm">
-            <span className="text-xs font-semibold text-muted-foreground">
+          <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center bg-card border border-border rounded-2xl px-5 py-3 shadow-sm">
+            <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap">
               {loadedCount} {loadedCount === 1 ? 'item' : 'items'} loaded
             </span>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-foreground">Sort By:</span>
-              <div className="flex gap-1">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+              <span className="text-xs font-bold text-foreground whitespace-nowrap">Sort By:</span>
+              <div className="flex gap-1 shrink-0">
                 {SORTS.map((s) => (
                   <button
                     key={s.value}
                     onClick={() => setSort(s.value)}
-                    className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition ${
-                      sort === s.value ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-black/[0.04]'
+                    aria-pressed={sort === s.value}
+                    className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition whitespace-nowrap ${
+                      sort === s.value ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-muted border border-transparent hover:border-border'
                     }`}
                   >
                     {s.label}
@@ -209,7 +210,7 @@ export function CollectionsPage() {
           {isLoading ? (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="animate-pulse bg-card rounded-3xl p-4 border border-border h-96"></div>
+                <div key={i} className="shimmer rounded-3xl p-4 border border-border h-96"></div>
               ))}
             </div>
           ) : isError ? (
@@ -284,7 +285,7 @@ function FilterRow({
     >
       <span
         className={`grid h-5 w-5 place-items-center rounded-[5px] border transition ${
-          checked ? 'border-primary bg-primary text-primary-foreground' : 'border-black/20 text-transparent'
+          checked ? 'border-primary bg-primary text-primary-foreground' : 'border-border text-transparent'
         }`}
       >
         <Check className="h-3.5 w-3.5" />
@@ -313,7 +314,7 @@ function ProductCard({
       className="group flex flex-col justify-between bg-card p-4 border border-border rounded-3xl hover:border-primary/40 hover:shadow-xl transition-all duration-300 cursor-pointer"
     >
       {/* 1. Clean Product Image Container */}
-      <div className="relative w-full aspect-[4/5] bg-surface-container-low overflow-hidden rounded-2xl border border-black/5 shrink-0">
+      <div className="relative w-full aspect-[4/5] bg-surface-container-low overflow-hidden rounded-2xl border border-border/50 shrink-0">
         <img
           src={thumbnail}
           alt={p.name}
@@ -351,7 +352,7 @@ function ProductCard({
               })
             }}
             aria-label="Wishlist"
-            className="p-1.5 rounded-full hover:bg-black/5 text-muted-foreground transition"
+            className="p-1.5 rounded-full hover:bg-muted text-muted-foreground transition"
           >
             <Heart className={cn('h-4 w-4', wishlistItems.includes(p.id) ? 'fill-red-500 text-red-500' : 'text-muted-foreground')} />
           </button>
