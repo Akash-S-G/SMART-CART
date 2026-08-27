@@ -315,3 +315,16 @@ export async function getRealLogsApi(): Promise<any[]> {
 export async function restockProductApi(productId: string, quantity: number): Promise<Product> {
   return postJson<Product, { quantity: number }>(`/products/${productId}/restock`, { quantity })
 }
+
+export interface RecipeResponse {
+  title: string
+  prompt: string
+  ingredients: string[]
+  steps: string[]
+  products: { id: string; name: string; brand: string | null; price: number; image: string | null; ingredient: string }[]
+  source: string
+}
+
+export async function generateRecipeApi(prompt: string): Promise<RecipeResponse> {
+  return postJson<RecipeResponse, { prompt: string }>(`/ai/recipe`, { prompt })
+}

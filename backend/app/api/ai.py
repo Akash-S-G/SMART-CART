@@ -118,3 +118,38 @@ def health():
 
         model_name="YOLO11n",
     )
+
+
+from pydantic import BaseModel
+
+class RecipeRequest(BaseModel):
+    prompt: str
+    max_ingredients: int = 6
+
+class RecipeResponse(BaseModel):
+    title: str
+    prompt: str
+    ingredients: list[str]
+    steps: list[str]
+    products: list[dict]
+    source: str
+
+@router.post("/recipe", response_model=RecipeResponse)
+def recipe_copilot(
+    req: RecipeRequest,
+    db: Session = Depends(get_db),
+):
+    """Recipe Copilot — flan-t5-small (80M) recipe-only LLM + RAG over 1005 products."""
+    from app.ai.recipe_service import generate_recipe, match_products
+
+    result = generate_recipe(req.prompt)
+    # RAG: match ingredients to products
+    products = match_products(result["ingredients"][: req.max_ingredients], db)
+    return RecipeResponse(
+        title=result["title"],
+        prompt=req.prompt,
+        ingredients=result["ingredients"],
+        steps=result["steps"],
+        products=products,
+        source=result.get("source", "unknown"),
+    )
