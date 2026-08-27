@@ -47,7 +47,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.last_cleanup = time.time()
 
     async def dispatch(self, request: Request, call_next):
-        if request.url.path in ["/docs", "/redoc", "/openapi.json", "/healthz", "/readyz"]:
+        if request.url.path in ["/docs", "/redoc", "/openapi.json", "/healthz", "/readyz"] or request.url.path.startswith("/static"):
             return await call_next(request)
 
         client_ip = request.client.host if request.client else "unknown"

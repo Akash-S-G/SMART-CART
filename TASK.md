@@ -4,12 +4,12 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T14 — Git & docs**  [IN_PROGRESS]
-- All core flows verified locally with **local Postgres** (`smartcart-postgres` on 5433). Needs README update + final commit.
+**T14 — Git & docs**  [IN_PROGRESS — local psql active, all 8 E2E pass]
+- Switched to **local psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (host Postgres 16, 652 products, 16 cats) — removed Docker 5433 per your request. Fixed rate-limit 429 (`black/*` static now excluded, 100→1000), backfilled 20 missing `product_prices`+`inventory` (was `Product price not found`).
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability
-- [x] **T1 — Backend boot & DB migrations**: `DB_AUTO_CREATE=True`, YOLO lazy guard, `orders.py` dedup + `/admin` ordering, `DATABASE_URL` switched to local `postgresql://smartcart_user:777@localhost:5433/smartcart` (Docker `postgres:16-alpine`), `healthz` ✓, `readyz` ✓ `{"status":"ready"}`, schema `create_all` + admin seed `admin@smartcart.ai / SmartCart@123` ✓
+- [x] **T1 — Backend boot & DB migrations**: `DB_AUTO_CREATE=True`, YOLO lazy guard, `orders.py` dedup + `/admin` ordering, `DATABASE_URL` `postgresql://smartcart_user:777@localhost:5432/smartcart` (host psql 16, was Docker 5433 per 652 products), `healthz` ✓, `readyz` ✓, `create_all` + admin seed `admin@smartcart.ai / SmartCart@123` ✓
 - [x] **T2 — Auth**: `POST /auth/register` ✓, `POST /auth/login` ✓, `GET /auth/me` ✓, `POST /auth/refresh` ✓, brute-force 429 lockout ✓ (pytest 5/5), Google OAuth code exchange (real redirect, mock removed)
 - [x] **T3 — Product catalog**: categories ✓, list/search/pagination/sort/filters ✓, get by id ✓, admin CRUD `POST/PUT/DELETE /products` ✓, bulk CSV ✓, image upload (Cloudinary fallback to `/static/uploads`) ✓, barcode `GET /generate-barcode` ✓, `putJson` import fixed
 
@@ -27,21 +27,23 @@
 ### Frontend UX & Testing
 - [x] **T11 — UI/UX audit**: index.css Geist/shadows/shimmer/reduced-motion, button gradient, navbar mobile drawer + scroll-lock/Esc/overlay, `black/*` → tokens, landing skeletons, collections sort responsive, checkout promo API — **crash `handleMockGoogleSignIn` fixed**, dark mode verified
 - [x] **T12 — E2E suite**: `playwright.config.ts` + `e2e/smoke.spec.ts` 6/6 ✓ + `e2e/full-flow.spec.ts` 2/2 ✓ (register→browse→product→cart→checkout→payment→orders + wishlist/reviews) — total **8/8 ✓** (1.62.1, Chromium 1234)
-- [x] **T13 — Scalability pass**: pagination `PAGE_SIZE 24` + infinite scroll sentinel, `vite manualChunks` react/query/radix/charts/motion (main 540k→150k gzip), rate-limit 100/60s, `loading="lazy"` on product images, `healthz/readyz` probes
+- [x] **T13 — Scalability pass**: pagination `PAGE_SIZE 24` + infinite scroll, `vite manualChunks` (main 540k→150k gzip), **rate-limit 1000/60s + `/static` excluded** (was 100, hit 429 on image-heavy collections), `loading="lazy"`, `healthz/readyz`
 
 ## Queue — Remaining
 - [ ] **T14 — Git & docs**: finalize README, `.env.example` for local (`DATABASE_URL=postgresql://smartcart_user:777@localhost:5433/smartcart`), seed instruction `./seed_products.sh --limit 20` or admin API seeding (done via curl for 8 products)
 
 ## Notes
-- Local DB: Docker `smartcart-postgres` on `5433` (to avoid host 5432 conflict with system Postgres 16). `backend/.env` now points to local, Supabase backed up to `backend/.env.supabase.bak` — switch back by swapping `DATABASE_URL` if needed.
-- Playwright: `npx playwright test` 8/8, `pytest tests/test_api.py` 5/5, `npm run build` clean (no chunk >600k).
-- AI: Modal URL used, no local CUDA needed.
+- Local DB: **host psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (24 tables, 652 products) — backfilled 20 missing `product_prices`/`inventory` (was `Product price not found` on cart). Supabase backup `backend/.env.supabase.bak`.
+- Playwright 8/8, pytest 5/5, build 150k gzip — all green after rate-limit fix.
+- AI: Modal URL, no local CUDA.
+- Google OAuth: fixed `GOOGLE_CLIENT_SECRET` missing attr (was 500 on `/auth/google-login`); now `code` exchange + fallback email works — verify `http://localhost:5173` in Console redirect URIs.
 
 ## How to Run Locally (now)
 ```bash
-# postgres (local)
-docker ps | grep smartcart-postgres # already running on 5433
-# if not: docker run -d --name smartcart-postgres -e POSTGRES_USER=smartcart_user -e POSTGRES_PASSWORD=777 -e POSTGRES_DB=smartcart -p 5433:5432 postgres:16-alpine
+# postgres (local psql — host)
+psql -h /var/run/postgresql -U akash -c "SELECT 1" # host running on 5432
+# if needed: PGPASSWORD=777 psql -h 127.0.0.1 -U smartcart_user -d smartcart -c "SELECT count(*) FROM products;" # 652
+# Docker alternative: docker run -d --name smartcart-postgres -e POSTGRES_USER=smartcart_user -e POSTGRES_PASSWORD=777 -e POSTGRES_DB=smartcart -p 5433:5432 postgres:16-alpine
 
 # backend
 cd backend && uv run uvicorn app.main:app --reload --port 8000
@@ -62,4 +64,5 @@ npx playwright test --reporter=list # 8 passed
 - 2026-08-27 — feat(ui): design-system refresh & chunk splitting (beefc49)
 - 2026-08-27 — fix(backend): deduplicate orders routes, fix /admin shadowing, add flat coupons (3bbb6b1)
 - 2026-08-27 — fix(frontend): remove undefined `handleMockGoogleSignIn` crash, add Playwright smoke 6/6 (fe4f11e)
-- 2026-08-27 — feat(local): switch to Docker Postgres 5433, full E2E 8/8, all backend flows verified via curl
+- 2026-08-27 — feat(local): Docker 5433 → host psql 5432, full E2E 8/8, all backend flows via curl
+- 2026-08-27 — fix(auth): GOOGLE_CLIENT_SECRET attr + rate-limit 1000 + /static exclude + backfill 20 prices/inventory (d75c7da)

@@ -33,19 +33,36 @@ test.describe('SmartCart — full commerce flow (local DB)', () => {
     await firstCard.click();
     await expect(page.getByText(/Add to Cart/i).first()).toBeVisible({ timeout: 10000 });
 
-    // Add to cart
+    // Add to cart — wait for POST /cart/items
     const addBtn = page.getByRole('button', { name: /Add to Cart/i }).first();
     await expect(addBtn).toBeVisible({ timeout: 10000 });
-    await addBtn.click();
-    // wait for cart mutation + toast
-    await page.waitForTimeout(1500);
-    // verify cart badge updated (optional) — cart button shows price after add, so just wait for network
-    await page.waitForLoadState('networkidle');
+    const [cartResp] = await Promise.all([
+      page.waitForResponse(r => r.url().includes('/cart/items') && r.request().method() === 'POST', { timeout: 10000 }).catch(() => null),
+      addBtn.click(),
+    ]);
+    if (cartResp) {
+      const status = cartResp.status();
+      if (!cartResp.ok()) {
+        const body = await cartResp.text().catch(() => '');
+        console.log('cart POST failed', status, body.slice(0,500));
+      }
+      await expect(cartResp.ok()).toBeTruthy();
+    }
+    // wait for toast and cart mutation
+    await expect(page.getByText(/Added to Cart/i).first()).toBeVisible({ timeout: 5000 }).catch(() => {});
+    await page.waitForTimeout(800);
 
     // Go to checkout
     await page.goto('/checkout');
     await page.waitForLoadState('networkidle');
-    await expect(page.getByText(/Checkout/i).first()).toBeVisible({ timeout: 10000 });
+    // Checkout shows either "Checkout" heading or "Your Cart is Empty" if add failed — handle both
+    const checkoutHeading = page.getByText(/Checkout/i).first();
+    const emptyHeading = page.getByText(/Your Cart is Empty/i).first();
+    await expect(checkoutHeading.or(emptyHeading)).toBeVisible({ timeout: 10000 });
+    // if empty, fail early with diagnostic
+    if (await emptyHeading.isVisible()) {
+      throw new Error('Cart empty after Add to Cart — add failed');
+    }
     // Should not show Sign In guard now that we're logged in
     await expect(page.getByText(/Sign In to Checkout/i)).toBeHidden();
 

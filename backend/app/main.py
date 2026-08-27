@@ -51,7 +51,7 @@ register_exception_handlers(app)
 
 
 app.add_middleware(LoggingMiddleware)
-app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
+app.add_middleware(RateLimitMiddleware, max_requests=1000, window_seconds=60)
 
 # CORS must be the OUTERMOST middleware. Wrapping CORSMiddleware inside
 # BaseHTTPMiddleware (SecurityHeaders/Logging/RateLimit) breaks preflight
