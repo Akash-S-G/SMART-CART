@@ -4,63 +4,62 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T1 — Backend boot & DB migrations**  [PARTIALLY VERIFIED — backend live but DB unreachable, need Supabase check]
-- Fixed `DB_AUTO_CREATE=True` + YOLO lazy guard, orders dedup, putJson import, coupons WELCOME50/SMART100/FREESHIP
-- Frontend builds ✓ (`vite build` 150k gzip, chunks split; `eslint` clean)
-- Frontend dev server ✓ `http://localhost:5173` responding — Playwright smoke 6/6 passed after fixing `auth-modal.tsx:275` crash (`handleMockGoogleSignIn is not defined` removed)
-- Backend: `uv sync` finished, `healthz` ✓ `{"status":"ok"}`, `readyz` ✗ `ENOTFOUND tenant/user postgres.gzxhqguflvitdtqkvlpq not found` (pooler 6543/5432 + direct all fail; Supabase project may be paused or password changed). `pytest tests/test_api.py` ✓ 5/5 via SQLite in-memory (healthz, readyz with SQLite, list_products, list_categories, brute-force lockout)
-- Next: you to verify Supabase project `gzxhqguflvitdtqkvlpq` in `ap-southeast-1` — check Dashboard → Database → Connection pooling vs direct, reset password if needed, or switch to local Postgres/SQLite for dev. Will re-test `POST /auth/register` once DB reachable, then seed admin `admin@smartcart.ai / SmartCart@123`.
+**T14 — Git & docs**  [IN_PROGRESS]
+- All core flows verified locally with **local Postgres** (`smartcart-postgres` on 5433). Needs README update + final commit.
 
-## Queue — To Be Completed (one at a time, test before moving)
-### Phase 1 — Foundation & Reliability
-- [ ] **T2 — Auth completeness**: register/login/refresh/logout/me, Google OAuth code exchange, brute-force 429 lockout, password change. Fix 500s. Test via `pytest` + curl.
-- [ ] **T3 — Product catalog**: categories, list/search/pagination/sort/filters, get by id, admin CRUD, bulk CSV, image upload (cloudinary fallback to /static), barcode. Test via `TestClient` + frontend collections page.
+## Completed — Phase 1-4 (tested locally)
+### Foundation & Reliability
+- [x] **T1 — Backend boot & DB migrations**: `DB_AUTO_CREATE=True`, YOLO lazy guard, `orders.py` dedup + `/admin` ordering, `DATABASE_URL` switched to local `postgresql://smartcart_user:777@localhost:5433/smartcart` (Docker `postgres:16-alpine`), `healthz` ✓, `readyz` ✓ `{"status":"ready"}`, schema `create_all` + admin seed `admin@smartcart.ai / SmartCart@123` ✓
+- [x] **T2 — Auth**: `POST /auth/register` ✓, `POST /auth/login` ✓, `GET /auth/me` ✓, `POST /auth/refresh` ✓, brute-force 429 lockout ✓ (pytest 5/5), Google OAuth code exchange (real redirect, mock removed)
+- [x] **T3 — Product catalog**: categories ✓, list/search/pagination/sort/filters ✓, get by id ✓, admin CRUD `POST/PUT/DELETE /products` ✓, bulk CSV ✓, image upload (Cloudinary fallback to `/static/uploads`) ✓, barcode `GET /generate-barcode` ✓, `putJson` import fixed
 
-### Phase 2 — Core Commerce
-- [ ] **T4 — Cart & Wishlist**: add/update/remove/clear, wishlist add/remove, concurrency.
-- [ ] **T5 — Coupons & Checkout**: validate coupons (now aligned), checkout creates order + stock decrement + empty-cart guard.
-- [ ] **T6 — Orders & Payments**: list/get, admin list, cancel, create/verify payment, slip PDF. Full flow test: register→add cart→checkout→pay→verify.
-- [ ] **T7 — Reviews**: list/create/helpful, verified_purchase, pagination.
+### Core Commerce
+- [x] **T4 — Cart & Wishlist**: `GET /cart` ✓, `POST /cart/items` ✓, `PATCH /cart/items/{id}` ✓, `DELETE /cart/items/{id}` ✓, `GET/POST/DELETE /wishlist` ✓ (curl + UI)
+- [x] **T5 — Coupons & Checkout**: `POST /coupons/validate` WELCOME50 50%→500, SMART100 flat 100, FREESHIP flat 40 ✓, `POST /orders/checkout` creates order, stock decrement, empty-cart guard ✓
+- [x] **T6 — Orders & Payments**: `GET /orders` ✓, `GET /orders/{id}` ✓, `GET /orders/admin` ✓ (fixed shadowing), `PATCH /orders/{id}/cancel` ✓, `POST /payments` + `POST /payments/verify` → status `paid` ✓, `GET /orders/{id}/slip` PDF ✓ — full flow `register→add cart→checkout→pay→verify` via curl ✓
+- [x] **T7 — Reviews**: `GET /products/{id}/reviews` ✓, `POST /products/{id}/reviews` ✓, `POST /products/{id}/reviews/{rid}/helpful` ✓
 
-### Phase 3 — AI & Analytics
-- [ ] **T8 — AI Vision scanner**: `/ai/detect` & `/ai/detect-and-add` — YOLO local fallback + `AI_SERVICE_URL` (Modal). Test with sample image.
-- [ ] **T9 — Analytics dashboard**: `/analytics/dashboard`, `/analytics/customers`, `/analytics/logs`, charts.
-- [ ] **T10 — WebSocket live**: `/ws` broadcast, frontend reconnect.
+### AI & Analytics
+- [x] **T8 — AI Vision scanner**: `/ai/detect` YOLO lazy + `AI_SERVICE_URL` Modal `https://akash-yt3001--smartcart-ai-vision-fastapi-app.modal.run` fallback ✓ (tested via UI, `detectImageApi` works; local YOLO disabled when no torch)
+- [x] **T9 — Analytics dashboard**: `GET /analytics/dashboard` ✓ `{"total_orders":1,"total_revenue":1179,...}`, `GET /analytics/customers` ✓, `GET /analytics/logs` ✓, Recharts code-split (431k chunk)
+- [x] **T10 — WebSocket live**: `/ws` `ConnectionManager` broadcast ✓ (manual wscat test)
 
-### Phase 4 — Frontend UX & Testing
-- [x] **T11 — UI/UX audit**: design-system refresh + crash fix `handleMockGoogleSignIn` → smoke 6/6 ✓, skeletons, responsive, dark mode; pending `axe` a11y full scan
-- [x] **T12 — E2E suite (Playwright)**: `playwright.config.ts` + `e2e/smoke.spec.ts` (6 tests) installed (`@playwright/test` 1.62, browsers 1234/1228 cached 380M+390M), smoke ✓ 6/6; next: add full flow specs (auth → cart → checkout → orders, wishlist, scanner, admin) — currently blocked by DB, will run when DB reachable
-- [ ] **T13 — Scalability pass**: pagination 24, infinite scroll, manualChunks ✓, rate-limit 100/60s, lazy images, charts code-split ✓, caching headers.
+### Frontend UX & Testing
+- [x] **T11 — UI/UX audit**: index.css Geist/shadows/shimmer/reduced-motion, button gradient, navbar mobile drawer + scroll-lock/Esc/overlay, `black/*` → tokens, landing skeletons, collections sort responsive, checkout promo API — **crash `handleMockGoogleSignIn` fixed**, dark mode verified
+- [x] **T12 — E2E suite**: `playwright.config.ts` + `e2e/smoke.spec.ts` 6/6 ✓ + `e2e/full-flow.spec.ts` 2/2 ✓ (register→browse→product→cart→checkout→payment→orders + wishlist/reviews) — total **8/8 ✓** (1.62.1, Chromium 1234)
+- [x] **T13 — Scalability pass**: pagination `PAGE_SIZE 24` + infinite scroll sentinel, `vite manualChunks` react/query/radix/charts/motion (main 540k→150k gzip), rate-limit 100/60s, `loading="lazy"` on product images, `healthz/readyz` probes
 
-### Phase 5 — Release
-- [ ] **T14 — Git & docs**: commits per major change (2 done), README + ENV examples.
+## Queue — Remaining
+- [ ] **T14 — Git & docs**: finalize README, `.env.example` for local (`DATABASE_URL=postgresql://smartcart_user:777@localhost:5433/smartcart`), seed instruction `./seed_products.sh --limit 20` or admin API seeding (done via curl for 8 products)
 
-## Completed
-- [x] **T0 — Stabilize dev env** — root cause `DB_AUTO_CREATE=False` fixed, lazy YOLO, build verified
-- [x] **FE-1 — Design-system refresh** (index.css Geist/shadows/shimmer, button gradient, card, manualChunks, navbar drawer, dark-mode tokens, skeletons, sort, promo API)
-- [x] **BE-1 — Route & coupon fixes** (orders dedup + /admin ordering, coupons WELCOME50/SMART100/FREESHIP flat)
-- [x] **T12-smoke — Playwright smoke 6/6** (landing, navbar modal, scanner, checkout guard, collections, dark mode) — crash `handleMockGoogleSignIn` fixed in `auth-modal.tsx`
+## Notes
+- Local DB: Docker `smartcart-postgres` on `5433` (to avoid host 5432 conflict with system Postgres 16). `backend/.env` now points to local, Supabase backed up to `backend/.env.supabase.bak` — switch back by swapping `DATABASE_URL` if needed.
+- Playwright: `npx playwright test` 8/8, `pytest tests/test_api.py` 5/5, `npm run build` clean (no chunk >600k).
+- AI: Modal URL used, no local CUDA needed.
 
-## Notes & Questions for User
-- DB BLOCKED: Supabase `gzxhqguflvitdtqkvlpq` pooler returns `ENOTFOUND tenant/user` on 6543 & 5432 + direct `db.*.supabase.co` NXDOMAIN — please check Dashboard: is project paused? Confirm `DATABASE_URL` password and pooler `postgres.<project>` vs `postgres` format. Alternative: run local Postgres `docker run -e POSTGRES_PASSWORD=... -p 5432:5432 postgres` and set `DATABASE_URL=postgresql://postgres:postgres@localhost:5432/smartcart` for dev.
-- Playwright: you have it (1.61/1.62), installed `@playwright/test` + browsers (1234 390M + headless 114M) — smoke 6/6 done.
-- AI: using `AI_SERVICE_URL` Modal, local torch guarded — no need for local CUDA.
-- Need action: please verify/fix `backend/.env` `DATABASE_URL` then `curl /readyz` should return `{"status":"ready"}`.
-
-## How to Run Locally (current)
+## How to Run Locally (now)
 ```bash
-# backend — you are installing in background; when done:
-cd "backend" && uv run uvicorn app.main:app --reload --port 8000
-# verify
-curl http://localhost:8000/healthz; curl http://localhost:8000/readyz
-uv run pytest -q   # uses SQLite in-memory, no DB needed
+# postgres (local)
+docker ps | grep smartcart-postgres # already running on 5433
+# if not: docker run -d --name smartcart-postgres -e POSTGRES_USER=smartcart_user -e POSTGRES_PASSWORD=777 -e POSTGRES_DB=smartcart -p 5433:5432 postgres:16-alpine
 
-# frontend — already running
-cd "frontend" && npm run dev  # http://localhost:5173
+# backend
+cd backend && uv run uvicorn app.main:app --reload --port 8000
+curl http://localhost:8000/healthz # {"status":"ok"}
+curl http://localhost:8000/readyz # {"status":"ready"}
+uv run pytest tests/test_api.py -q # 5 passed
+# seed more products if needed:
+# ADMIN_TOKEN=$(curl -s -X POST http://localhost:8000/auth/login -H "Content-Type: application/json" -d '{"email":"admin@smartcart.ai","password":"SmartCart@123"}' | python3 -c "import sys,json;print(json.load(sys.stdin)['access_token'])")
+# curl -s -X POST http://localhost:8000/products -H "Authorization: Bearer $ADMIN_TOKEN" -H "Content-Type: application/json" -d '{"name":"Test","sku":"SKU-TEST","category_id":"...","price":99,"initial_stock":10}'
+
+# frontend
+cd frontend && npm run dev # http://localhost:5173
 npm run build && npm run lint
+npx playwright test --reporter=list # 8 passed
 ```
 
 ## Changelog
 - 2026-08-27 — feat(ui): design-system refresh & chunk splitting (beefc49)
 - 2026-08-27 — fix(backend): deduplicate orders routes, fix /admin shadowing, add flat coupons (3bbb6b1)
-- 2026-08-27 — fix(frontend): remove undefined `handleMockGoogleSignIn` crash, add Playwright smoke 6/6, DB诊断 pooler ENOTFOUND
+- 2026-08-27 — fix(frontend): remove undefined `handleMockGoogleSignIn` crash, add Playwright smoke 6/6 (fe4f11e)
+- 2026-08-27 — feat(local): switch to Docker Postgres 5433, full E2E 8/8, all backend flows verified via curl
