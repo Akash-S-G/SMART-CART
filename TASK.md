@@ -4,8 +4,8 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T15 — Product Data Completeness**  [DONE on `feat/product-data-completeness` — 1005/1005 verified, ready to merge]
-- Backfilled 69 missing `description`, 18 `brand`, 635 `product_images` (was 635/652 without images), already fixed 20 `prices`/`inventory`. Generated 353 synthetic to reach **1005** total (was 652). Verified `no_desc 0, no_brand 0, no_img 0`, `product_prices 1005`, `inventory 1005`, `product_images 1080`. Branch `feat/product-data-completeness` tested 8/8 + 5/5, ready to merge to `main`.
+**T17 — Scanner Accuracy**  [NEXT — `feat/scanner-accuracy` to validate YOLO11n/best.pt mAP]
+- `T16` done on `feat/recipe-copilot-llm`: `POST /ai/recipe` with `flan-t5-small` (80M) fallback + RAG over 1005 products, `ai-copilot.tsx` now shows ingredients/steps/source + matched pantry, `vite build` 150k, 8/8 green, ready to merge.
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability
@@ -27,11 +27,12 @@
 ### Frontend UX & Testing
 - [x] **T11 — UI/UX audit**: index.css Geist/shadows/shimmer/reduced-motion, button gradient, navbar mobile drawer + scroll-lock/Esc/overlay, `black/*` → tokens, landing skeletons, collections sort responsive, checkout promo API — **crash `handleMockGoogleSignIn` fixed**, dark mode verified
 - [x] **T12 — E2E suite**: `playwright.config.ts` + `e2e/smoke.spec.ts` 6/6 ✓ + `e2e/full-flow.spec.ts` 2/2 ✓ (register→browse→product→cart→checkout→payment→orders + wishlist/reviews) — total **8/8 ✓** (1.62.1, Chromium 1234)
-- [x] **T13 — Scalability pass**: pagination `PAGE_SIZE 24` + infinite scroll, `vite manualChunks` (main 540k→150k gzip), **rate-limit 1000/60s + `/static` excluded** (was 100, hit 429 on image-heavy collections), `loading="lazy"`, `healthz/readyz`
+- [x] **T13 — Scalability pass**: pagination `PAGE_SIZE 24` + infinite scroll, `vite manualChunks` (main 540k→150k gzip), **rate-limit 1000/60s + `/static` excluded** (was 100, hit 429), `loading="lazy"`, `healthz/readyz`
+- [x] **T16 — Recipe Copilot LLM**: `backend/app/ai/recipe_service.py:1` `flan-t5-small` 80M (recipe-only, assistant) + fallback templates, `POST /ai/recipe` RAG over 1005, `frontend/src/components/ai/ai-copilot.tsx:56` now shows title/ingredients/steps/source, `lib/api.ts:318` `RecipeResponse`, `vite build` 150k, 8/8 green
 
 ## Queue — Next Feats (each own branch, merge after test)
-- [ ] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — replace hardcoded `PRESET_RECIPES` with `google/flan-t5-small` (80M, recipe-only) + RAG over `products` (reduce size, increase accuracy, assistant responses)
-- [ ] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — validate `yolo11n.pt`/`best.pt` on `vision-dataset-factory`, compute mAP50/precision/recall, re-train threshold tuning
+- [x] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — `POST /ai/recipe` `flan-t5-small` 80M + RAG, `ai-copilot.tsx` ingredients/steps/source, `lib/api.ts:318` `RecipeResponse`
+- [ ] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — validate `yolo11n.pt`/`best.pt` on `vision-dataset-factory`, compute mAP50/precision/recall, re-train threshold tuning, test via `POST /ai/detect` on 652→1005 image set
 - [ ] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book, order tracking, return, search autocomplete, compare, recently viewed (like other ecommerce)
 - [ ] **T14 — Git & docs**: finalize README, `.env.example` local `5432`, host psql instructions
 

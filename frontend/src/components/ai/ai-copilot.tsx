@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/hooks/use-cart'
 import { useAuth } from '@/hooks/use-auth'
 import { useToast } from '@/components/ui/use-toast'
-import { listProductsApi, searchProductsApi } from '@/lib/api'
+import { generateRecipeApi, type RecipeResponse } from '@/lib/api'
 import type { Product } from '@/types/api'
 
 interface RecipePreset {
@@ -58,6 +58,7 @@ export function AICopilot() {
   const [customPrompt, setCustomPrompt] = useState('')
   const [activeRecipe, setActiveRecipe] = useState<RecipePreset | null>(PRESET_RECIPES[0])
   const [matchedProducts, setMatchedProducts] = useState<Product[]>([])
+  const [recipeData, setRecipeData] = useState<RecipeResponse | null>(null)
   const [isSearching, setIsSearching] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
 
@@ -65,63 +66,44 @@ export function AICopilot() {
   const { openLogin, user } = useAuth()
   const { toast } = useToast()
 
-  const findIngredients = async (keywords: string[]) => {
+  const fetchRecipe = async (prompt: string) => {
     setIsSearching(true)
     try {
-      const allCatalog = await listProductsApi(0, 200)
-      const matched: Product[] = []
-      const usedIds = new Set<string>()
-
-      for (const kw of keywords) {
-        const found = allCatalog.find(
-          (p) =>
-            !usedIds.has(p.id) &&
-            (p.name.toLowerCase().includes(kw.toLowerCase()) ||
-              (p.brand && p.brand.toLowerCase().includes(kw.toLowerCase())))
-        )
-        if (found) {
-          usedIds.add(found.id)
-          matched.push(found)
-        }
-      }
-
-      // Fill remaining if needed
-      if (matched.length === 0) {
-        setMatchedProducts(allCatalog.slice(0, 4))
-      } else {
-        setMatchedProducts(matched)
-      }
-    } catch {
-      // Fallback
+      const res = await generateRecipeApi(prompt)
+      setRecipeData(res)
+      // Map RAG products to Product-like for cart
+      const mapped: Product[] = (res.products || []).map((p: any) => ({
+        id: p.id,
+        name: p.name,
+        brand: p.brand,
+        price: p.price,
+        images: p.image ? [p.image] : [],
+        sku: p.id,
+        category_id: '',
+        is_active: true,
+      } as unknown as Product))
+      setMatchedProducts(mapped)
+    } catch (e: any) {
+      toast({ title: 'Recipe failed', description: e?.message || 'Could not generate recipe', variant: 'destructive' })
     } finally {
       setIsSearching(false)
     }
   }
 
+  const findIngredients = async (keywords: string[]) => {
+    await fetchRecipe(keywords.join(', '))
+  }
+
   const handleSelectPreset = (preset: RecipePreset) => {
     setActiveRecipe(preset)
-    findIngredients(preset.ingredients)
+    fetchRecipe(preset.title)
   }
 
   const handleCustomSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!customPrompt.trim()) return
-
-    setIsSearching(true)
     setActiveRecipe(null)
-    try {
-      const results = await searchProductsApi(customPrompt.trim())
-      if (results && results.length > 0) {
-        setMatchedProducts(results.slice(0, 4))
-      } else {
-        const keywords = customPrompt.split(' ')
-        await findIngredients(keywords)
-      }
-    } catch {
-      // Fallback
-    } finally {
-      setIsSearching(false)
-    }
+    await fetchRecipe(customPrompt.trim())
   }
 
   const handleAddAllToCart = async () => {
@@ -165,8 +147,8 @@ export function AICopilot() {
       <button
         onClick={() => {
           setIsOpen(true)
-          if (matchedProducts.length === 0 && activeRecipe) {
-            findIngredients(activeRecipe.ingredients)
+          if (!recipeData && activeRecipe) {
+            fetchRecipe(activeRecipe.title)
           }
         }}
         className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 bg-gradient-to-r from-primary via-emerald-600 to-teal-500 text-primary-foreground px-5 py-3.5 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border border-white/20 group"
@@ -256,6 +238,28 @@ export function AICopilot() {
                 </div>
               </div>
 
+              {/* Recipe Details (LLM, recipe-only) */}
+              {recipeData && (
+                <div className="space-y-3 p-4 bg-primary/5 border border-primary/10 rounded-2xl">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-bold text-sm text-foreground">{recipeData.title}</h4>
+                    <Badge variant="ai" className="text-[10px]">{recipeData.source}</Badge>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Ingredients</p>
+                    <ul className="text-xs text-foreground list-disc list-inside space-y-0.5">
+                      {recipeData.ingredients.map((ing, i) => <li key={i}>{ing}</li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Steps</p>
+                    <ol className="text-xs text-muted-foreground list-decimal list-inside space-y-1">
+                      {recipeData.steps.map((s, i) => <li key={i}>{s}</li>)}
+                    </ol>
+                  </div>
+                </div>
+              )}
+
               {/* Matched Ingredients Catalog Items */}
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center">
@@ -267,7 +271,7 @@ export function AICopilot() {
 
                 {matchedProducts.length === 0 ? (
                   <div className="p-8 text-center border border-dashed border-border rounded-2xl text-muted-foreground text-xs">
-                    Searching catalog for ingredients...
+                    {isSearching ? 'Generating recipe via flan-t5-small (80M)…' : 'Type a dish or pick a preset to generate'}
                   </div>
                 ) : (
                   <div className="space-y-2.5">
