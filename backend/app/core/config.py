@@ -73,6 +73,8 @@ class Settings(BaseSettings):
     # Google OAuth
     # =====================
     GOOGLE_CLIENT_ID: str | None = None
+    GOOGLE_CLIENT_SECRET: str | None = None
+    GOOGLE_REDIRECT_URI: str | None = None
     # =====================
     # AI Microservice
     # =====================
