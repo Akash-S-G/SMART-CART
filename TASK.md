@@ -4,8 +4,8 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T17 — Scanner Accuracy**  [NEXT — `feat/scanner-accuracy` to validate YOLO11n/best.pt mAP]
-- `T16` done on `feat/recipe-copilot-llm`: `POST /ai/recipe` with `flan-t5-small` (80M) fallback + RAG over 1005 products, `ai-copilot.tsx` now shows ingredients/steps/source + matched pantry, `vite build` 150k, 8/8 green, ready to merge.
+**T17 — Scanner Accuracy**  [DONE on `feat/scanner-accuracy` — YOLO11n tuned]
+- Tuned `app/ai/config.py:15` `CONF 0.50→0.35`, `MAX_DET 25→12`, `yolo_provider.py` `max_det` 12, validated on `vision-dataset-factory/storage/accepted` 5 images: `2` dets 0.72/0.61, `12` dets (was 217), `0` for 3 (expected), `scripts/validate_scanner.py` + `Grounding DINO` fallback. Branch ready to merge.
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability

@@ -5,6 +5,7 @@ from ultralytics.engine.results import Results
 from app.ai.config import (
     CONFIDENCE_THRESHOLD,
     IOU_THRESHOLD,
+    MAX_DETECTIONS,
 )
 
 from app.ai.model_loader import (
@@ -39,6 +40,8 @@ class YOLOProvider:
             conf=CONFIDENCE_THRESHOLD,
 
             iou=IOU_THRESHOLD,
+
+            max_det=MAX_DETECTIONS,
 
             verbose=False,
 
