@@ -4,8 +4,8 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T14 — Git & docs**  [IN_PROGRESS — local psql active, all 8 E2E pass]
-- Switched to **local psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (host Postgres 16, 652 products, 16 cats) — removed Docker 5433 per your request. Fixed rate-limit 429 (`black/*` static now excluded, 100→1000), backfilled 20 missing `product_prices`+`inventory` (was `Product price not found`).
+**T15 — Product Data Completeness**  [DONE on `feat/product-data-completeness` — 1005/1005 verified, ready to merge]
+- Backfilled 69 missing `description`, 18 `brand`, 635 `product_images` (was 635/652 without images), already fixed 20 `prices`/`inventory`. Generated 353 synthetic to reach **1005** total (was 652). Verified `no_desc 0, no_brand 0, no_img 0`, `product_prices 1005`, `inventory 1005`, `product_images 1080`. Branch `feat/product-data-completeness` tested 8/8 + 5/5, ready to merge to `main`.
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability
@@ -29,14 +29,18 @@
 - [x] **T12 — E2E suite**: `playwright.config.ts` + `e2e/smoke.spec.ts` 6/6 ✓ + `e2e/full-flow.spec.ts` 2/2 ✓ (register→browse→product→cart→checkout→payment→orders + wishlist/reviews) — total **8/8 ✓** (1.62.1, Chromium 1234)
 - [x] **T13 — Scalability pass**: pagination `PAGE_SIZE 24` + infinite scroll, `vite manualChunks` (main 540k→150k gzip), **rate-limit 1000/60s + `/static` excluded** (was 100, hit 429 on image-heavy collections), `loading="lazy"`, `healthz/readyz`
 
-## Queue — Remaining
-- [ ] **T14 — Git & docs**: finalize README, `.env.example` for local (`DATABASE_URL=postgresql://smartcart_user:777@localhost:5433/smartcart`), seed instruction `./seed_products.sh --limit 20` or admin API seeding (done via curl for 8 products)
+## Queue — Next Feats (each own branch, merge after test)
+- [ ] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — replace hardcoded `PRESET_RECIPES` with `google/flan-t5-small` (80M, recipe-only) + RAG over `products` (reduce size, increase accuracy, assistant responses)
+- [ ] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — validate `yolo11n.pt`/`best.pt` on `vision-dataset-factory`, compute mAP50/precision/recall, re-train threshold tuning
+- [ ] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book, order tracking, return, search autocomplete, compare, recently viewed (like other ecommerce)
+- [ ] **T14 — Git & docs**: finalize README, `.env.example` local `5432`, host psql instructions
 
 ## Notes
-- Local DB: **host psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (24 tables, 652 products) — backfilled 20 missing `product_prices`/`inventory` (was `Product price not found` on cart). Supabase backup `backend/.env.supabase.bak`.
-- Playwright 8/8, pytest 5/5, build 150k gzip — all green after rate-limit fix.
+- Local DB: **host psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (24 tables, **1005** products) — backfilled 69 desc, 18 brand, 635 images + 20 prices/inventory, generated 353 to reach 1000+ (supabase paused, local only as requested). Supabase backup `backend/.env.supabase.bak`.
+- Playwright 8/8, pytest 5/5, build 150k gzip — green.
 - AI: Modal URL, no local CUDA.
-- Google OAuth: fixed `GOOGLE_CLIENT_SECRET` missing attr (was 500 on `/auth/google-login`); now `code` exchange + fallback email works — verify `http://localhost:5173` in Console redirect URIs.
+- Google OAuth: fixed `GOOGLE_CLIENT_SECRET` (was 500), now works — verify `http://localhost:5173` in Console.
+- Git flow: `feat/*` branches, merge only after test (this branch `feat/product-data-completeness` ready).
 
 ## How to Run Locally (now)
 ```bash
