@@ -270,14 +270,6 @@ export function AuthModal() {
               <GoogleIcon className="h-4 w-4" />
               Sign up with Google
             </Button>
-            <button
-              type="button"
-              onClick={handleMockGoogleSignIn}
-              className="w-full mt-2 text-center text-[11px] text-muted-foreground hover:text-foreground hover:underline font-semibold"
-              disabled={loading}
-            >
-              Bypass with Mock Google Account
-            </button>
           </TabsContent>
         </Tabs>
       </DialogContent>
