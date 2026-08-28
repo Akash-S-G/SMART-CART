@@ -4,12 +4,11 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T19 — Inventory Management**  [IN_PROGRESS on `feat/ecom-hardening`→`feat/inventory-mgmt` — full inventory controls]
-- `backend/app/api/inventory.py:1` admin-only: `GET /inventory` (search/pagination/low_stock), `GET /inventory/valuation`, `GET /inventory/low-stock`, `GET /inventory/{id}`, `GET /inventory/{id}/transactions`, `PATCH /inventory/{id}` (reorder_level/max_capacity/location/quantity), `POST /inventory/{id}/adjust` (quantity_change, type restock/adjustment/damaged/expired/return/sale, remarks, caps checks, transaction log). `backend/app/repositories/inventory_repository.py:166` `record_transaction` used for all adjustments. Wired in `app/main.py:47` `inventory_router`.
-- `frontend/src/lib/api.ts:352` `listInventoryApi`/`getInventoryValuationApi`/`adjustInventoryApi`/`updateInventoryApi`/`getInventoryTransactionsApi` + `InventoryRow`.
-- `frontend/src/pages/admin.tsx:36` imports + `InventoryDashboardView` now uses `GET /inventory/valuation` + `listInventoryApi` for thresholds, 3 per-row actions: **+Stock** → `InventoryAdjustModal` (qty±, type, remarks), **History** → `InventoryHistoryModal` (before→after log), **Threshold** → `InventoryThresholdModal` (reorder_level/max_capacity/location). Alerts table shows `Reorder: X · Loc: Y` per SKU.
-- Follows git flow: branch `feat/inventory-mgmt` (from `feat/ecom-hardening`), needs `pytest` + `playwright 8/8` + `curl` verify before merge.
-- Previous: **T18 Ecom Hardening** `[DONE on feat/ecom-hardening]` — `addresses.py` CRUD + `GET /products/autocomplete`, `navbar.tsx:191` autocomplete, `address-book.tsx`, `TrackingTimeline`, `use-recent.ts` Recently Viewed.
+**T14 — Git & docs**  [IN_PROGRESS on `feat/git-docs` — README + .env.example + gitignore]
+- `README.md:1` new: local host psql `5432` quick start, `5433` docker alt, 1005 products, all features (catalog/cart/orders/payments/inventory/analytics/AI), `pytest 5/5` + `playwright 8/8` + curl checks, git flow `feat/*` merge after test, Deploy (Render/HF + Vercel).
+- `backend/.env.example:1` updated: default `5432` host, `5433` docker alt + supabase pooler comment, `BACKEND_CORS_ORIGINS` with Vercel + localhost union, `GOOGLE_REDIRECT_URI`, `AI_SERVICE_URL` Modal, Cloudinary fallback, Supabase optional. `frontend/.env.example` already correct (`VITE_API_URL=http://localhost:8000`).
+- `.gitignore:60` added `backend/.env.supabase.bak`, `frontend/test-results/`, `playwright-report/`.
+- Previous: **T19 Inventory Management** `[DONE on feat/ecom-hardening ec44b2c]` — 7 endpoints `inventory.py:1`, `api.ts:359` helpers, `admin.tsx:36` +Stock/History/Threshold modals, valuation. **T18 Ecom Hardening** `[DONE]` — addresses/autocomplete/recent/tracking/filters.
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability
@@ -37,9 +36,9 @@
 ## Queue — Next Feats (each own branch, merge after test)
 - [x] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — `POST /ai/recipe` `flan-t5-small` 80M + RAG, `ai-copilot.tsx` ingredients/steps/source
 - [x] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — `CONF 0.35`, `MAX_DET 12`, `validate_scanner.py` 2/12 dets, 8/8 green, merged `84b4cda`
-- [x] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book CRUD `POST/GET /addresses`, autocomplete `GET /autocomplete`, order `TrackingTimeline`, recently viewed `useRecent` (all local psql, 1005 products) — done, 8/8 green
-- [ ] **T19 — Inventory Management** `feat/inventory-mgmt` — `GET/PATCH/POST /inventory` valuation/low-stock/transactions/adjust/thresholds + Admin UI (+Stock/History/Threshold) — in progress, needs `pytest`+`playwright` before merge
-- [ ] **T14 — Git & docs**: finalize README, `.env.example` local `5432`, host psql instructions
+- [x] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book CRUD `POST/GET /addresses`, autocomplete `GET /autocomplete`, order `TrackingTimeline`, recently viewed `useRecent` (all local psql, 1005 products) — done, 8/8 green, merged `ac44b2c`
+- [x] **T19 — Inventory Management** `feat/ecom-hardening` (combined) — `GET/PATCH/POST /inventory` valuation/low-stock/transactions/adjust/thresholds + Admin UI (+Stock/History/Threshold) — done, merged `ac44b2c`, pytest 5/5 build 154k
+- [ ] **T14 — Git & docs** `feat/git-docs` — README local 5432, `.env.example` host 5432, `.gitignore` supabase/test-results — in progress (this branch), needs `pytest`+`playwright` before merge
 
 ## Notes
 - Local DB: **host psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (24 tables, **1005** products) — backfilled 69 desc, 18 brand, 635 images + 20 prices/inventory, generated 353 to reach 1000+ (supabase paused, local only as requested). Supabase backup `backend/.env.supabase.bak`.

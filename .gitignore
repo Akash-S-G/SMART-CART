@@ -57,3 +57,9 @@ Thumbs.db
 # Compiled test caches
 .pytest_cache/
 .mypy_cache/
+
+# Local backups & test artifacts (not committed)
+backend/.env.supabase.bak
+frontend/test-results/
+frontend/playwright-report/
+playwright/.cache/
