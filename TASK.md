@@ -4,11 +4,9 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T14 — Git & docs**  [IN_PROGRESS on `feat/git-docs` — README + .env.example + gitignore]
-- `README.md:1` new: local host psql `5432` quick start, `5433` docker alt, 1005 products, all features (catalog/cart/orders/payments/inventory/analytics/AI), `pytest 5/5` + `playwright 8/8` + curl checks, git flow `feat/*` merge after test, Deploy (Render/HF + Vercel).
-- `backend/.env.example:1` updated: default `5432` host, `5433` docker alt + supabase pooler comment, `BACKEND_CORS_ORIGINS` with Vercel + localhost union, `GOOGLE_REDIRECT_URI`, `AI_SERVICE_URL` Modal, Cloudinary fallback, Supabase optional. `frontend/.env.example` already correct (`VITE_API_URL=http://localhost:8000`).
-- `.gitignore:60` added `backend/.env.supabase.bak`, `frontend/test-results/`, `playwright-report/`.
-- Previous: **T19 Inventory Management** `[DONE on feat/ecom-hardening ec44b2c]` — 7 endpoints `inventory.py:1`, `api.ts:359` helpers, `admin.tsx:36` +Stock/History/Threshold modals, valuation. **T18 Ecom Hardening** `[DONE]` — addresses/autocomplete/recent/tracking/filters.
+**T14 — Git & docs**  [DONE on `feat/git-docs` → `main` 37a4b9b]
+- `README.md:1` created: host psql `5432` quick start + docker `5433` alt, 1005 products, env, architecture, features, testing, git flow. `backend/.env.example:1` default `5432` host, `BACKEND_CORS_ORIGINS` Vercel+localhost, `AI_SERVICE_URL`, docs. `.gitignore:60` `supabase.bak`/`test-results`/`playwright-report`. Verified `pytest 5/5` + `vite 154k` + `8/8` green before merge.
+- Previous: **T19 Inventory** `[DONE ac44b2c]` 7 endpoints + admin modals, **T18 Ecom** `[DONE ac44b2c]` addresses/autocomplete/recent/tracking/filters.
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability
@@ -36,9 +34,9 @@
 ## Queue — Next Feats (each own branch, merge after test)
 - [x] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — `POST /ai/recipe` `flan-t5-small` 80M + RAG, `ai-copilot.tsx` ingredients/steps/source
 - [x] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — `CONF 0.35`, `MAX_DET 12`, `validate_scanner.py` 2/12 dets, 8/8 green, merged `84b4cda`
-- [x] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book CRUD `POST/GET /addresses`, autocomplete `GET /autocomplete`, order `TrackingTimeline`, recently viewed `useRecent` (all local psql, 1005 products) — done, 8/8 green, merged `ac44b2c`
-- [x] **T19 — Inventory Management** `feat/ecom-hardening` (combined) — `GET/PATCH/POST /inventory` valuation/low-stock/transactions/adjust/thresholds + Admin UI (+Stock/History/Threshold) — done, merged `ac44b2c`, pytest 5/5 build 154k
-- [ ] **T14 — Git & docs** `feat/git-docs` — README local 5432, `.env.example` host 5432, `.gitignore` supabase/test-results — in progress (this branch), needs `pytest`+`playwright` before merge
+- [x] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book CRUD `POST/GET /addresses`, autocomplete `GET /autocomplete`, order `TrackingTimeline`, recently viewed `useRecent` — done 8/8, merged `ac44b2c`
+- [x] **T19 — Inventory Management** `feat/ecom-hardening` (combined) — `GET/PATCH/POST /inventory` valuation/low-stock/transactions/adjust/thresholds + Admin UI (+Stock/History/Threshold) — done merged `ac44b2c`, pytest 5/5 build 154k
+- [x] **T14 — Git & docs** `feat/git-docs` — README `5432`, `.env.example` host `5432`, `.gitignore` `supabase/test-results` — done merged `37a4b9b`, pytest 5/5 build 154k
 
 ## Notes
 - Local DB: **host psql** `127.0.0.1:5432` `smartcart_user:777/smartcart` (24 tables, **1005** products) — backfilled 69 desc, 18 brand, 635 images + 20 prices/inventory, generated 353 to reach 1000+ (supabase paused, local only as requested). Supabase backup `backend/.env.supabase.bak`.
