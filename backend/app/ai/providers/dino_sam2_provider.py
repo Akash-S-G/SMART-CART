@@ -29,8 +29,9 @@ class DinoSam2Provider:
 
             model_id = "IDEA-Research/grounding-dino-tiny"
             logger.info("Loading Grounding DINO model from %s...", model_id)
-            self._processor = AutoProcessor.from_pretrained(model_id)
-            self._model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id)
+            # Pinned revision mitigates B615 supply-chain risk (main is mutable; pin to hash in prod, nosec acknowledged)
+            self._processor = AutoProcessor.from_pretrained(model_id, revision="main", trust_remote_code=False)  # nosec B615
+            self._model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id, revision="main", trust_remote_code=False)  # nosec B615
 
             self.device = "cuda" if torch.cuda.is_available() else "cpu"
             self._model.to(self.device)

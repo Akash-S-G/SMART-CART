@@ -216,7 +216,8 @@ def payment_webhook(
         service = PaymentService(db)
         try:
             service.verify_payment(transaction_id)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging as _logging
+            _logging.getLogger("smartcart").warning("webhook verify failed for %s: %s", transaction_id, e)
             
     return {"status": "ok", "event": event}

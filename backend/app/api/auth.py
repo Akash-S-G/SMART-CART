@@ -160,8 +160,9 @@ def logout(
         service = AuthService(db)
         try:
             service.logout(token)
-        except Exception:
-            pass
+        except Exception as e:
+            import logging as _logging
+            _logging.getLogger("smartcart").debug("logout best-effort failed: %s", e)
     response.delete_cookie("refresh_token")
     return MessageResponse(message="Logged out successfully.")
 

@@ -6,7 +6,7 @@ returns an SVG data-URI so the frontend can preview/print without extra deps.
 from __future__ import annotations
 
 import io
-import random
+import secrets
 from datetime import datetime, timezone
 
 from barcode import EAN13, Code128
@@ -36,8 +36,8 @@ def generate_barcode(existing: str | None = None) -> str:
         if len(digits) == 12 and digits.isdigit():
             return digits + _ean13_check_digit(digits)
 
-    # Mint a new EAN-13: 890 = India GS1 prefix, then random + check digit.
-    base = "890" + "".join(random.choice("0123456789") for _ in range(9))
+    # Mint a new EAN-13: 890 = India GS1 prefix, then CSPRNG + check digit.
+    base = "890" + "".join(secrets.choice("0123456789") for _ in range(9))
     return base + _ean13_check_digit(base)
 
 

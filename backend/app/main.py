@@ -105,8 +105,9 @@ class ConnectionManager:
         for connection in self.active_connections:
             try:
                 await connection.send_json(message)
-            except Exception:
-                pass
+            except Exception as e:
+                import logging as _logging
+                _logging.getLogger("smartcart").debug("ws broadcast to %s failed: %s", id(connection), e)
 
 ws_manager = ConnectionManager()
 

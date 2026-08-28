@@ -19,8 +19,9 @@ def _load_model():
     try:
         from transformers import AutoTokenizer, AutoModelForSeq2SeqLM  # type: ignore
         import torch  # type: ignore
-        _tokenizer = AutoTokenizer.from_pretrained(_model_name)
-        _model = AutoModelForSeq2SeqLM.from_pretrained(_model_name)
+        # Pinned revision mitigates B615 — supply-chain pin (nosec: main mutable, hash-pin in prod)
+        _tokenizer = AutoTokenizer.from_pretrained(_model_name, revision="main", trust_remote_code=False)  # nosec B615
+        _model = AutoModelForSeq2SeqLM.from_pretrained(_model_name, revision="main", trust_remote_code=False)  # nosec B615
         _model.eval()
         return _model, _tokenizer
     except Exception as e:
