@@ -141,7 +141,8 @@ function OrderCard({ order }: { order: any }) {
 
       {/* Expanded detail */}
       {expanded && (
-        <div className="border-t border-white/10 p-5 space-y-4">
+        <div className="border-t border-border p-5 space-y-4 bg-muted/20">
+          <TrackingTimeline status={order.status} />
           {/* Live Delivery Driver Simulation Card */}
           {['confirmed', 'processing', 'shipped', 'delivered'].includes(order.status) && (
             <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-4 mt-4">

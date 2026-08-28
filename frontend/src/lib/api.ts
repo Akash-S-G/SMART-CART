@@ -328,3 +328,79 @@ export interface RecipeResponse {
 export async function generateRecipeApi(prompt: string): Promise<RecipeResponse> {
   return postJson<RecipeResponse, { prompt: string }>(`/ai/recipe`, { prompt })
 }
+
+export async function getAutocompleteApi(q: string): Promise<string[]> {
+  const res = await getJson<string[]>(`/products/autocomplete?q=${encodeURIComponent(q)}`)
+  return Array.isArray(res) ? res : []
+}
+
+export interface Address {
+  id: string
+  address_type: string
+  line1: string
+  line2?: string | null
+  city: string
+  state: string
+  country: string
+  postal_code: string
+  is_default: boolean
+}
+
+export async function listAddressesApi(): Promise<Address[]> {
+  return getJson<Address[]>(`/addresses`)
+}
+export async function createAddressApi(body: Omit<Address, 'id'>): Promise<Address> {
+  return postJson<Address, typeof body>(`/addresses`, body)
+}
+export async function deleteAddressApi(id: string): Promise<void> {
+  return deleteJson<void>(`/addresses/${id}`)
+}
+
+/* ==========================================================================
+   INVENTORY MANAGEMENT APIs (admin)
+   ========================================================================== */
+
+export interface InventoryRow {
+  product_id: string
+  inventory_id: string
+  product_name: string
+  sku: string
+  barcode: string | null
+  quantity: number
+  reorder_level: number | null
+  max_capacity: number | null
+  location: string | null
+  price: number | null
+  status: 'optimal' | 'low' | 'out'
+}
+
+export async function listInventoryApi(params?: { low_stock?: boolean; search?: string; skip?: number; limit?: number }): Promise<InventoryRow[]> {
+  const qs = new URLSearchParams()
+  if (params?.low_stock) qs.set('low_stock', 'true')
+  if (params?.search) qs.set('search', params.search)
+  if (typeof params?.skip === 'number') qs.set('skip', String(params.skip))
+  if (typeof params?.limit === 'number') qs.set('limit', String(params.limit))
+  const suffix = qs.toString() ? `?${qs.toString()}` : ''
+  const res = await getJson<InventoryRow[]>(`/inventory${suffix}`)
+  return Array.isArray(res) ? res : []
+}
+
+export async function getInventoryValuationApi(): Promise<{ total_skus: number; total_units: number; total_valuation: number; low_stock_count: number; out_of_stock_count: number }> {
+  return getJson<any>(`/inventory/valuation`)
+}
+
+export async function getInventoryApi(productId: string): Promise<InventoryRow> {
+  return getJson<InventoryRow>(`/inventory/${productId}`)
+}
+
+export async function adjustInventoryApi(productId: string, body: { quantity_change: number; transaction_type?: string; remarks?: string }): Promise<InventoryRow> {
+  return postJson<InventoryRow, any>(`/inventory/${productId}/adjust`, body)
+}
+
+export async function updateInventoryApi(productId: string, body: { reorder_level?: number | null; max_capacity?: number | null; location?: string | null; quantity?: number }): Promise<InventoryRow> {
+  return patchJson<InventoryRow, any>(`/inventory/${productId}`, body)
+}
+
+export async function getInventoryTransactionsApi(productId: string): Promise<{ id: string; transaction_type: string; quantity_change: number; quantity_before: number; quantity_after: number; remarks: string | null; created_at: string | null }[]> {
+  return getJson<any>(`/inventory/${productId}/transactions`)
+}

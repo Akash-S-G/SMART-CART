@@ -42,6 +42,11 @@ import {
   listAdminOrdersApi,
   getRealCustomersApi,
   getRealLogsApi,
+  listInventoryApi,
+  getInventoryValuationApi,
+  adjustInventoryApi,
+  updateInventoryApi,
+  getInventoryTransactionsApi,
 } from '@/lib/api'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -253,13 +258,21 @@ function InventoryDashboardView({
   onDelete: (id: string) => void
 }) {
   const navigate = useNavigate()
+  const { toast } = useToast()
+  const queryClient = useQueryClient()
+  const [adjustFor, setAdjustFor] = useState<ProductRow | null>(null)
+  const [historyFor, setHistoryFor] = useState<ProductRow | null>(null)
+  const [editInvFor, setEditInvFor] = useState<ProductRow | null>(null)
+  const { data: valuation } = useQuery({ queryKey: ['inv-valuation'], queryFn: getInventoryValuationApi })
+  const { data: invRows } = useQuery({ queryKey: ['inventory-api'], queryFn: () => listInventoryApi({ limit: 200 }) })
 
   if (loading) return <div className="p-10 text-center text-muted-foreground text-sm">Loading inventory metrics…</div>
 
-  const totalSkus = products.length
+  const totalSkus = valuation?.total_skus ?? products.length
   const lowStockProducts = products.filter((p) => (p.stock ?? 0) > 0 && (p.stock ?? 0) < 20)
   const outOfStockProducts = products.filter((p) => (p.stock ?? 0) === 0)
-  const totalValuation = products.reduce((acc, p) => acc + (p.price ?? 0) * (p.stock ?? 0), 0)
+  const totalValuation = valuation?.total_valuation ?? products.reduce((acc, p) => acc + (p.price ?? 0) * (p.stock ?? 0), 0)
+  const reorderMap = new Map((invRows || []).map(r => [r.product_id, r]))
 
   const searchedProducts = searchQuery
     ? products.filter(
@@ -419,14 +432,21 @@ function InventoryDashboardView({
                           {isZero ? 'Out of Stock' : 'Low Stock'}
                         </Badge>
                       </td>
-                      <td className="p-3 text-right flex justify-end gap-2">
+                      <td className="p-3 text-right flex justify-end gap-1.5 flex-wrap">
+                        {(() => {
+                          const inv = reorderMap.get(p.id)
+                          return inv ? <span className="text-[10px] text-muted-foreground mr-1">Reorder: {inv.reorder_level ?? 20} · Loc: {inv.location ?? '—'}</span> : null
+                        })()}
+                        <Button size="sm" variant="gradient" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setAdjustFor(p)}>+Stock</Button>
+                        <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setHistoryFor(p)}>History</Button>
+                        <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setEditInvFor(p)}><RefreshCw className="h-3 w-3" /></Button>
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-lg text-[11px] h-7 px-3 gap-1"
+                          className="rounded-lg text-[11px] h-7 px-2 gap-1"
                           onClick={() => navigate(`/product/${p.id}`)}
                         >
-                          Product Page <ExternalLink className="h-3 w-3" />
+                          <ExternalLink className="h-3 w-3" />
                         </Button>
                         <Button size="sm" variant="outline" className="rounded-lg text-[11px] h-7 px-2" onClick={() => onEdit(p)}>
                           <Pencil className="h-3 w-3" />
@@ -440,7 +460,103 @@ function InventoryDashboardView({
           </div>
         )}
       </div>
+
+      {adjustFor && (
+        <InventoryAdjustModal
+          product={adjustFor}
+          onClose={() => setAdjustFor(null)}
+          onDone={() => { setAdjustFor(null); queryClient.invalidateQueries({ queryKey: ['inventory-api'] }); queryClient.invalidateQueries({ queryKey: ['inv-valuation'] }); queryClient.invalidateQueries({ queryKey: ['admin-products'] }); toast({ title: 'Inventory adjusted' }) }}
+        />
+      )}
+      {historyFor && (
+        <InventoryHistoryModal product={historyFor} onClose={() => setHistoryFor(null)} />
+      )}
+      {editInvFor && (
+        <InventoryThresholdModal
+          product={editInvFor}
+          current={reorderMap.get(editInvFor.id)}
+          onClose={() => setEditInvFor(null)}
+          onDone={() => { setEditInvFor(null); queryClient.invalidateQueries({ queryKey: ['inventory-api'] }); toast({ title: 'Thresholds updated' }) }}
+        />
+      )}
     </div>
+  )
+}
+
+function InventoryAdjustModal({ product, onClose, onDone }: { product: ProductRow; onClose: () => void; onDone: () => void }) {
+  const { toast } = useToast()
+  const [qty, setQty] = useState(10)
+  const [type, setType] = useState('restock')
+  const [remarks, setRemarks] = useState('')
+  const [busy, setBusy] = useState(false)
+  const handle = async () => {
+    if (!qty || qty === 0) { toast({ title: 'Quantity required', variant: 'destructive' }); return }
+    setBusy(true)
+    try {
+      await adjustInventoryApi(product.id, { quantity_change: qty, transaction_type: type, remarks: remarks || undefined })
+      onDone()
+    } catch (e: any) { toast({ title: 'Adjust failed', description: e?.message, variant: 'destructive' }) } finally { setBusy(false) }
+  }
+  return (
+    <ModalShell title={`Adjust Stock — ${product.name}`} onClose={onClose}>
+      <p className="text-xs text-muted-foreground">Current: <b>{product.stock}</b> · SKU {product.sku}</p>
+      <div className="grid grid-cols-2 gap-4 mt-3">
+        <Field label="Quantity Change (+ inbound / - outbound)"><Input type="number" value={qty} onChange={e => setQty(Number(e.target.value))} className="bg-card border-border" /></Field>
+        <Field label="Type">
+          <select value={type} onChange={e => setType(e.target.value)} className="w-full bg-card border border-border rounded-xl px-3 py-2 text-sm">
+            <option value="restock">restock</option>
+            <option value="adjustment">adjustment</option>
+            <option value="damaged">damaged</option>
+            <option value="expired">expired</option>
+            <option value="return">return</option>
+            <option value="sale">sale</option>
+          </select>
+        </Field>
+        <Field label="Remarks" full><Input value={remarks} onChange={e => setRemarks(e.target.value)} placeholder="e.g. Supplier delivery GRN-42" className="bg-card border-border" /></Field>
+      </div>
+      <div className="flex justify-end gap-2 mt-5"><Button variant="ghost" onClick={onClose}>Cancel</Button><Button variant="gradient" onClick={handle} disabled={busy}>{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Confirm'}</Button></div>
+    </ModalShell>
+  )
+}
+
+function InventoryThresholdModal({ product, current, onClose, onDone }: { product: ProductRow; current: any; onClose: () => void; onDone: () => void }) {
+  const { toast } = useToast()
+  const [reorder, setReorder] = useState(current?.reorder_level ?? 20)
+  const [maxCap, setMaxCap] = useState(current?.max_capacity ?? 500)
+  const [loc, setLoc] = useState(current?.location ?? '')
+  const [busy, setBusy] = useState(false)
+  const handle = async () => {
+    setBusy(true)
+    try { await updateInventoryApi(product.id, { reorder_level: Number(reorder), max_capacity: Number(maxCap), location: loc || null }); onDone() } catch (e: any) { toast({ title: 'Update failed', description: e?.message, variant: 'destructive' }) } finally { setBusy(false) }
+  }
+  return (
+    <ModalShell title={`Thresholds — ${product.name}`} onClose={onClose}>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Reorder Level"><Input type="number" value={reorder} onChange={e => setReorder(Number(e.target.value))} className="bg-card border-border" /></Field>
+        <Field label="Max Capacity"><Input type="number" value={maxCap} onChange={e => setMaxCap(Number(e.target.value))} className="bg-card border-border" /></Field>
+        <Field label="Location" full><Input value={loc} onChange={e => setLoc(e.target.value)} placeholder="Aisle-3 / WH-1" className="bg-card border-border" /></Field>
+      </div>
+      <div className="flex justify-end gap-2 mt-5"><Button variant="ghost" onClick={onClose}>Cancel</Button><Button variant="gradient" onClick={handle} disabled={busy}>{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}</Button></div>
+    </ModalShell>
+  )
+}
+
+function InventoryHistoryModal({ product, onClose }: { product: ProductRow; onClose: () => void }) {
+  const { data, isLoading } = useQuery({ queryKey: ['inv-tx', product.id], queryFn: () => getInventoryTransactionsApi(product.id) })
+  return (
+    <ModalShell title={`History — ${product.name}`} onClose={onClose}>
+      {isLoading ? <p className="text-xs text-muted-foreground">Loading…</p> : !data?.length ? <p className="text-xs text-muted-foreground">No transactions yet.</p> : (
+        <div className="max-h-80 overflow-auto border border-border rounded-xl divide-y">
+          {data.map((t: any) => (
+            <div key={t.id} className="p-3 flex justify-between items-center text-xs">
+              <div><span className={`font-bold ${t.quantity_change > 0 ? 'text-emerald-600' : 'text-destructive'}`}>{t.quantity_change > 0 ? '+' : ''}{t.quantity_change}</span> <span className="text-muted-foreground ml-2">{t.transaction_type}</span><span className="text-muted-foreground ml-2">{t.remarks || ''}</span></div>
+              <div className="text-right"><div className="font-mono">{t.quantity_before} → {t.quantity_after}</div><div className="text-[10px] text-muted-foreground">{t.created_at?.slice(0,16).replace('T',' ')}</div></div>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="flex justify-end mt-4"><Button variant="outline" onClick={onClose}>Close</Button></div>
+    </ModalShell>
   )
 }
 
