@@ -130,6 +130,26 @@ def generate_barcode_endpoint(
 
 
 @router.get(
+    "/autocomplete",
+    response_model=list[str],
+)
+def autocomplete(
+    q: str = Query(..., min_length=1, max_length=50),
+    db: Session = Depends(get_db),
+):
+    """Search autocomplete — returns up to 8 product name suggestions."""
+    from app.models.products.product import Product
+
+    results = (
+        db.query(Product.name)
+        .filter(Product.name.ilike(f"%{q}%"), Product.is_active == True)  # noqa
+        .limit(8)
+        .all()
+    )
+    return [r[0] for r in results]
+
+
+@router.get(
     "/{product_id}",
     response_model=ProductResponse,
 )

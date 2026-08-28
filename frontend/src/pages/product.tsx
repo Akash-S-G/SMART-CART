@@ -43,6 +43,7 @@ import { useCart } from '@/hooks/use-cart'
 import { useWishlist } from '@/hooks/use-wishlist'
 import { useToast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/cn'
+import { useRecentlyViewedSync, useRecent } from '@/hooks/use-recent'
 
 export function ProductPage() {
   const { id } = useParams<{ id: string }>()
@@ -117,6 +118,7 @@ export function ProductPage() {
     }
   }
   const queryClient = useQueryClient()
+  useRecentlyViewedSync(id)
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -797,6 +799,9 @@ export function ProductPage() {
         </TabsContent>
       </Tabs>
 
+      {/* Recently Viewed */}
+      <RecentlyViewed currentId={id} />
+
       {/* Recommended Products Section */}
       <div className="mt-16 pt-10 border-t border-border flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -888,6 +893,28 @@ export function ProductPage() {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+function RecentlyViewed({ currentId }: { currentId?: string }) {
+  const { ids } = useRecent()
+  const { data: all } = useQuery({ queryKey: ['recent-products'], queryFn: () => listProductsApi(0, 100) })
+  const navigate = useNavigate()
+  const recent = (all || []).filter(p => ids.includes(p.id) && p.id !== currentId).slice(0, 4)
+  if (recent.length === 0) return null
+  return (
+    <div className="mt-16 pt-10 border-t border-border">
+      <h3 className="text-lg font-bold text-foreground">Recently Viewed</h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        {recent.map(r => (
+          <div key={r.id} onClick={() => navigate(`/product/${r.id}`)} className="cursor-pointer bg-card border border-border rounded-2xl p-3 hover:border-primary/30 transition">
+            <img src={r.images?.[0] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200'} alt={r.name} className="w-full h-32 object-cover rounded-xl" />
+            <p className="text-xs font-bold mt-2 truncate">{r.name}</p>
+            <p className="text-xs text-primary font-bold">₹{r.price}</p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

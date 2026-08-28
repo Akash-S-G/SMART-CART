@@ -28,6 +28,7 @@ import { useWishlist } from '@/hooks/use-wishlist'
 import { listOrdersApi, getProfileApi } from '@/lib/api'
 import { useToast } from '@/components/ui/use-toast'
 import { formatCurrency } from '@/lib/format'
+import { AddressBook } from '@/components/profile/address-book'
 
 export function ProfilePage() {
   const navigate = useNavigate()
@@ -176,12 +177,15 @@ export function ProfilePage() {
 
       {/* Main Profile Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-10 w-full">
-        <TabsList className="flex gap-4 border-b border-border bg-transparent p-0 rounded-none w-full mb-8">
+        <TabsList className="flex gap-4 border-b border-border bg-transparent p-0 rounded-none w-full mb-8 overflow-x-auto scrollbar-none">
           <TabsTrigger value="dashboard" className="border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-2 pb-3 pt-0 rounded-none font-semibold text-sm flex items-center gap-1.5">
             <User className="h-4 w-4" /> Personal Details
           </TabsTrigger>
           <TabsTrigger value="orders" className="border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-2 pb-3 pt-0 rounded-none font-semibold text-sm flex items-center gap-1.5">
             <ShoppingBag className="h-4 w-4" /> Orders ({orders.length})
+          </TabsTrigger>
+          <TabsTrigger value="addresses" className="border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-2 pb-3 pt-0 rounded-none font-semibold text-sm flex items-center gap-1.5">
+            <MapPin className="h-4 w-4" /> Addresses
           </TabsTrigger>
           <TabsTrigger value="security" className="border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-2 pb-3 pt-0 rounded-none font-semibold text-sm flex items-center gap-1.5">
             <Settings className="h-4 w-4" /> Account Settings
@@ -346,6 +350,12 @@ export function ProfilePage() {
                 Sign Out from Device
               </Button>
             </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="addresses">
+          <div className="bg-card border border-border p-6 rounded-2xl shadow-sm">
+            <AddressBook />
           </div>
         </TabsContent>
       </Tabs>

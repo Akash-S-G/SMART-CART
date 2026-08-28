@@ -70,11 +70,15 @@ from app.api.health import router as health_router
 from app.api.wishlist import router as wishlist_router
 from app.api.coupons import router as coupon_router
 from app.api.analytics import router as analytics_router
+from app.api.addresses import router as addresses_router
+from app.api.inventory import router as inventory_router
 
 app.include_router(health_router)
 app.include_router(wishlist_router)
 app.include_router(coupon_router)
 app.include_router(analytics_router)
+app.include_router(addresses_router)
+app.include_router(inventory_router)
 app.include_router(ai_router)
 app.include_router(payment_router)
 app.include_router(order_router)

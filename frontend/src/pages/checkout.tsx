@@ -27,9 +27,10 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/cn'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
-import { checkoutApi, createPaymentApi, verifyPaymentApi } from '@/lib/api'
+import { checkoutApi, createPaymentApi, verifyPaymentApi, listAddressesApi } from '@/lib/api'
 import { useToast } from '@/components/ui/use-toast'
 import type { Order, PaymentMethod } from '@/types/api'
+import { AddressBook } from '@/components/profile/address-book'
 
 const STEPS = ['Shipping', 'Payment', 'Review']
 
@@ -267,6 +268,7 @@ function StepShipping({
   setForm: (v: any) => void
   onContinue: () => void
 }) {
+  const [showAddrBook, setShowAddrBook] = useState(false)
   const handleChange = (key: string, val: string) => {
     setForm({ ...form, [key]: val })
   }
@@ -280,12 +282,34 @@ function StepShipping({
     }
   }
 
+  const handleSelectAddr = (a: any) => {
+    setForm({
+      ...form,
+      address: a.line1 + (a.line2 ? `, ${a.line2}` : ''),
+      city: a.city,
+      state: a.state,
+      zip: a.postal_code,
+      country: a.country,
+    })
+    setShowAddrBook(false)
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <section>
-        <h2 className="flex items-center gap-2 text-xl font-bold text-foreground">
-          <MapPin className="h-5 w-5 text-primary" /> Delivery Address
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="flex items-center gap-2 text-xl font-bold text-foreground">
+            <MapPin className="h-5 w-5 text-primary" /> Delivery Address
+          </h2>
+          <Button type="button" variant="outline" size="sm" className="rounded-xl text-xs" onClick={() => setShowAddrBook(v => !v)}>
+            {showAddrBook ? 'Hide saved' : 'Use saved address'}
+          </Button>
+        </div>
+        {showAddrBook && (
+          <div className="mt-4">
+            <AddressBook selectable onSelect={handleSelectAddr} />
+          </div>
+        )}
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Field label="First name" required value={form.firstName} onChange={(e) => handleChange('firstName', e.target.value)} placeholder="Alex" />
           <Field label="Last name" required value={form.lastName} onChange={(e) => handleChange('lastName', e.target.value)} placeholder="Mercer" />

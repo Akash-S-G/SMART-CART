@@ -7,8 +7,9 @@ import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
 import { useTheme } from '@/hooks/use-theme'
 import { useLanguage } from '@/hooks/use-language'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useToast } from '@/components/ui/use-toast'
+import { getAutocompleteApi } from '@/lib/api'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,6 +44,9 @@ export function Navbar() {
   const { toast } = useToast()
 
   const [navSearch, setNavSearch] = useState('')
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const navSearchRef = useRef<HTMLInputElement>(null)
   const [showLocationModal, setShowLocationModal] = useState(false)
   const [locSearch, setLocSearch] = useState('')
   const [detectingGps, setDetectingGps] = useState(false)
@@ -64,9 +68,42 @@ export function Navbar() {
   const handleNavSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (navSearch.trim()) {
+      setShowSuggestions(false)
       navigate(`/collections?search=${encodeURIComponent(navSearch.trim())}`)
     }
   }
+
+  // Autocomplete with debounce
+  useEffect(() => {
+    if (navSearch.trim().length < 2) {
+      setSuggestions([])
+      return
+    }
+    const id = setTimeout(async () => {
+      try {
+        const res = await getAutocompleteApi(navSearch.trim())
+        setSuggestions(res)
+        setShowSuggestions(true)
+      } catch {
+        setSuggestions([])
+      }
+    }, 250)
+    return () => clearTimeout(id)
+  }, [navSearch])
+
+  // close suggestions on outside click
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (navSearchRef.current && !navSearchRef.current.contains(e.target as Node)) {
+        // check if click is on suggestions box
+        const sug = document.getElementById('nav-autocomplete')
+        if (sug && sug.contains(e.target as Node)) return
+        setShowSuggestions(false)
+      }
+    }
+    window.addEventListener('mousedown', onClick)
+    return () => window.removeEventListener('mousedown', onClick)
+  }, [])
 
   const handleSelectLocation = (loc: { area: string; city: string; pincode: string }) => {
     setCurrentLoc(loc)
@@ -188,15 +225,35 @@ export function Navbar() {
           </div>
 
           {/* Quick Header Search */}
-          <form onSubmit={handleNavSearch} className="hidden md:flex flex-1 max-w-md mx-4 relative">
+          <form onSubmit={handleNavSearch} className="hidden md:flex flex-1 max-w-md mx-4 relative" ref={navSearchRef as any}>
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               value={navSearch}
               onChange={(e) => setNavSearch(e.target.value)}
+              onFocus={() => navSearch.trim().length >= 2 && setShowSuggestions(true)}
               placeholder="Search groceries (e.g. Milk, Atta, Eggs)..."
               className="w-full h-9 pl-9 pr-4 text-xs bg-muted/50 border border-border rounded-full text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary focus:bg-background transition-all"
+              autoComplete="off"
             />
+            {showSuggestions && suggestions.length > 0 && (
+              <div id="nav-autocomplete" className="absolute top-full mt-2 left-0 right-0 bg-card border border-border rounded-2xl shadow-xl overflow-hidden z-50">
+                {suggestions.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      setNavSearch(s)
+                      setShowSuggestions(false)
+                      navigate(`/collections?search=${encodeURIComponent(s)}`)
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-xs font-medium text-foreground hover:bg-muted flex items-center gap-2"
+                  >
+                    <Search className="h-3.5 w-3.5 text-muted-foreground" /> {s}
+                  </button>
+                ))}
+              </div>
+            )}
           </form>
 
           {/* Nav Navigation Links */}
@@ -354,7 +411,17 @@ export function Navbar() {
                 value={navSearch} onChange={e => setNavSearch(e.target.value)}
                 placeholder="Search groceries…"
                 className="w-full h-10 pl-9 pr-4 text-sm bg-muted/50 border border-border rounded-xl text-foreground placeholder:text-muted-foreground/70 outline-none focus:border-primary"
+                autoComplete="off"
               />
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full mt-1 left-0 right-0 bg-card border border-border rounded-xl shadow-lg z-50 overflow-hidden">
+                  {suggestions.map((s) => (
+                    <button key={s} type="button" onClick={() => { setNavSearch(s); setShowSuggestions(false); navigate(`/collections?search=${encodeURIComponent(s)}`); }} className="w-full text-left px-3 py-2 text-xs font-medium hover:bg-muted flex items-center gap-2">
+                      <Search className="h-3 w-3.5 text-muted-foreground" /> {s}
+                    </button>
+                  ))}
+                </div>
+              )}
             </form>
             <nav className="flex flex-wrap gap-1.5 pt-1">
               {NAV_LINKS.map(link => (

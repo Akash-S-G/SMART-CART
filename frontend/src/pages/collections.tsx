@@ -24,6 +24,10 @@ const PRICE_FILTERS = [
   { label: '₹500 - ₹1500', min: 500, max: 1500 },
   { label: 'Over ₹1500', min: 1500, max: 999999 },
 ]
+const RATING_FILTERS = [
+  { label: '4★ & above', min: 4 },
+  { label: '3★ & above', min: 3 },
+]
 const SORTS: { label: string; value: string }[] = [
   { label: 'Recommended', value: '' },
   { label: 'Price: Low to High', value: 'price_asc' },
@@ -43,6 +47,9 @@ export function CollectionsPage() {
 
   const [cats, setCats] = useState<string[]>(() => (categoryParam ? [categoryParam] : []))
   const [prices, setPrices] = useState<string[]>([])
+  const [ratings, setRatings] = useState<string[]>([])
+  const [inStockOnly, setInStockOnly] = useState(false)
+  const [compare, setCompare] = useState<string[]>([])
   const [sort, setSort] = useState('')
   const sentinelRef = useRef<HTMLDivElement | null>(null)
 
@@ -58,7 +65,7 @@ export function CollectionsPage() {
   })
 
   // Build a stable filter signature so each filter change resets pagination.
-  const filterKey = JSON.stringify({ searchQuery, cats, prices, sort })
+  const filterKey = JSON.stringify({ searchQuery, cats, prices, ratings, inStockOnly, sort })
 
   const {
     data,
@@ -91,7 +98,17 @@ export function CollectionsPage() {
     },
   })
 
-  const products = useMemo(() => (data ? data.pages.flat() : []), [data])
+  const productsRaw = useMemo(() => (data ? data.pages.flat() : []), [data])
+  const products = useMemo(() => {
+    let filtered: Product[] = productsRaw as any
+    if (ratings.length > 0) {
+      const mins = ratings.map(r => RATING_FILTERS.find(f => f.label === r)?.min || 0)
+      const minRating = Math.min(...mins)
+      filtered = filtered.filter((p: any) => (p.rating || 4.5) >= minRating)
+    }
+    if (inStockOnly) filtered = filtered.filter((p: any) => (p.stock || 0) > 0)
+    return filtered
+  }, [productsRaw, ratings, inStockOnly])
   const loadedCount = products.length
 
   const toggle = (list: string[], set: (v: string[]) => void, v: string) => {
@@ -178,6 +195,48 @@ export function CollectionsPage() {
                 ))}
               </div>
             </div>
+
+            {/* Rating Filter */}
+            <div className="border-t border-border pt-6">
+              <h3 className="font-bold text-foreground text-sm mb-3">Customer Rating</h3>
+              <div className="space-y-2">
+                {RATING_FILTERS.map((f) => (
+                  <FilterRow
+                    key={f.label}
+                    label={f.label}
+                    checked={ratings.includes(f.label)}
+                    onToggle={() => toggle(ratings, setRatings, f.label)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Availability */}
+            <div className="border-t border-border pt-6">
+              <label className="flex items-center gap-2.5 text-sm cursor-pointer">
+                <input type="checkbox" checked={inStockOnly} onChange={e => setInStockOnly(e.target.checked)} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
+                <span className={inStockOnly ? 'text-foreground font-semibold' : 'text-muted-foreground'}>In Stock only</span>
+              </label>
+            </div>
+
+            {/* Compare */}
+            {compare.length > 0 && (
+              <div className="border-t border-border pt-6">
+                <h3 className="font-bold text-foreground text-sm mb-2">Compare ({compare.length}/4)</h3>
+                <div className="space-y-1.5 mb-3">
+                  {compare.map(id => {
+                    const p = products.find(x => x.id === id)
+                    return <div key={id} className="text-xs bg-muted px-2 py-1 rounded-lg flex justify-between"><span className="truncate">{p?.name || id}</span><button onClick={() => setCompare(c => c.filter(x => x !== id))} className="text-muted-foreground hover:text-foreground ml-2">×</button></div>
+                  })}
+                </div>
+                <Button size="sm" className="w-full rounded-xl text-xs" disabled={compare.length < 2} onClick={() => {
+                  const qs = compare.join(',')
+                  navigate(`/collections?compare=${qs}`)
+                  toast({ title: 'Compare', description: `${compare.length} products selected for compare` })
+                }}>Compare Now</Button>
+                <Button size="sm" variant="ghost" className="w-full rounded-xl text-xs mt-1" onClick={() => setCompare([])}>Clear</Button>
+              </div>
+            )}
           </div>
         </div>
 

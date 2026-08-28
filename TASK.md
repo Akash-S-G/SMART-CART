@@ -4,8 +4,12 @@
 > Testing: Playwright (E2E), Vitest/unit, FastAPI pytest, manual curl/http checks. Scalability: pagination, caching, rate-limit, chunking.
 
 ## Current Working Task
-**T17 — Scanner Accuracy**  [DONE on `feat/scanner-accuracy` — YOLO11n tuned]
-- Tuned `app/ai/config.py:15` `CONF 0.50→0.35`, `MAX_DET 25→12`, `yolo_provider.py` `max_det` 12, validated on `vision-dataset-factory/storage/accepted` 5 images: `2` dets 0.72/0.61, `12` dets (was 217), `0` for 3 (expected), `scripts/validate_scanner.py` + `Grounding DINO` fallback. Branch ready to merge.
+**T19 — Inventory Management**  [IN_PROGRESS on `feat/ecom-hardening`→`feat/inventory-mgmt` — full inventory controls]
+- `backend/app/api/inventory.py:1` admin-only: `GET /inventory` (search/pagination/low_stock), `GET /inventory/valuation`, `GET /inventory/low-stock`, `GET /inventory/{id}`, `GET /inventory/{id}/transactions`, `PATCH /inventory/{id}` (reorder_level/max_capacity/location/quantity), `POST /inventory/{id}/adjust` (quantity_change, type restock/adjustment/damaged/expired/return/sale, remarks, caps checks, transaction log). `backend/app/repositories/inventory_repository.py:166` `record_transaction` used for all adjustments. Wired in `app/main.py:47` `inventory_router`.
+- `frontend/src/lib/api.ts:352` `listInventoryApi`/`getInventoryValuationApi`/`adjustInventoryApi`/`updateInventoryApi`/`getInventoryTransactionsApi` + `InventoryRow`.
+- `frontend/src/pages/admin.tsx:36` imports + `InventoryDashboardView` now uses `GET /inventory/valuation` + `listInventoryApi` for thresholds, 3 per-row actions: **+Stock** → `InventoryAdjustModal` (qty±, type, remarks), **History** → `InventoryHistoryModal` (before→after log), **Threshold** → `InventoryThresholdModal` (reorder_level/max_capacity/location). Alerts table shows `Reorder: X · Loc: Y` per SKU.
+- Follows git flow: branch `feat/inventory-mgmt` (from `feat/ecom-hardening`), needs `pytest` + `playwright 8/8` + `curl` verify before merge.
+- Previous: **T18 Ecom Hardening** `[DONE on feat/ecom-hardening]` — `addresses.py` CRUD + `GET /products/autocomplete`, `navbar.tsx:191` autocomplete, `address-book.tsx`, `TrackingTimeline`, `use-recent.ts` Recently Viewed.
 
 ## Completed — Phase 1-4 (tested locally)
 ### Foundation & Reliability
@@ -31,9 +35,10 @@
 - [x] **T16 — Recipe Copilot LLM**: `backend/app/ai/recipe_service.py:1` `flan-t5-small` 80M (recipe-only, assistant) + fallback templates, `POST /ai/recipe` RAG over 1005, `frontend/src/components/ai/ai-copilot.tsx:56` now shows title/ingredients/steps/source, `lib/api.ts:318` `RecipeResponse`, `vite build` 150k, 8/8 green
 
 ## Queue — Next Feats (each own branch, merge after test)
-- [x] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — `POST /ai/recipe` `flan-t5-small` 80M + RAG, `ai-copilot.tsx` ingredients/steps/source, `lib/api.ts:318` `RecipeResponse`
-- [ ] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — validate `yolo11n.pt`/`best.pt` on `vision-dataset-factory`, compute mAP50/precision/recall, re-train threshold tuning, test via `POST /ai/detect` on 652→1005 image set
-- [ ] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book, order tracking, return, search autocomplete, compare, recently viewed (like other ecommerce)
+- [x] **T16 — Recipe Copilot LLM** `feat/recipe-copilot-llm` — `POST /ai/recipe` `flan-t5-small` 80M + RAG, `ai-copilot.tsx` ingredients/steps/source
+- [x] **T17 — Scanner Accuracy** `feat/scanner-accuracy` — `CONF 0.35`, `MAX_DET 12`, `validate_scanner.py` 2/12 dets, 8/8 green, merged `84b4cda`
+- [x] **T18 — Ecom Hardening** `feat/ecom-hardening` — address book CRUD `POST/GET /addresses`, autocomplete `GET /autocomplete`, order `TrackingTimeline`, recently viewed `useRecent` (all local psql, 1005 products) — done, 8/8 green
+- [ ] **T19 — Inventory Management** `feat/inventory-mgmt` — `GET/PATCH/POST /inventory` valuation/low-stock/transactions/adjust/thresholds + Admin UI (+Stock/History/Threshold) — in progress, needs `pytest`+`playwright` before merge
 - [ ] **T14 — Git & docs**: finalize README, `.env.example` local `5432`, host psql instructions
 
 ## Notes
