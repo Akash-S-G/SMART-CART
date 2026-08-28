@@ -337,7 +337,8 @@ class AuthService:
                         last_name = idinfo.get("family_name")
                         profile_image = idinfo.get("picture")
             except Exception as e:
-                pass
+                import logging as _logging2
+                _logging2.getLogger("smartcart").debug("google code exchange failed: %s", e)
 
         # 2. Verify Google ID Token directly if passed
         if not email and request.id_token:
@@ -352,8 +353,9 @@ class AuthService:
                 first_name = idinfo.get("given_name")
                 last_name = idinfo.get("family_name")
                 profile_image = idinfo.get("picture")
-            except Exception:
-                pass
+            except Exception as e:
+                import logging as _logging3
+                _logging3.getLogger("smartcart").debug("google id_token verify failed: %s", e)
 
         # 3. Fallback email
         if not email and request.email:
