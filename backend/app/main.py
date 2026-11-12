@@ -26,19 +26,8 @@ from app.core.config import settings
 
 app = FastAPI(lifespan=lifespan)
 
-# CORS configuration
-# Always allow the standard local dev origins, and union them with any
-# explicitly configured origins (e.g. the Vercel deploy URL) so local dev
-# never breaks even if BACKEND_CORS_ORIGINS omits localhost.
-DEV_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-configured = settings.BACKEND_CORS_ORIGINS or []
-origins = list(dict.fromkeys([*configured, *DEV_ORIGINS]))  # preserve order, dedupe
+# CORS configuration: configured origins plus local dev defaults.
+origins = settings.allowed_origins()
 app.add_middleware(SecurityHeadersMiddleware)
 
 # Serve seeded product images locally (backend/static -> /static).
@@ -72,6 +61,7 @@ from app.api.coupons import router as coupon_router
 from app.api.analytics import router as analytics_router
 from app.api.addresses import router as addresses_router
 from app.api.inventory import router as inventory_router
+from app.websocket.router import router as websocket_router
 
 app.include_router(health_router)
 app.include_router(wishlist_router)
@@ -86,40 +76,7 @@ app.include_router(cart_router)
 app.include_router(reviews_router)
 app.include_router(product_router)
 app.include_router(auth_router)
-
-from fastapi import WebSocket, WebSocketDisconnect
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: list[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        if websocket in self.active_connections:
-            self.active_connections.remove(websocket)
-
-    async def broadcast(self, message: dict):
-        for connection in self.active_connections:
-            try:
-                await connection.send_json(message)
-            except Exception as e:
-                import logging as _logging
-                _logging.getLogger("smartcart").debug("ws broadcast to %s failed: %s", id(connection), e)
-
-ws_manager = ConnectionManager()
-
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await ws_manager.connect(websocket)
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await ws_manager.broadcast({"type": "LIVE_PING", "data": data})
-    except WebSocketDisconnect:
-        ws_manager.disconnect(websocket)
+app.include_router(websocket_router)
 
 @app.get('/')
 def root():

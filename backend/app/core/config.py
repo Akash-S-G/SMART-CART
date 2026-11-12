@@ -88,6 +88,17 @@ class Settings(BaseSettings):
     DEFAULT_ADMIN_USERNAME: str = "admin"
     DEFAULT_ADMIN_PASSWORD: str = "SmartCart@123"
 
+    DEV_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+
+    def allowed_origins(self) -> list[str]:
+        configured = self.BACKEND_CORS_ORIGINS or []
+        return list(dict.fromkeys([*configured, *self.DEV_ORIGINS]))
 
     def validate_secrets(self) -> None:
         if not self.SECRET_KEY or self.SECRET_KEY in ["secret", "change-me", "your_secret_key"]:

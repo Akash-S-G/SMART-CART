@@ -31,7 +31,10 @@ class YOLOProvider:
     def predict(
         self,
         image,
-    ) -> Results:
+    ) -> Results | None:
+
+        if self.model is None:
+            return None
 
         result = self.model.predict(
 

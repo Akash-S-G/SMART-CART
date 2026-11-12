@@ -10,8 +10,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.models.payment.payment import Payment
 from app.db.base import Base
-
 
 class Order(Base):
     __tablename__ = "orders"

@@ -35,7 +35,7 @@ class Detector:
         # 2. Fallback: YOLO provider
         result = yolo_provider.predict(image)
         detections = []
-        if hasattr(result, "boxes") and result.boxes is not None:
+        if result is not None and hasattr(result, "boxes") and result.boxes is not None:
             for box in result.boxes:
                 cls = int(box.cls.item())
                 detections.append(

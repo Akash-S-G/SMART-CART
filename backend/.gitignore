@@ -14,3 +14,4 @@ static/
 SQLAlchemy-FastAPI-Postgres.md
 .env
 .vscode/
+load_test/

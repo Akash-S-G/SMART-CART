@@ -12,6 +12,7 @@ from app.models.products.inventory_transaction import InventoryTransaction, Inve
 from app.models.products.product import Product
 from app.models.products.product_price import ProductPrice
 from app.repositories.inventory_repository import InventoryRepository
+from app.websocket.events import emit_inventory_updated
 
 router = APIRouter(prefix="/inventory", tags=["Inventory"])
 
@@ -216,7 +217,16 @@ def update_inventory_thresholds(
             db.refresh(inv)
     # reload with product
     inv = db.query(Inventory).filter(Inventory.product_id == product_id).options(joinedload(Inventory.product).joinedload(Product.price)).first()
-    return _to_response(inv)
+    response = _to_response(inv)
+    emit_inventory_updated(
+        product_id=response.product_id,
+        sku=response.sku,
+        quantity=response.quantity,
+        status=response.status,
+        reorder_level=response.reorder_level,
+        actor_id=str(current_user.id),
+    )
+    return response
 
 
 @router.post("/{product_id}/adjust", response_model=InventoryResponse)
@@ -265,4 +275,14 @@ def adjust_inventory(
                 last_tx.reference_id = body.reference_id
             db.commit()
     inv = db.query(Inventory).filter(Inventory.product_id == product_id).options(joinedload(Inventory.product).joinedload(Product.price)).first()
-    return _to_response(inv)
+    response = _to_response(inv)
+    emit_inventory_updated(
+        product_id=response.product_id,
+        sku=response.sku,
+        quantity=response.quantity,
+        status=response.status,
+        reorder_level=response.reorder_level,
+        actor_id=str(current_user.id),
+        transaction_type=body.transaction_type.value if hasattr(body.transaction_type, "value") else str(body.transaction_type),
+    )
+    return response

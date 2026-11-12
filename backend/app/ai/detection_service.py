@@ -124,6 +124,74 @@ class DetectionService:
         )
 
     # ------------------------------------------------------------------
+    # PROCESS REMOTE MICROSERVICE DETECTIONS
+    # ------------------------------------------------------------------
+
+    def process_remote_detections(
+        self,
+        remote_detections: list[dict],
+        image_width: int,
+        image_height: int,
+        inference_time_ms: float = 0.0,
+    ) -> DetectionResponse:
+        results: list[DetectionResult] = []
+
+        for idx, det in enumerate(remote_detections):
+            bbox_dict = det.get("bounding_box", {})
+            x = float(bbox_dict.get("x", 0))
+            y = float(bbox_dict.get("y", 0))
+            width = float(bbox_dict.get("width", 0))
+            height = float(bbox_dict.get("height", 0))
+
+            raw_conf = float(det.get("confidence", 0.0))
+            conf = raw_conf / 100.0 if raw_conf > 1.0 else raw_conf
+
+            ocr_text = det.get("ocr_text", "").strip()
+            class_name = det.get("class_name") or det.get("object_type") or f"Item {det.get('class_id', idx)}"
+
+            # 1. Match via OCR tokens
+            product = None
+            if ocr_text:
+                tokens = ocr_text.split()
+                product = self.matcher.ocr_match(tokens)
+
+            # 2. Match via class name
+            if product is None and class_name:
+                product = self.matcher.best_match(class_name)
+
+            # 3. Fallback match
+            if product is None:
+                product = self.matcher.fallback_match()
+
+            label_name = product.name if product else class_name
+
+            bbox_box = DetectionBox(
+                label=label_name,
+                confidence=round(conf, 4),
+                x=x,
+                y=y,
+                width=width,
+                height=height,
+            )
+
+            results.append(
+                DetectionResult(
+                    request_id=f"det-{idx}",
+                    object_type=label_name,
+                    confidence=round(conf, 4),
+                    bbox=bbox_box,
+                    matched_product=product,
+                )
+            )
+
+        return DetectionResponse(
+            detections=results,
+            inference_time_ms=round(inference_time_ms, 2),
+            image_width=image_width,
+            image_height=image_height,
+        )
+
+    # ------------------------------------------------------------------
     # DETECT + ADD TO CART
     # ------------------------------------------------------------------
 

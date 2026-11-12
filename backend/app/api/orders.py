@@ -6,7 +6,6 @@ from fastapi import (
     status,
 )
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 
 from app.auth.dependencies import (
     get_current_admin,
@@ -24,6 +23,7 @@ from app.schemas.order import (
 )
 
 from app.services.order_service import OrderService
+from app.websocket.events import emit_order_event
 
 router = APIRouter(
     prefix="/orders",
@@ -51,6 +51,15 @@ def checkout(
 
         order = service.checkout(
             user_id=str(current_user.id)
+        )
+
+        emit_order_event(
+            "ORDER_CREATED",
+            order_id=str(order.id),
+            order_number=order.order_number,
+            user_id=str(order.user_id),
+            status=order.status,
+            total_amount=order.total_amount,
         )
 
         return CheckoutResponse(order=order)
@@ -198,6 +207,19 @@ def cancel_order(
             is_admin=current_user.role == "admin",
         )
 
+        from app.models.order.order import Order
+
+        cancelled = db.query(Order).filter(Order.id == order_id).first()
+        if cancelled is not None:
+            emit_order_event(
+                "ORDER_CANCELLED",
+                order_id=str(cancelled.id),
+                order_number=cancelled.order_number,
+                user_id=str(cancelled.user_id),
+                status=cancelled.status,
+                total_amount=cancelled.total_amount,
+            )
+
         return CancelOrderResponse(
             message="Order cancelled successfully."
         )
@@ -209,9 +231,6 @@ def cancel_order(
             detail=str(exc),
         )
 
-
-class UpdateOrderStatusRequest(BaseModel):
-    status: str
 
 @router.patch(
     "/{order_id}/status",
@@ -225,7 +244,16 @@ def update_order_status(
 ):
     service = OrderService(db)
     try:
-        return service.update_status(order_id=order_id, status=request.status)
+        order = service.update_status(order_id=order_id, status=request.status)
+        emit_order_event(
+            "ORDER_STATUS_UPDATED",
+            order_id=str(order.id),
+            order_number=order.order_number,
+            user_id=str(order.user_id),
+            status=order.status,
+            total_amount=order.total_amount,
+        )
+        return order
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
 

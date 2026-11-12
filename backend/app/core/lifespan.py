@@ -6,6 +6,7 @@ from app.core.logging import logger
 from app.ai.model_loader import model_loader
 from app.core.config import settings
 from app.db.init_db import init_db
+from app.websocket.manager import ws_manager
 
 from sqlalchemy.exc import ProgrammingError
 
@@ -21,6 +22,7 @@ import app.models.order  # noqa: F401
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
+    await ws_manager.start()
 
     logger.info("Loading YOLO model...")
     try:
@@ -63,5 +65,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
+    await ws_manager.stop()
     logger.info("Stopping SmartCart...")
 

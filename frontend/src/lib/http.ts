@@ -36,7 +36,7 @@ http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config
 })
 
-async function refreshAccessToken() {
+export async function refreshAccessToken() {
   const session = loadSession()
   if (!session?.refreshToken) {
     clearSession()

@@ -48,19 +48,28 @@ async def detect_image(
     if settings.AI_SERVICE_URL:
         try:
             import httpx
+            import time
+            t0 = time.perf_counter()
             target_url = settings.AI_SERVICE_URL.rstrip('/')
             if not target_url.endswith('.modal.run') and not target_url.endswith('/predict'):
                 target_url = f"{target_url}/predict"
 
-            async with httpx.AsyncClient(timeout=25.0) as client:
+            async with httpx.AsyncClient(timeout=8.0) as client:
                 resp = await client.post(
                     target_url,
                     files={"file": (file.filename, contents, file.content_type)}
                 )
                 if resp.status_code == 200:
+                    data = resp.json()
+                    remote_dets = data.get("detections", [])
                     service = DetectionService(db)
-                    image = preprocessor.load_bytes(contents)
-                    return service.detect(image)
+                    latency_ms = (time.perf_counter() - t0) * 1000
+                    return service.process_remote_detections(
+                        remote_dets,
+                        image_width=data.get("imageWidth", 640),
+                        image_height=data.get("imageHeight", 480),
+                        inference_time_ms=latency_ms,
+                    )
         except Exception as err:
             from app.core.logging import logger
             logger.warning(f"External AI microservice call to {settings.AI_SERVICE_URL} failed ({err}). Using local engine fallback.")
@@ -93,11 +102,51 @@ async def detect_and_add(
 
     contents = await file.read()
 
+    from app.core.config import settings
+    service = DetectionService(db)
+
+    if settings.AI_SERVICE_URL:
+        try:
+            import httpx
+            import time
+            t0 = time.perf_counter()
+            target_url = settings.AI_SERVICE_URL.rstrip('/')
+            if not target_url.endswith('.modal.run') and not target_url.endswith('/predict'):
+                target_url = f"{target_url}/predict"
+
+            async with httpx.AsyncClient(timeout=8.0) as client:
+                resp = await client.post(
+                    target_url,
+                    files={"file": (file.filename, contents, file.content_type)}
+                )
+                if resp.status_code == 200:
+                    data = resp.json()
+                    remote_dets = data.get("detections", [])
+                    latency_ms = (time.perf_counter() - t0) * 1000
+                    response = service.process_remote_detections(
+                        remote_dets,
+                        image_width=data.get("imageWidth", 640),
+                        image_height=data.get("imageHeight", 480),
+                        inference_time_ms=latency_ms,
+                    )
+                    for item in response.detections:
+                        if item.matched_product:
+                            try:
+                                service.cart.add_product(
+                                    user_id=str(current_user.id),
+                                    product_id=str(item.matched_product.id),
+                                    quantity=1,
+                                )
+                            except Exception:
+                                pass
+                    return response
+        except Exception as err:
+            from app.core.logging import logger
+            logger.warning(f"External AI microservice call to {settings.AI_SERVICE_URL} failed ({err}). Using local engine fallback.")
+
     image = preprocessor.load_bytes(
         contents
     )
-
-    service = DetectionService(db)
 
     return service.detect_and_add(
         image=image,

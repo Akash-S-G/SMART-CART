@@ -29,6 +29,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { useAuth } from '@/hooks/use-auth'
+import { useRealtime } from '@/hooks/use-realtime'
 import {
   getCategoriesApi,
   listProductsApi,
@@ -76,6 +77,25 @@ export function AdminPage() {
   const navigate = useNavigate()
   const { toast } = useToast()
   const queryClient = useQueryClient()
+
+  useRealtime(['admin'], (event) => {
+    if (event.type === 'INVENTORY_UPDATED') {
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] })
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+      queryClient.invalidateQueries({ queryKey: ['inventory-api'] })
+      queryClient.invalidateQueries({ queryKey: ['inv-valuation'] })
+      queryClient.invalidateQueries({ queryKey: ['admin-logs'] })
+    }
+    if (
+      event.type === 'ORDER_CREATED' ||
+      event.type === 'ORDER_STATUS_UPDATED' ||
+      event.type === 'ORDER_CANCELLED' ||
+      event.type === 'PAYMENT_VERIFIED'
+    ) {
+      queryClient.invalidateQueries({ queryKey: ['admin-orders'] })
+      queryClient.invalidateQueries({ queryKey: ['admin-logs'] })
+    }
+  })
 
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'customers' | 'logs'>('inventory')
   const [searchQuery, setSearchQuery] = useState('')

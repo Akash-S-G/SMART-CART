@@ -26,6 +26,7 @@ from app.schemas.payment import (
 )
 
 from app.services.payment_service import PaymentService
+from app.websocket.events import emit_payment_verified
 
 router = APIRouter(
     prefix="/payments",
@@ -83,9 +84,20 @@ def verify_payment(
 
     try:
 
-        return service.verify_payment(
+        payment = service.verify_payment(
             request.transaction_id
         )
+
+        emit_payment_verified(
+            payment_id=str(payment.id),
+            order_id=str(payment.order_id),
+            user_id=str(payment.user_id),
+            transaction_id=payment.transaction_id,
+            amount=payment.amount,
+            status=payment.status,
+        )
+
+        return payment
 
     except ValueError as exc:
 
