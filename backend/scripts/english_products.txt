@@ -1,0 +1,390 @@
+SC-PET-00004	Crunchy snack
+SC-FRU-00002	Cranberries
+SC-FRU-00006	Berry Delight Bars
+SC-FRU-00009	Coconut Water
+SC-PER-00016	Hydrate & Defrizz hair serum
+SC-FRU-00015	Emotion
+SC-FRU-00017	Schweppes
+SC-VEG-00001	Pringles Original
+SC-FRU-00038	Avocado Oil Spray
+SC-FRU-00013	Cranberries dried & sweetened
+SC-FRU-00180	Medjool dates
+SC-FRU-00181	Kiwi SUNGOLD
+SC-TEST-COLA	Coca-Cola
+SC-FRU-00023	Premium Fruit & Nut Muesli
+SC-PET-00046	Oral Care
+SC-FRU-00025	Sungold Kiwi
+SC-PET-00041	Whiskas Catmilk
+SC-PET-00005	Whiskas And 400g
+SC-VEG-00005	Aicha Tomato Paste
+SC-FRU-00031	Mogu lychee
+SC-PER-00007	tender care powder (w) 50g
+SC-PET-00025	dentastix x28
+SC-FRU-00043	Avocados
+SC-PET-00040	Olewo
+SC-FRU-00052	Epler
+SC-PET-00010	regular sterilised 37
+SC-FRU-00059	Pitted Dates
+SC-FRU-00068	Live Rostoy
+SC-PET-00059	junior
+SC-FRU-00073	Eat Natural Dark Chocolate With Cranberries And Macadam
+SC-FRU-00074	kiwi gold
+SC-FRU-00076	Banane
+SC-FRU-00078	Lemons
+SC-PET-00012	Light weight
+SC-FRU-00081	Kiwi
+SC-FRU-00083	Pitted Prunes
+SC-FRU-00086	Protein peanuts, almonds & salted caramel
+SC-FRU-00087	Dazzling Dates
+SC-FRU-00088	Kiwis
+SC-FRU-00091	Mockingbird Raw greens smoothie
+SC-FRU-00094	Apple
+SC-FRU-00100	Kokoschips
+SC-FRU-00102	Raspberries
+SC-PET-00030	perro
+SC-PET-00076	Cat Herring and veg
+SC-FRU-00111	Naranjas
+SC-FRU-00045	UAE by
+SC-PER-00018	Navratna hair oil
+SC-FRU-00119	Confettura extra fragole
+SC-FRU-00120	Heidelbeeren
+SC-PET-00057	Purina One Laks
+SC-FRU-00122	Aprikosen
+SC-FRU-00127	Organic Sun-Dried Dates Pitted Deglet Nour
+SC-FRU-00129	Sift Figs
+SC-FRU-00133	Aardbeien
+SC-FRU-00136	Marmelade Feige
+SC-FRU-00139	Strawberries
+SC-FRU-00140	DATE BITES PEANUT & COCOA
+SC-FRU-00144	5 Fairtrade Bananas
+SC-FRU-00147	Deglet Nour Dates
+SC-FRU-00149	Professional fresh Erdbeere
+SC-FRU-00150	Cookie Dough
+SC-FRU-00153	Pineapple Chunks
+SC-FRU-00154	RED SEEDLESS GRAPES
+SC-FRU-00159	True Dates - Sour Apple
+SC-FRU-00162	Pamplemousse
+SC-FRU-00166	Tropical Fruits Granola
+SC-FRU-00169	Breakfast avocado
+SC-FRU-00170	APPLE APPLE
+SC-FRU-00172	Oranges
+SC-FRU-00173	Plantain Chips Naturally Sweet
+SC-FRU-00182	golden
+SC-FRU-00191	Nektarinen
+SC-FRU-00196	Ripe and Ready Avocados
+SC-FRU-00200	Heidelbeeren Polen
+SC-FRU-00203	True Dates - Sour Cola
+SC-FRU-00216	True Dates - Sweet Peach
+SC-FRU-00207	Cherry Coca-Cola
+SC-FRU-00231	Nour laayoune
+SC-FRU-00215	Freeze Dried Strawberries unsweetened & unsulfured
+SC-FRU-00061	Mix frutos rojos
+SC-FRU-00222	Avocado
+SC-FRU-00227	Crunchy
+SC-FRU-00234	Dried pitted Deglet Nour Dates
+SC-FRU-00233	Chokladboll Dadlar
+SC-FRU-00235	Dates
+SC-FRU-00239	Apfelringe
+SC-FRU-00243	Brombeeren
+SC-FRU-00246	DATEES DEGLET NOUR
+SC-FRU-00248	APLES + MANGOES MINI FRUIT BAR
+SC-FRU-00250	lion kimjo Dates
+SC-VEG-00010	Haricots Verts extra-fins 1/2
+SC-VEG-00014	Haricots Verts extra-fins 1/4
+SC-VEG-00017	Cornichons aigres-doux Recette Paysanne
+SC-VEG-00018	Ketchup
+SC-VEG-00022	Haricots Verts extra-fins 4/4
+SC-VEG-00025	Solis
+SC-VEG-00029	Petits Pois 1/4
+SC-VEG-00031	Rata & Quinoa
+SC-VEG-00041	Petits Pois 1/2
+SC-VEG-00046	Tomate triturado
+SC-VEG-00047	Tomatenpuree
+SC-VEG-00049	Tomate Saus
+SC-VEG-00054	Haricots verts extra-fins
+SC-VEG-00056	Kimchi
+SC-VEG-00062	Haricot verts
+SC-VEG-00067	Salsa dip
+SC-VEG-00068	Polpa
+SC-VEG-00069	Betterave moutarde 320g
+SC-VEG-00072	Sun-Dried Tomatoes with sea salt
+SC-VEG-00076	Haricots rouges - 1/2
+SC-VEG-00081	Haricots verts extra fins 4/4
+SC-VEG-00083	eingelegte Paprika
+SC-DAI-00004	Jben
+SC-DAI-00005	uht jaouda 1L
+SC-DAI-00006	Cream cheese
+SC-DAI-00025	Familia 200g
+SC-DAI-00011	Frommage fondu
+SC-DAI-00012	jaouda Cremy
+SC-DAI-00013	Assil vanille
+SC-DAI-00014	Jebli
+SC-DAI-00016	Tartine & Cuisine
+SC-DAI-00040	Mantequilla
+SC-DAI-00022	Salim
+SC-DAI-00028	DANONE ASSIL BANANE
+SC-DAI-00031	Yaourt Grec Muesli
+SC-DAI-00035	ALPRO vanille
+SC-DAI-00036	danino
+SC-BAK-00003	KRISPROLLS Complets
+SC-BAK-00006	Fibres
+SC-BAK-00010	wasa
+SC-BAK-00008	100% mie complet 500g
+SC-FRU-00108	Blueberries
+SC-BAK-00031	White Ciabattin
+SC-BAK-00037	Wraps
+SC-BAK-00039	Krisprolls
+SC-BAK-00040	Heudebert Fibre +
+SC-BAK-00041	Sourdough Grains & Seeds
+SC-BAK-00046	Proper Sourdough
+SC-BAK-00056	pain Burger complet
+SC-BAK-00063	Pain complet
+SC-BAK-00064	Biscottes
+SC-BAK-00065	Pain complet seigle
+SC-BAK-00066	Golden Wheat Swedish Krisprolls, 7.9oz (225g)
+SC-BAK-00067	special burger
+SC-DAI-00002	Perly
+SC-BEV-00064	Coca Cola
+SC-BAK-00072	Trigo Espelta Crackers
+SC-BAK-00073	100% mie
+SC-BAK-00077	Seeded Sourdough Bread
+SC-BAK-00078	Vollkornbrot
+SC-BAK-00083	Biscotte gout brioche heudebert
+SC-BAK-00085	Tartines craquantes Froment
+SC-BAK-00086	JASON'S SOURDOUGH
+SC-SNA-00003	Excellence Noir Prodigieux 90% Cacao
+SC-SNA-00006	Noir Intense
+SC-SNA-00007	Excellence 85% cacao
+SC-SNA-00008	Tonik
+SC-BAK-00005	AUTHENTIQUE
+SC-BEV-00001	Sidi Ali
+SC-SNA-00019	Tuc Original
+SC-SNA-00027	Merendina
+SC-SNA-00031	Sable coco Henry s 42g
+SC-SNA-00037	Excellence 85% Cacao Rich Dark
+SC-SNA-00038	Extra Dark 74% Cocoa
+SC-SNA-00046	KING COOKIES
+SC-SNA-00047	Excellence 70% Cocoa Intense Dark
+SC-FRU-00260	Medjool Dates
+SC-BEV-00003	isabelle
+SC-BEV-00006	Coca-Cola Original Taste
+SC-BEV-00008	Cappy PULPY
+SC-PER-00014	Cream silk
+SC-BEV-00011	Ciel 33cl
+SC-BEV-00013	Ciel
+SC-BEV-00014	Ain Saiss Eau Minerale Naturelle
+SC-BEV-00015	Coke Zero
+SC-BEV-00016	ain saiss 50cl
+SC-BEV-00017	Coca-Cola
+SC-BEV-00024	Oat No Sugars
+SC-BEV-00025	Eau
+SC-BEV-00027	Alpro Mandeldrink, Original 1L
+SC-BEV-00029	Oulmes Eau Gazeuse
+SC-BEV-00030	Coca Cola Original taste
+SC-BEV-00031	S. Pellegrino Water
+SC-DAI-00027	LBEN CARTON PASTEURISER
+SC-BEV-00033	Aquafina 50cl
+SC-BEV-00034	Hawai Tropical
+SC-BEV-00036	Alpro smooth subtle creamy oat
+SC-BEV-00037	Green Tea
+SC-HOM-00006	Maxis Dishwash Bar
+SC-HOM-00007	Pril Dishwash Liquid
+SC-BEV-00041	Nesquik
+SC-BEV-00044	Cocacola zero sugar
+SC-BEV-00049	1848
+SC-BEV-00050	Mont Roucous
+SC-BEV-00051	Coconut
+SC-BEV-00053	Original Taste
+SC-BEV-00055	Coca-Cola Zero 500ml
+SC-BEV-00056	press up jaouda petit orange
+SC-BEV-00058	Caobel
+SC-BEV-00059	Leben BELDI
+SC-BEV-00060	33CL CAN SLIM TROPICAL
+SC-BEV-00065	Press Up moyen
+SC-BEV-00067	Soyamilch
+SC-BEV-00069	Ciel 50cl
+SC-BEV-00071	Rich and indulgent Hazelnut
+SC-BEV-00072	Benco Original
+SC-BEV-00073	PET 1.75L COCA
+SC-BEV-00074	AQUAFINA
+SC-BEV-00077	Acyl
+SC-BAK-00038	Complet & Graines
+SC-FRO-00011	Coca-Cola original taste
+SC-FRO-00015	Monaco Emmental
+SC-HOM-00008	Fortune Dishwash Gel
+SC-FRO-00023	Croustibat
+SC-FRO-00056	Amora Moutarde Forte 185g
+SC-FRO-00036	PET 1L OCEAN SPRAY CLASS
+SC-PET-00045	Croquette
+SC-FRO-00045	Ristorante Pizza Vegetale
+SC-FRO-00048	Pizza
+SC-FRO-00051	Lays
+SC-FRO-00060	Panzani sauce provencale nat 210g f12
+SC-BAB-00007	Nestle Cerelac Wheat
+SC-FRO-00064	Ristorante PIZZA TONNO
+SC-FRO-00067	Mon Cherie
+SC-FRO-00072	Ice Pulpe Orange 1.5cl
+SC-FRO-00078	Ratatouille
+SC-FRO-00085	Choco crousti
+SC-FRO-00087	Tendre
+SC-INS-00002	Yum Yum Chicken Flavour
+SC-INS-00003	Indomie instant noodles baladi chicken flavor
+SC-FRU-00042	Bananes
+SC-HOM-00002	Ariel Matic Top Load
+SC-FRU-00198	Bananas
+SC-DAI-00042	Cream Cheese
+SC-BAK-00079	Krisprolls complets
+SC-BEV-00020	coca-cola
+SC-BEV-00012	Ain Atlas
+SC-INS-00004	Buldak Hot Chicken
+SC-INS-00005	Indomie
+SC-INS-00006	Ramen soja caramel
+SC-INS-00007	maggi
+SC-INS-00008	Nouilles poulet teriyaki
+SC-INS-00009	Beef Flavour
+SC-INS-00010	Shrimp Flavour
+SC-INS-00012	SOBA Classic
+SC-INS-00013	Ramen
+SC-INS-00016	Vegetable Flavour
+SC-INS-00018	Yum Yum Duck flavour
+SC-INS-00019	Samyang
+SC-INS-00020	Soba Cup Noodles Teriyaki
+SC-INS-00022	Carbiana Buldak Spicy Ramen
+SC-INS-00024	MAGGI Soupe Chinoise 60g
+SC-INS-00025	Ramen Noodle Soup Chicken Flavor
+SC-INS-00026	Curry Flavour
+SC-INS-00028	Demae Ramen - Chicken
+SC-INS-00032	Chicken & Mushroom Flavour
+SC-PET-00003	katzenstangerl
+SC-INS-00035	Maggi noodles masala
+SC-INS-00038	Banzai noodle
+SC-INS-00040	SOON VEGGIE RAMYUN NOODLE
+SC-INS-00041	Chicken Flavour Instant Noodles
+SC-INS-00042	Ramen beef supreme
+SC-INS-00045	Cup noodles chiken
+SC-INS-00046	Demae Ramen Spicy Instant Noodles
+SC-INS-00047	Artificial Spicy Chicken Flavor Stir-Fried Ramen
+SC-HOM-00003	Tide Plus Detergent
+SC-INS-00048	Samyang 2x buldak spicy ramen
+SC-INS-00050	Coup Noodles Beef
+SC-HOM-00004	Safari Liquid Detergent
+SC-INS-00052	Soba Peking Duck
+SC-INS-00054	SOBA Cup Yakitori Poulet
+SC-INS-00055	2-minute noodles masala taste
+SC-INS-00056	Rice noodles Satay flavour
+SC-INS-00057	Rice noodles chick-n ramen
+SC-INS-00058	soba chili
+SC-INS-00060	Samyang cheese buldak spicy ramen
+SC-SNA-00023	Nutella
+SC-INS-00064	Poulet Goma Shoyu
+SC-INS-00069	Soba Teriyaki
+SC-INS-00070	demae ramen
+SC-INS-00073	instant noodles
+SC-INS-00075	Yakisoba soja classique
+SC-INS-00076	Nouilles
+SC-INS-00078	Yippee Noodles
+SC-INS-00080	Rice noodles chilli miso
+SC-INS-00081	Yakisoba classic
+SC-INS-00083	Soba noodle spicy
+SC-INS-00084	Buldak Spicy Ramen
+SC-INS-00085	Masala Veg Atta Noodles
+SC-INS-00087	Wholewheat Medium Noodles
+SC-INS-00088	Instant Nudeln, Japanese Chicken Flavor
+SC-INS-00089	Medium Egg Noodles
+SC-INS-00090	Katsu rice noodles cup
+SC-INS-00093	Kania
+SC-INS-00094	Nouilles Ramen savoeur Boeuf Korean BBQ
+SC-BRE-00005	Nocciolata
+SC-BRE-00011	Chocapic
+SC-BRE-00012	Nutella Plant-Based
+SC-HOM-00005	Vim Dishwash Gel
+SC-BRE-00018	Original
+SC-BRE-00021	Poulain
+SC-BRE-00022	CORN FLAKES
+SC-PER-00010	Baby wipes
+SC-PER-00011	Anti Stain Toothpaste
+SC-PER-00001	Medizinisches Zahncreme-Konzentrat
+SC-PER-00002	Sensation White
+SC-PER-00004	Park Avenue Signature Collection Neo
+SC-PER-00009	LINE FILLER PRO
+SC-PER-00019	Natural Lavender Laundry Wash
+SC-PER-00020	Cotton Soft Soft & Thick Personal Care
+SC-PER-00021	Men + Care Zero 48Hrs
+SC-HOM-00001	Surf Excel Liquid Detergent
+SC-HOM-00009	Lizol Disinfectant
+SC-HOM-00010	Harpic Floor Cleaner
+SC-HOM-00011	Dettol Floor Cleaner
+SC-HOM-00012	Harpic Bathroom Cleaner
+SC-HOM-00013	Cif Surface Cleaner
+SC-HOM-00014	Colin Glass Cleaner
+SC-HOM-00015	Godrej Aer Pocket
+SC-HOM-00016	Odonil Bathroom Block
+SC-BAB-00001	Pampers Active Baby Diapers
+SC-BAB-00002	Huggies Wonder Pants
+SC-BAB-00003	MamyPoko Pants
+SC-BAB-00004	Mee Mee Baby Wipes
+SC-BAB-00005	Pampers Baby Wipes
+SC-BAB-00006	Himalaya Baby Wipes
+SC-BAB-00008	Happa Organic Puree
+SC-BAB-00009	Himalaya Baby Soap
+SC-BAB-00010	Johnson's Baby Soap
+SC-BAB-00011	Johnson's Baby Powder
+SC-BAB-00012	Himalaya Baby Powder
+SC-PET-00002	True Country
+SC-PET-00008	Orijen Cat & Kitten
+SC-PET-00009	Royal Canin Hairball Care
+SC-PET-00017	Regional Red
+SC-PET-00016	Select Gold Sensitive Maxi Senior
+SC-PET-00020	wilderness adult
+SC-PET-00021	Snacks
+SC-PET-00024	Creamy Saumon
+SC-PET-00026	adult small&mini
+SC-PET-00028	RANCHOS JERKIES
+SC-PET-00032	Pedigree Jumbone
+SC-PET-00033	Dentalife
+SC-PET-00036	AMI CAT Ideal Maintenance
+SC-PET-00037	Chicko
+SC-PET-00039	Adult medium breed lambd
+SC-PET-00044	Tourterelles
+SC-PET-00047	Regular FIT 32
+SC-PET-00052	Party Mix
+SC-PET-00051	Whiskas 1+adult ocean fish flavour 480gr
+SC-PET-00053	ROYAL CANIN XSMALL ADULT
+SC-PET-00054	whiskas tasty mix
+SC-PET-00055	whiskas junior mackrel
+SC-PET-00056	whiskas mackrel
+SC-PET-00058	Puppy Food
+SC-PET-00062	pedigree biscotti multi mix
+SC-PET-00064	Purina One
+SC-PET-00069	doggy man sampo tisu basah
+SC-PET-00067	Dark Fjord
+SC-PET-00074	Whiskas ocean fish flavour 400 gr
+SC-PET-00075	Dentastix pedigree M 98gr
+SC-PET-00077	CAT FOOD WHISKAS MAKEREL 1.2KG
+SC-ELE-00001	Syska 20W Fast Charger
+SC-ELE-00002	Boat 33W Charger
+SC-ELE-00003	Ambrane Charger Adapter
+SC-ELE-00004	Boat Type-C Cable 1m
+SC-ELE-00005	Portronics Lightning Cable
+SC-ELE-00006	Ambrane Micro USB Cable
+SC-ELE-00007	Boat Airdopes 131
+SC-ELE-00008	Realme Buds Wireless
+SC-ELE-00009	Noise Buds Mini
+SC-ELE-00010	Duracell AA Batteries
+SC-ELE-00011	Eveready AAA Batteries
+SC-ELE-00012	Energizer AA Batteries
+SC-ELE-00013	Mi 10000mAh Power Bank
+SC-ELE-00014	Syska 20000mAh Power Bank
+SC-ELE-00015	Ambrane 10000mAh Power Bank
+SC-KIT-00001	Prestige Non-stick Fry Pan
+SC-KIT-00002	Hawkins Induction Base Pan
+SC-KIT-00003	Nova Pressure Cooker
+SC-KIT-00004	Tupperware Fridge Storage Box
+SC-KIT-00005	Cello Airtight Container
+SC-KIT-00006	Signoraware Spice Jar Set
+SC-KIT-00007	Pigeon Steel Spatula
+SC-KIT-00008	Vinod Steel Ladle
+SC-KIT-00009	Bergner Cooking Spoon
+SC-KIT-00010	Scotch-Brite Scrub Pad
+SC-KIT-00011	Gala Floor Wiper
+SC-KIT-00012	Vim Scrubber

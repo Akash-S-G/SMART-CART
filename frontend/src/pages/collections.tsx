@@ -67,6 +67,11 @@ export function CollectionsPage() {
   // Build a stable filter signature so each filter change resets pagination.
   const filterKey = JSON.stringify({ searchQuery, cats, prices, ratings, inStockOnly, sort })
 
+  // When filters (e.g. category) change, automatically scroll back to the top of the product catalog
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }, [filterKey])
+
   const {
     data,
     isLoading,

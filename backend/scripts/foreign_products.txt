@@ -1,0 +1,243 @@
+SC-FRU-00003	Compote Pomme Nature
+SC-FRU-00005	Barres chocolat noir amandes cranberries & noix de coco
+SC-PET-00042	Whiskas 1+ Vis selectie in gelei
+SC-FRU-00008	Assaisonnement aromatise au citron
+SC-PET-00063	carotte
+SC-FRU-00179	Avocat bio
+SC-VEG-00002	Carottes rapees citron dnp 320g
+SC-FRU-00016	Pommes Myrtille SSA
+SC-FRU-00178	Coco rallado
+SC-FRU-00020	Ciruelas desecadas sin hueso
+SC-FRU-00021	Sirop de fraise
+SC-FRU-00022	Jus joker multifruit
+SC-FRU-00018	Datteln
+SC-FRU-00039	Pommes Fraises
+SC-FRU-00040	Pomme vanille
+SC-FRU-00026	Confiture d'abricots rouges du Roussillon
+SC-PET-00072	purina One adulto salmone spirulina
+SC-FRU-00029	Apfelsaft aus Apfelsaftkonzentrat
+SC-VEG-00006	Tomates Cerises
+SC-VEG-00007	Gehackte Tomaten in Tomatensaft
+SC-FRU-00027	Pruneaux d'Agen
+SC-FRU-00032	POM'POTES Compotes Gourdes BIO Pomme Nature 12x90g
+SC-FRU-00033	myrtilles
+SC-PET-00006	Whiskas with chicken in Jelly
+SC-FRU-00036	Riz Coco
+SC-PET-00014	Royal Canin - Croquettes Veterinary Diet Satiety
+SC-FRU-00044	TK - Beerenmischung
+SC-FRU-00046	Pommes - Passion
+SC-FRU-00047	Dattes Deglet Nour de Tunisie
+SC-FRU-00049	Figues moelleuses
+SC-FRU-00051	POM'POTES Compotes Gourdes Pomme Nature 12x90g
+SC-PET-00049	Catisfactions Kattensnack zalige zalmsmaak maxi pack
+SC-FRU-00012	Fraise
+SC-FRU-00057	Figue
+SC-PET-00043	Vitakraft Kracker konijn groente noten bosbessen
+SC-FRU-00062	Yogur bebible fresa 0%
+SC-PET-00048	IAMS Naturally cat adult zalm & rijst
+SC-FRU-00066	Bio Zitronen
+SC-FRU-00067	Pruneaux d'agen denoyautes tres gros 44/55
+SC-FRU-00071	Yaourt aux fruits : fraises et framboises
+SC-FRU-00077	Compote Pommes Cerises
+SC-FRU-00079	Pruneaux d'Agen entiers
+SC-FRU-00082	Bocal compote pommes poire BIO SSA
+SC-FRU-00084	Cerise Noire
+SC-FRU-00089	Pruneaux d'agen avec noyaux
+SC-PET-00031	alimento gato carne
+SC-FRU-00092	Figues Moelleuses
+SC-FRU-00093	Dattes Medjool L'(a)typique
+SC-FRU-00096	Myrtilles sauvages bio
+SC-FRU-00097	Mangue
+SC-DAI-00041	Lait U.H.T entier
+SC-FRU-00098	Datteln entsteint / Dates pitted
+SC-FRU-00099	Myrtille bio
+SC-PET-00007	pedigree dog chicken in gravy
+SC-FRU-00103	Les belles tranches - Ananas au jus
+SC-FRU-00104	DATTES MEDJOOL
+SC-FRU-00105	Pasteque
+SC-FRU-00106	Compotes Pomme Framboise
+SC-FRU-00107	Avocats Hass
+SC-FRU-00112	Pommes Kiwis
+SC-FRU-00115	Erdbeeren
+SC-PET-00071	Friskoes gato conejo y pollo 1.5kg
+SC-FRU-00118	Banane BIO
+SC-PET-00011	Croquettes chaton
+SC-FRU-00125	morceaux d'ananas au jus
+SC-FRU-00132	Nectar de Goyave
+SC-FRU-00134	Pruneau d'Agen - Sachet 500g
+SC-FRU-00135	Confiture fraises et framboises
+SC-FRU-00141	Innocent plus green de star 750ml
+SC-FRU-00142	Abricots fondants
+SC-FRU-00143	Dattes moelleuses
+SC-FRU-00155	Mangues en morceaux bio
+SC-FRU-00156	Dattes deglet nour ravier 500g
+SC-FRU-00157	Cerise Bigarreau
+SC-FRU-00164	Mangues en tranches
+SC-FRU-00165	La banane Francaise
+SC-FRU-00167	Ananas et nata de coco
+SC-FRU-00168	bio avokado
+SC-FRU-00171	Pruneaux d'agen entiers 44/55
+SC-FRU-00174	Sirop de dattes
+SC-FRU-00177	Abricot moelleux - Sachet 250g
+SC-FRU-00187	La Mangue Morceaux
+SC-FRU-00184	Pomme Juliet
+SC-FRU-00185	Myrtille
+SC-FRU-00189	Fresas
+SC-FRU-00190	FRUIT &Cie POMME
+SC-FRU-00194	Granini abricot
+SC-FRU-00197	Poires Williams
+SC-FRU-00201	Datteln, getrocknet, entsteint
+SC-FRU-00204	Le petit doux
+SC-FRU-00205	Prunes - Confiture
+SC-FRU-00209	Pommes Gala
+SC-FRU-00211	Halve perziken op sap
+SC-FRU-00212	Dattes premium Mejhool
+SC-FRU-00213	Bebida Tropical Sin Gas
+SC-FRU-00218	Ananas au jus
+SC-FRU-00221	Avocats
+SC-FRU-00228	Ananas Scheiben
+SC-FRU-00229	Datteln Lulu
+SC-FRU-00230	Ananas en morceaux au jus d'ananas
+SC-FRU-00236	Ananas au jus d'ananas
+SC-FRU-00238	Dattes Deglet Nour, Maitre Prunille
+SC-FRU-00241	Dattes avec noyaux
+SC-FRU-00242	Erdbeermarmelade ohne Zuckerzusatz
+SC-FRU-00247	Pomme bicolores
+SC-FRU-00249	Cocktail de fruits rouges
+SC-VEG-00009	Carottes rapees citron dnp 500g
+SC-VEG-00023	Maille Cornichons Extra-Fins L'Original Bocal 380g
+SC-VEG-00026	Petits Pois & Carottes
+SC-VEG-00027	Passierte Tomaten
+SC-VEG-00032	Carottes rapees citron
+SC-VEG-00035	Coulis de tomate bio
+SC-VEG-00036	Coleslaw, choux blanc et carottes
+SC-VEG-00039	Concombre fromage blc 320g
+SC-VEG-00052	Chair de tomates
+SC-VEG-00059	Petits Pois et Carottes 4/4
+SC-VEG-00063	Coeurs d'artichauts
+SC-VEG-00065	Tomates cerises
+SC-VEG-00066	Coleslaw Chou blanc et carottes
+SC-VEG-00086	RIZ
+SC-VEG-00087	Maille Cornichons Fins Bocal 300g
+SC-VEG-00094	Feinste passierte Tomaten Bio
+SC-DAI-00001	Fromage Blanc Nature
+SC-DAI-00003	Lait de la ferme jaouda
+SC-DAI-00007	Skyr nature 0%
+SC-DAI-00008	Le nature
+SC-DAI-00038	Tendre nature
+SC-DAI-00021	le blanc nature 900g araai
+SC-DAI-00023	Goldium Blanc Nature
+SC-DAI-00026	fromage herbes milky food
+SC-DAI-00033	Le Beurre Tendre
+SC-DAI-00034	Perly fromage
+SC-BAK-00001	Pain De Mie Bio
+SC-BAK-00002	Pain de mie grandes tranches Seigle & Graines 500g
+SC-BAK-00007	tartine de campagne
+SC-BAK-00014	Pain de mie grandes tranches Toastiligne complet
+SC-BAK-00016	Pain de mie 100% mie nature
+SC-BAK-00018	Tartines Bio quinoa & graines 450g
+SC-BAK-00023	Pain de mie grandes tranches Avoine & Graines 500g
+SC-BAK-00026	Pain au lait bio x12 420g
+SC-BAK-00044	Fines Tartines farine de Seigle
+SC-BAK-00032	Pain de mie grandes tranches 7 cereales
+SC-BAK-00033	Extra moelleux nature
+SC-BAK-00047	Pain de mie complet
+SC-BAK-00058	Le pain au Seigle
+SC-BAK-00059	Pan de molde 100% integral
+SC-BAK-00069	Pain de mie nature
+SC-BAK-00075	Tortillas de trigo integrales
+SC-BAK-00080	Pan de molde con 52% centeno
+SC-BAK-00081	Pain de mie longue conservation
+SC-SNA-00004	Tartines craquantes au sarrasin imp
+SC-SNA-00013	Pomme Noisette
+SC-SNA-00014	Figue & son
+SC-SNA-00017	Biscuit raisins
+SC-SNA-00020	Avoine chocolat
+SC-SNA-00021	Pains au lait
+SC-SNA-00024	Biscuits NUTELLA Biscuits Noisettes et Cacao x22 - 304g
+SC-BAK-00009	8 Pains au lait frais Bio 280g
+SC-SNA-00026	Biscuits pavot citron
+SC-FRU-00158	Myrtilles
+SC-SNA-00029	Biscuits Soja Figue
+SC-SNA-00032	Biscuit lait chocolat
+SC-SNA-00033	Tartines craquantes quinoa - pois chiche sans gluten
+SC-SNA-00034	Chocolate con leche y almendras
+SC-SNA-00035	P'tit Nature Complet
+SC-BAK-00013	Brioche moins de sucre
+SC-SNA-00043	Chips de lentilles saveur fines herbes
+SC-SNA-00044	Granola L'Original
+SC-SNA-00045	Crunchy avoine et miel
+SC-BEV-00010	Alvalle Gazpacho l'original
+SC-SNA-00016	CRISTALINE Eau De Source 0.5L
+SC-BEV-00023	Amande sans sucres
+SC-BEV-00026	Avoine - Boisson biologique
+SC-BEV-00035	1848 Chocolat en poudre
+SC-BEV-00043	Eau de table
+SC-BEV-00046	Bahia, Eau De Table
+SC-BEV-00048	Lait d'amande
+SC-BEV-00054	Lait de coco
+SC-BEV-00061	Shot de gingembre bio
+SC-BEV-00063	Avoine sans sucres
+SC-BEV-00076	Bio Hafer
+SC-BAK-00017	American sandwich nature
+SC-FRO-00020	Petites Madeleines -30% de sucres
+SC-FRO-00026	Muesli au chocolat
+SC-FRO-00027	Granola chocolat noir - faible en sucre
+SC-FRO-00033	Girasoli Pesto basilic et pignons
+SC-FRO-00039	4 filets de cabillaud panure croustillante
+SC-FRO-00040	Frites de patate douce
+SC-FRO-00043	L'extra craquante nature
+SC-FRO-00047	Pommes noisettes
+SC-FRO-00058	Huile d'olive vierge extra
+SC-FRO-00061	100% mie nature
+SC-FRO-00066	Glace au Nutella
+SC-FRO-00069	BIO Ginger Mango-Lime Shot
+SC-FRO-00071	Pommes noisettes croustillantes et fondantes
+SC-FRO-00073	Lait Extra fin
+SC-FRO-00077	Galettes de riz complet
+SC-FRO-00082	Quinoa royal - Pois-chiches & citron confit
+SC-FRU-00253	Dattes Medjool l'(a)typique
+SC-FRU-00014	Pomme
+SC-FRU-00072	Abricots moelleux
+SC-FRO-00090	Glaces Amande
+SC-FRO-00092	Lentilles Carottes
+SC-FRU-00050	Dattes Deglet Nour
+SC-FRU-00085	Dattes
+SC-FRU-00261	PRUNEAUX D'AGEN avec noyaux
+SC-FRU-00131	Framboises
+SC-FRU-00146	Ananas en morceaux
+SC-VEG-00060	Carottes
+SC-INS-00011	Ramen saveur boeuf
+SC-INS-00014	Nouilles japonaises saveur boeuf teppanyaki
+SC-INS-00015	Poulet citron
+SC-INS-00017	Shin Ramyun Instant Noedels, Heet en pittig
+SC-INS-00031	Nouilles saveur Poulet Teriyaki
+SC-INS-00039	Nouille Saveur Boeuf Gyudon
+SC-INS-00051	Nouilles Japonaise saveur crevette
+SC-INS-00061	Nudeln (instant) - Soba Chili mit Yakisoba-Sauce
+SC-INS-00063	Yakisoba saveur boeuf wasabi
+SC-INS-00066	SERVEERSUGGESTIE/SUGGESTION DE PRESENTATION SERVIE
+SC-INS-00072	MAGGI Nouilles Saveur Pad Thai - Sachet de 128g
+SC-INS-00082	Nouilles - Saveur Curry
+SC-INS-00092	Nouilles japonaise saveur boeuf yakiniku
+SC-BRE-00004	Rigoni di Asiago - Nocciolata bio
+SC-BRE-00006	Croustillant Chocolat
+SC-BRE-00008	Flocons d'avoine
+SC-BRE-00010	Muesli Raisin, Figue, Datte, Abricot
+SC-BRE-00013	Special Muesli 30% fruits & noix
+SC-BRE-00014	Muesli Superfruits Raisins, cassis, cranberry, myrtille
+SC-BRE-00015	Confiture de fraise
+SC-BRE-00019	Confiture De Fraises 430 G
+SC-BRE-00020	Country Crisp 4 noix
+SC-BRE-00023	Muesli avoine chocolat bio
+SC-BRE-00024	Cruesli Chocolat noir
+SC-BRE-00030	Le Choco
+SC-BRE-00031	Muesli 36% fruits noix & graines
+SC-BRE-00037	Nocciolata la bianca
+SC-PET-00019	Real Nature Wilderness
+SC-PET-00018	Real Nature Mediterran
+SC-PET-00027	Terrine pour chien riche en boeuf
+SC-PET-00038	ultima nature
+SC-PET-00060	Whiskas au thon
+SC-PET-00061	150G Fun Tastix Jambon / Fromage Fido
+SC-PET-00070	Whiskas carne

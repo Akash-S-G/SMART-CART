@@ -1,0 +1,710 @@
+SC-ATT-00001	Aashirvaad Whole Wheat Atta
+SC-ATT-00002	Fortune Chakki Fresh Atta
+SC-ATT-00003	India Gate Classic Basmati Rice
+SC-ATT-00004	Daawat Everyday Basmati Rice
+SC-ATT-00005	24 Mantra Organic Sona Masoori Rice
+SC-ATT-00006	Tata Sampann Toor Dal
+SC-ATT-00007	Tata Sampann Moong Dal
+SC-ATT-00008	Tata Sampann Chana Dal
+SC-ATT-00009	Tata Sampann Masoor Dal
+SC-ATT-00010	Tata Sampann Urad Dal
+SC-ATT-00011	Tata Sampann Rajma Chitra
+SC-ATT-00012	Tata Sampann Kabuli Chana
+SC-ATT-00013	Rajdhani Besan Gram Flour
+SC-ATT-00014	Rajdhani Sooji Rava
+SC-ATT-00015	Rajdhani Poha Thick
+SC-ATT-00016	Rajdhani Idli Rava
+SC-ATT-00017	Rajdhani Maida Refined Flour
+SC-ATT-00018	Patanjali Whole Wheat Atta
+SC-ATT-00019	Shakti Bhog Atta
+SC-ATT-00020	Pillsbury Chakki Atta
+SC-ATT-00021	Rajdhani Wheat Flour Maida
+SC-ATT-00022	Rajdhani Bajra Flour
+SC-ATT-00023	Rajdhani Jowar Flour
+SC-ATT-00024	Rajdhani Ragi Flour
+SC-ATT-00025	Rajdhani Kuttu Atta
+SC-ATT-00026	Rajdhani Singhara Atta
+SC-ATT-00027	Rajdhani Sabudana
+SC-ATT-00028	India Gate Samba Rice
+SC-ATT-00029	India Gate Ponni Rice
+SC-ATT-00030	Tata Sampann Jeera Rice
+SC-ATT-00031	Daawat Kolam Rice
+SC-ATT-00032	24 Mantra Brown Rice
+SC-ATT-00033	Rajdhani Poha Red
+SC-ATT-00034	Rajdhani Poha Thin
+SC-ATT-00035	Rajdhani Vermicelli Roasted
+SC-ATT-00036	Tata Sampann Rajma Red
+SC-ATT-00037	Tata Sampann Lobia
+SC-ATT-00038	Tata Sampann Green Moong Whole
+SC-ATT-00039	Tata Sampann Chana Whole
+SC-ATT-00040	Tata Sampann Toor Dal Fine
+SC-ATT-00041	Tata Sampann Soya Chunks
+SC-ATT-00042	Tata Sampann Soya Granules
+SC-BAK-00001	Britannia Whole Wheat Bread
+SC-BAK-00002	Britannia Sandwich White Bread
+SC-BAK-00003	Modern Pav Bread
+SC-BAK-00004	Modern Brown Bread
+SC-BAK-00005	Britannia Burger Buns
+SC-BAK-00006	Britannia Premium Rusk
+SC-BAK-00007	Britannia Fruit Cake
+SC-BAK-00008	Monginis Atta Khari Puff
+SC-BAK-00009	Britannia Fruit Bread
+SC-BAK-00010	Harvest Gold Multigrain Bread
+SC-BAK-00011	The Baker's Dozen Garlic Bread
+SC-BAK-00012	The Baker's Dozen Croissant
+SC-BAK-00013	The Baker's Dozen Butter Croissant
+SC-BAK-00014	The Baker's Dozen Chocolate Muffin
+SC-BAK-00015	The Baker's Dozen Cookies
+SC-BAK-00016	The Baker's Dozen Cupcake
+SC-BAK-00017	Monginis Veg Puff
+SC-BAK-00018	Monginis Patties
+SC-BAK-00019	Monginis Chocolate Pastry
+SC-BAK-00020	Monginis Pineapple Pastry
+SC-BAK-00021	Monginis Donut
+SC-BAK-00022	Monginis Plum Cake
+SC-BAK-00023	Modern Brown Bread Loaf
+SC-BAK-00024	The Baker's Dozen Pav Bun
+SC-BAK-00025	Harvest Gold Hot Dog Bun
+SC-BAK-00026	Modern Sweet Bun
+SC-BAK-00027	Britannia Cake Rusk
+SC-BAK-00028	The Baker's Dozen Jeera Cookies
+SC-BAK-00029	The Baker's Dozen Atta Cookies
+SC-BAK-00030	Modern Bread Improver
+SC-BAK-00031	Harvest Gold Mini Pizza Base
+SC-BAK-00032	The Baker's Dozen Stuffed Kulcha
+SC-BAK-00033	The Baker's Dozen Chocolate Bread
+SC-BAK-00034	Harvest Gold Ragi Bread
+SC-BAK-00035	Harvest Gold Burger Bun
+SC-BAK-00036	The Baker's Dozen Cheese Garlic Bread
+SC-BAK-00037	The Baker's Dozen Choco Chip Muffin
+SC-BAK-00038	Monginis Honey Cake
+SC-BAK-00039	The Baker's Dozen Butter Cookies
+SC-BAK-00040	Monginis Tutti Frutti Cake
+SC-BAK-00041	Harvest Gold Dinner Rolls
+SC-BAK-00042	The Baker's Dozen Pita Bread
+SC-BAK-00043	The Baker's Dozen Naan
+SC-BAK-00044	Modern Kulhad Chai Bun
+SC-BAK-00045	Monginis Chocolate Donut
+SC-BAK-00046	Monginis Walnut Brownie
+SC-BAK-00047	The Baker's Dozen Cheese Straws
+SC-BAK-00048	Modern Bread Loaf White
+SC-BAK-00049	The Baker's Dozen Garlic Knots
+SC-BAK-00050	The Baker's Dozen Blueberry Muffin
+SC-BAK-00051	Britannia Rusk Wheat
+SC-BEV-00001	Coca-Cola Sprite
+SC-BEV-00002	Coca-Cola
+SC-BEV-00003	Coca-Cola Thums Up
+SC-BEV-00004	Coca-Cola Fanta
+SC-BEV-00005	PepsiCo Mirinda
+SC-BEV-00006	PepsiCo Pepsi
+SC-BEV-00007	PepsiCo 7UP
+SC-BEV-00008	PepsiCo Mountain Dew
+SC-BEV-00009	PepsiCo Slice
+SC-BEV-00010	Parle Agro Frooti
+SC-BEV-00011	Tropicana Mango
+SC-BEV-00012	Tropicana Orange
+SC-BEV-00013	Dabur Real Orange
+SC-BEV-00014	Dabur Real Mixed Fruit
+SC-BEV-00015	Raw Pressery Fresh Apple Juice
+SC-BEV-00016	Raw Pressery Fresh Orange Juice
+SC-BEV-00017	Tropicana Apple
+SC-BEV-00018	Coca-Cola Minute Maid Pulpy Orange
+SC-BEV-00019	Bisleri Mineral Water
+SC-BEV-00020	Coca-Cola Kinley Water
+SC-BEV-00021	PepsiCo Aquafina
+SC-BEV-00022	Tata Himalayan Still Water
+SC-BEV-00023	Tata Gluco Plus
+SC-BEV-00024	FDC Electral Powder
+SC-BEV-00025	Hamdard Rooh Afza
+SC-BEV-00026	Mapro Kokam Sherbet
+SC-BEV-00027	Catch Jaljeera
+SC-BEV-00028	Cadbury Bournvita Milk Mix
+SC-BEV-00029	Amul Lassi Mango
+SC-BEV-00030	Amul Cold Coffee
+SC-BEV-00031	Nestle Cold Coffee
+SC-BEV-00032	Raw Pressery Tender Coconut Water
+SC-BEV-00033	Local Lemon Drink
+SC-BEV-00034	Amul Buttermilk Spiced
+SC-BEV-00035	Bisleri Soda Water
+SC-BEV-00036	Monster Energy Drink Red
+SC-BEV-00037	PepsiCo Sting
+SC-BEV-00038	Tropicana Cranberry
+SC-BEV-00039	Local Ganne Ka Ras
+SC-BEV-00040	Amul Masala Chaas
+SC-BEV-00041	Lipton Green Tea Lemon
+SC-BEV-00042	Lipton Ice Tea Lemon
+SC-BEV-00043	Mother Dairy Lassi Sweet
+SC-BEV-00044	Tata Tea Gold
+SC-BEV-00045	Wagh Bakri Tea
+SC-BEV-00046	Bisleri Lemon Soda
+SC-BEV-00047	Bisleri Club Soda
+SC-BEV-00048	Parle Mango Frooti
+SC-BEV-00049	Coca-Cola Maaza
+SC-BEV-00050	Lipton Iced Tea Peach
+SC-BEV-00051	Tender Coconut Water
+SC-BIS-00001	Britannia Good Day Butter Cookies
+SC-BIS-00002	Britannia Marie Gold
+SC-BIS-00003	Britannia Bourbon
+SC-BIS-00004	Britannia Little Hearts
+SC-BIS-00005	Britannia Milk Bikis
+SC-BIS-00006	Britannia 50-50
+SC-BIS-00007	Britannia Jim Jam
+SC-BIS-00008	Britannia Chocolate Chip Cookies
+SC-BIS-00009	Britannia Digestive Biscuits
+SC-BIS-00010	Britannia Oats Biscuits
+SC-BIS-00011	Parle Krack Jack
+SC-BIS-00012	Parle 20-20
+SC-BIS-00013	Parle Monaco
+SC-BIS-00014	Parle-G
+SC-BIS-00015	Parle Hide & Seek
+SC-BIS-00016	Parle Kismi Bar
+SC-BIS-00017	Parle Mango Bite
+SC-BIS-00018	Parle Milk At Burst
+SC-BIS-00019	Cadbury Eclairs
+SC-BIS-00020	Cadbury Dairy Milk
+SC-BIS-00021	Cadbury Silk
+SC-BIS-00022	Cadbury Bournville
+SC-BIS-00023	Nestle KitKat
+SC-BIS-00024	Nestle Munch
+SC-BIS-00025	Nestle Milkybar
+SC-BIS-00026	Nabisco Oreo
+SC-BIS-00027	Sunfeast Dark Fantasy Choco Fill
+SC-BIS-00028	Sunfeast Marie Light
+SC-BIS-00029	Sunfeast Nice Chocolate
+SC-BIS-00030	Nestle Coffee Bite
+SC-BIS-00031	Perfetti Alpenliebe
+SC-BIS-00032	Perfetti Center Shock
+SC-BIS-00033	Parry's Poppins
+SC-BIS-00034	Dabur Hajmola
+SC-BIS-00035	Rasna
+SC-BIS-00036	Tang
+SC-BIS-00037	Cadbury Bournvita
+SC-BIS-00038	Heinz Complan
+SC-BIS-00039	GSK Horlicks
+SC-BIS-00040	Nestle Boost
+SC-BIS-00041	Kellogg's Chocos
+SC-BIS-00042	Kellogg's Corn Flakes
+SC-BIS-00043	Kellogg's Muesli
+SC-BIS-00044	Saffola Plain Oats
+SC-BIS-00045	Munch Chocolate Wafers
+SC-BIS-00046	Nestle Gems
+SC-DAI-00001	Amul Gold Full Cream Milk
+SC-DAI-00002	Amul Taaza Toned Milk
+SC-DAI-00003	Mother Dairy Toned Milk
+SC-DAI-00004	Amul Butter Salted
+SC-DAI-00005	Amul Fresh Paneer
+SC-DAI-00006	Amul Masti Dahi Curd
+SC-DAI-00007	Mother Dairy Classic Curd
+SC-DAI-00008	Amul Cheese Slices
+SC-DAI-00009	Amul Fresh Cream
+SC-DAI-00010	Amul Pure Ghee
+SC-DAI-00011	Fresh Farm Eggs
+SC-DAI-00012	Amul Lassi Sweet
+SC-DAI-00013	Amul Buttermilk Masala Chaas
+SC-DAI-00014	Amul Cheese Spreads
+SC-DAI-00015	Amul Pro
+SC-DAI-00016	Amul Kool
+SC-DAI-00017	Amul Masti Buttermilk
+SC-DAI-00018	Mother Dairy Turmeric Milk
+SC-DAI-00019	Nandini Milk
+SC-DAI-00020	Nandini Curd
+SC-DAI-00021	Nandini Paneer
+SC-DAI-00022	Mother Dairy Paneer
+SC-DAI-00023	Go Cheese Slices
+SC-DAI-00024	Go Cheese Spread
+SC-DAI-00025	Britannia Cheese
+SC-DAI-00026	Nilgiri Yogurt
+SC-DAI-00027	Epigam Milk
+SC-DAI-00028	Amul Double Tonned Milk
+SC-DAI-00029	Mother Dairy Skimmed Milk
+SC-DAI-00030	Nestle Condensed Milk
+SC-DAI-00031	Fresh Khoya
+SC-DAI-00032	Fresh Paneer Homemade
+SC-DAI-00033	Fresh Farm Boiled Eggs
+SC-DAI-00034	Fresh Farm Egg White
+SC-DAI-00035	Fresh Farm Brown Eggs
+SC-DAI-00036	Amul Cheese Cubes
+SC-DAI-00037	Amul Curd Set
+SC-DAI-00038	Amul Flavoured Yogurt Mango
+SC-DAI-00039	Mother Dairy Probiotic Curd
+SC-DAI-00040	Amul Butter Unsalted
+SC-DAI-00041	Britannia Cream Cheese
+SC-DRY-00001	Madhur Refined Sugar
+SC-DRY-00002	24 Mantra Organic Jaggery
+SC-DRY-00003	Dabur Pure Honey
+SC-DRY-00004	Happilo Whole Cashew W240
+SC-DRY-00005	Happilo California Almonds
+SC-DRY-00006	Happilo Seedless Raisins
+SC-DRY-00007	Happilo Pistachio Salted
+SC-DRY-00008	Lion Dates Seedless
+SC-DRY-00009	Happilo Walnut Kernels
+SC-DRY-00010	Catch Sesame Seeds
+SC-DRY-00011	Fresh Peanuts Raw
+SC-DRY-00012	Happilo Anjeer
+SC-DRY-00013	Happilo Apricot
+SC-DRY-00014	Happilo Prunes
+SC-DRY-00015	Happilo Black Raisins
+SC-DRY-00016	Happilo Cranberries Dried
+SC-DRY-00017	Happilo Blueberries Dried
+SC-DRY-00018	Happilo Tutti Frutti
+SC-DRY-00019	Happilo Mixed Dry Fruits
+SC-DRY-00020	Happilo Dates Seedless
+SC-DRY-00021	Happilo Munakka
+SC-DRY-00022	Happilo Foxnuts
+SC-DRY-00023	Happilo Cashew W180
+SC-DRY-00024	Happilo Pistachio Raw
+SC-DRY-00025	Happilo Almonds Grown
+SC-DRY-00026	Happilo Walnut Pieces
+SC-DRY-00027	Happilo Raisins Green
+SC-DRY-00028	Happilo Dried Kiwi
+SC-DRY-00029	Happilo Dried Mango
+SC-DRY-00030	Happilo Dried Pineapple
+SC-DRY-00031	Happilo Trail Mix
+SC-DRY-00032	Happilo Peanuts Roasted
+SC-DRY-00033	Happilo Sunflower Seeds
+SC-DRY-00034	Happilo Pumpkin Seeds
+SC-DRY-00035	Happilo Flax Seeds
+SC-DRY-00036	Happilo Chia Seeds
+SC-DRY-00037	Happilo Muskmelon Seeds
+SC-DRY-00038	Sugar Free Gold
+SC-DRY-00039	Sugar Free Stevia
+SC-DRY-00040	24 Mantra Jaggery Powder
+SC-DRY-00041	24 Mantra Gur Block
+SC-DRY-00042	24 Mantra Palm Jaggery
+SC-DRY-00043	24 Mantra Coconut Sugar
+SC-DRY-00044	24 Mantra Mishri
+SC-DRY-00045	24 Mantra Khandsari Sugar
+SC-FRU-00001	Fresh Onion
+SC-FRU-00002	Fresh Tomato
+SC-FRU-00003	Fresh Potato
+SC-FRU-00004	Fresh Ginger
+SC-FRU-00005	Fresh Garlic
+SC-FRU-00006	Fresh Green Chilli
+SC-FRU-00007	Fresh Coriander Leaves
+SC-FRU-00008	Fresh Mint Leaves
+SC-FRU-00009	Fresh Curry Leaves
+SC-FRU-00010	Fresh Spinach
+SC-FRU-00011	Fresh Methi Leaves
+SC-FRU-00012	Fresh Cauliflower
+SC-FRU-00013	Fresh Cabbage
+SC-FRU-00014	Fresh Carrot
+SC-FRU-00015	Fresh Capsicum
+SC-FRU-00016	Fresh Green Peas
+SC-FRU-00017	Fresh Brinjal
+SC-FRU-00018	Fresh Lady Finger
+SC-FRU-00019	Fresh Bottle Gourd
+SC-FRU-00020	Fresh Cucumber
+SC-FRU-00021	Fresh Lemon
+SC-FRU-00022	Fresh Beetroot
+SC-FRU-00023	Fresh Drumstick
+SC-FRU-00024	Fresh Pumpkin
+SC-FRU-00025	Fresh Sweet Corn
+SC-FRU-00026	Fresh Banana
+SC-FRU-00027	Fresh Apple
+SC-FRU-00028	Fresh Mango Alphonso
+SC-FRU-00029	Fresh Pomegranate
+SC-FRU-00030	Fresh Orange
+SC-FRU-00031	Fresh Grapes
+SC-FRU-00032	Fresh Papaya
+SC-FRU-00033	Fresh Watermelon
+SC-FRU-00034	Fresh Guava
+SC-FRU-00035	Fresh Coconut
+SC-FRU-00036	Fresh Garlic
+SC-FRU-00037	Fresh Ginger
+SC-FRU-00038	Fresh Turmeric
+SC-FRU-00039	Fresh Green Chilli
+SC-FRU-00040	Fresh Curry Leaves
+SC-FRU-00041	Fresh Lemon
+SC-FRU-00042	Fresh Drumstick
+SC-FRU-00043	Fresh Bottle Gourd
+SC-FRU-00044	Fresh Bitter Gourd
+SC-FRU-00045	Fresh Raw Banana
+SC-HOM-00001	HUL Surf Excel Easy Wash
+SC-HOM-00002	P&G Tide Plus Detergent
+SC-HOM-00003	P&G Ariel Matic Top
+SC-HOM-00004	HUL Vim Dishwash Bar
+SC-HOM-00005	HUL Vim Gel
+SC-HOM-00006	Reckitt Pril Dishwash Liquid
+SC-HOM-00007	Reckitt Harpic Toilet Cleaner
+SC-HOM-00008	Reckitt Lizol Disinfectant
+SC-HOM-00009	Colin Glass Cleaner
+SC-HOM-00010	Harpic Floor Cleaner
+SC-HOM-00011	Wheel Detergent Cake
+SC-HOM-00012	Ezee Laundry Liquid
+SC-HOM-00013	Comfort Fabric Conditioner
+SC-HOM-00014	Scotch-Brite Dishwash Scrub
+SC-HOM-00015	Godrej Air Freshener
+SC-HOM-00016	Origami Garbage Bags
+SC-HOM-00017	Harpic Mosaic Cleaner
+SC-HOM-00018	Dettol Hand Sanitizer
+SC-HOM-00019	Scotch-Brite Dishwash Brush
+SC-HOM-00020	Gala Toilet Brush
+SC-HOM-00021	Margo Phenyl
+SC-HOM-00022	Affresh Washing Machine Cleaner
+SC-HOM-00023	Hit Cockroach Repellent
+SC-HOM-00024	Goodknight Mosquito Coil
+SC-HOM-00025	Godrej All-Out Refill
+SC-HOM-00026	Odonil Room Freshener Spray
+SC-HOM-00027	Harpic Bleach
+SC-HOM-00028	Harpic Stain Remover
+SC-HOM-00029	Scotch-Brite Sponge Wipe
+SC-HOM-00030	Surf Excel Liquid Detergent
+SC-HOM-00031	Harpic Toilet Rim Block
+SC-HOM-00032	Harpic Drain Cleaner
+SC-HOM-00033	3M Car Wash Shampoo
+SC-HOM-00034	Kiwi Shoe Cleaner
+SC-HOM-00035	Mr. Muscle Multipurpose Cleaner
+SC-HOM-00036	Cif Stainless Steel Cleaner
+SC-HOM-00037	Origami Toilet Tissue
+SC-HOM-00038	Origami Kitchen Towel
+SC-HOM-00039	Vim Dishwash Bar
+SC-HOM-00040	Fortune Dishwash Liquid
+SC-HOM-00041	Lizol Floor Cleaner Rose
+SC-HOM-00042	Harpic Toilet Cleaner
+SC-HOM-00043	Harpic Glass Cleaner
+SC-HOM-00044	Domex Phenyl
+SC-HOM-00045	Tide Laundry Detergent Powder
+SC-HOM-00046	Surf Laundry Detergent Liquid
+SC-HOM-00047	Comfort Fabric Softener
+SC-HOM-00048	Raid Cockroach Gel
+SC-HOM-00049	Origami Garbage Bag
+SC-INS-00001	Nestle Maggi 2-Minute Noodles
+SC-INS-00002	Nestle Maggi Masala Ae Magic
+SC-INS-00003	Nissin Top Ramen Masala
+SC-INS-00004	ITC Yippee Magic Masala
+SC-INS-00005	Ching's Secret Schezwan Chutney
+SC-INS-00006	Ching's Secret Schezwan Sauce
+SC-INS-00007	Ching's Secret Hakka Noodles
+SC-INS-00008	Ching's Secret Manchurian Sauce
+SC-INS-00009	Ching's Secret Soya Sauce
+SC-INS-00010	Ching's Secret Vinegar
+SC-INS-00011	Ching's Secret Green Chilli Sauce
+SC-INS-00012	Ching's Secret Red Chilli Sauce
+SC-INS-00013	Kissan Tomato Ketchup
+SC-INS-00014	Maggi Tomato Sauce
+SC-INS-00015	FunFoods Mayonnaise
+SC-INS-00016	Britannia Cheese Spread
+SC-INS-00017	Bambino Pasta Macaroni
+SC-INS-00018	Del Monte Pasta Sauce
+SC-INS-00019	MTR Upma Mix
+SC-INS-00020	MTR Poha Mix
+SC-INS-00021	MTR Bisi Bele Bath Mix
+SC-INS-00022	MTR Puliyogare Mix
+SC-INS-00023	MTR Rava Idli Mix
+SC-INS-00024	MTR Dosa Mix
+SC-INS-00025	MTR Uttapam Mix
+SC-INS-00026	MTR Gulab Jamun Mix
+SC-INS-00027	MTR Rava Kesari Mix
+SC-INS-00028	MTR Pongal Mix
+SC-INS-00029	MTR Sambar Powder
+SC-INS-00030	MTR Rasam Powder
+SC-INS-00031	MTR Vermicelli
+SC-INS-00032	Mother Dairy Frozen Mixed Vegetables
+SC-INS-00033	Mother Dairy Frozen Peas
+SC-INS-00034	Mother Dairy Frozen Corn
+SC-INS-00035	McCain Frozen French Fries
+SC-INS-00036	McCain Frozen Aloo Tikki
+SC-INS-00037	McCain Frozen Chicken Nuggets
+SC-INS-00038	Nescafe Instant Coffee
+SC-INS-00039	HUL Bru Instant Coffee
+SC-INS-00040	Mother Dairy Rasgulla Tin
+SC-INS-00041	Vadilal Kulfi Mix
+SC-INS-00042	Amul Ice Cream Vanilla
+SC-INS-00043	Weikfield Custard Powder
+SC-INS-00044	Weikfield Jelly Crystals
+SC-INS-00045	MTR Ready Meal Rajma
+SC-INS-00046	MTR Ready Meal Dal Makhani
+SC-INS-00047	MTR Ready Meal Paneer Butter Masala
+SC-INS-00048	Nestle Maggi Atta Noodles
+SC-INS-00049	Knorr Pasta Macaroni
+SC-INS-00050	McCain Frozen Mixed Veg
+SC-INS-00051	MTR Instant Upma
+SC-INS-00052	MTR Instant Khichdi
+SC-MAS-00001	Everest Turmeric Powder
+SC-MAS-00002	Everest Red Chilli Powder
+SC-MAS-00003	Everest Kashmiri Chilli Powder
+SC-MAS-00004	Everest Coriander Powder
+SC-MAS-00005	Everest Cumin Powder
+SC-MAS-00006	Everest Garam Masala
+SC-MAS-00007	Everest Chole Masala
+SC-MAS-00008	Everest Pav Bhaji Masala
+SC-MAS-00009	MTR Sambar Masala
+SC-MAS-00010	MTR Rasam Powder
+SC-MAS-00011	Everest Chaat Masala
+SC-MAS-00012	Everest Kitchen King Masala
+SC-MAS-00013	Shan Biryani Masala
+SC-MAS-00014	Everest Tandoori Masala
+SC-MAS-00015	Catch Cumin Seeds
+SC-MAS-00016	Catch Mustard Seeds
+SC-MAS-00017	Catch Fenugreek Seeds
+SC-MAS-00018	Catch Black Pepper Whole
+SC-MAS-00019	Catch Green Cardamom
+SC-MAS-00020	Catch Cloves
+SC-MAS-00021	Catch Cinnamon
+SC-MAS-00022	Catch Bay Leaf
+SC-MAS-00023	Everest Asafoetida Hing
+SC-MAS-00024	Catch Carom Seeds Ajwain
+SC-MAS-00025	Catch Dry Red Chilli
+SC-MAS-00026	Catch Fennel Seeds
+SC-MAS-00027	Tata Iodised Salt
+SC-MAS-00028	Tata Black Salt Kala Namak
+SC-MAS-00029	Fresh Tamarind
+SC-MAS-00030	Everest Dry Mango Powder Amchur
+SC-MAS-00031	Everest Kasuri Methi
+SC-MAS-00032	MTR Sambhar Masala
+SC-MAS-00033	Everest Biryani Masala
+SC-MAS-00034	Everest Meat Masala
+SC-MAS-00035	Everest Fish Fry Masala
+SC-MAS-00036	MDH Kitchen King Masala
+SC-MAS-00037	MDH Shahi Paneer Masala
+SC-MAS-00038	MDH Tandoori Masala
+SC-MAS-00039	MDH Chana Masala
+SC-MAS-00040	MDH Goda Masala
+SC-MAS-00041	Everest Black Pepper
+SC-MAS-00042	Everest Cinnamon
+SC-OIL-00001	Fortune Sunlite Refined Sunflower Oil
+SC-OIL-00002	Saffola Gold Refined Oil
+SC-OIL-00003	Fortune Kachi Ghani Mustard Oil
+SC-OIL-00004	Dhara Groundnut Oil
+SC-OIL-00005	Parachute Coconut Oil
+SC-OIL-00006	Mother Dairy Cow Ghee
+SC-OIL-00007	Figaro Olive Oil Extra Virgin
+SC-OIL-00008	Fortune Mustard Oil
+SC-OIL-00009	Idhayam Sesame Oil
+SC-OIL-00010	Groundnut Oil
+SC-OIL-00011	Figaro Olive Oil
+SC-OIL-00012	Fortune Rice Bran Oil
+SC-OIL-00013	Fortune Soya Oil
+SC-OIL-00014	Figaro Pomace Olive Oil
+SC-OIL-00015	Saffola Sunflower Oil
+SC-OIL-00016	Fortune Canola Oil
+SC-OIL-00017	Fortune Palm Oil
+SC-OIL-00018	Gagan Vanaspati
+SC-OIL-00019	HUL Dalda
+SC-OIL-00020	Amul Ghee pouch
+SC-OIL-00021	Patanjali Cow Ghee
+SC-OIL-00022	Mother Dairy Desi Ghee
+SC-OIL-00023	Nandini Buffalo Ghee
+SC-OIL-00024	Woodpress Filtered Groundnut Oil
+SC-OIL-00025	Maxcare Cold Pressed Coconut Oil
+SC-OIL-00026	Leonardo Garlic Infused Oil
+SC-OIL-00027	Fortune Spray Oil
+SC-OIL-00028	Fortune Pan Spray
+SC-OIL-00029	Figaro Vinegar Oil
+SC-OIL-00030	Leonardo Grapeseed Oil
+SC-OIL-00031	Leonardo Avocado Oil
+SC-OIL-00032	Leonardo Flaxseed Oil
+SC-OIL-00033	Amul Butter
+SC-OIL-00034	Amul White Butter
+SC-OIL-00035	Britannia Cooking Butter
+SC-OIL-00036	Patanjali Ghee Tin
+SC-OIL-00037	Woodpress Filtered Sesame Oil
+SC-OIL-00038	Fortune Refined Cottonseed Oil
+SC-OIL-00039	Figaro Emu Oil
+SC-OIL-00040	Idhayam Gingerly Oil
+SC-OIL-00041	Saffola Corn Oil
+SC-OIL-00042	Fortune Blended Oil
+SC-OIL-00043	Figaro Olive Pomace Tin
+SC-OIL-00044	Gagan Cooking Ghee
+SC-OIL-00045	Amul Spreadable Butter
+SC-OIL-00046	Patanjali Clarified Butter
+SC-OIL-00047	Saffola Sunflower Tin
+SC-OIL-00048	Fortune Mustard Oil Pouch
+SC-OIL-00049	Parachute Coconut Tin
+SC-OIL-00050	Idhayam Sesame Tin
+SC-OIL-00051	Mother Dairy Ghee Jar
+SC-PER-00001	HUL Lifebuoy Total 10 Soap
+SC-PER-00002	Reckitt Dettol Original Soap
+SC-PER-00003	HUL Dove Cream Bar
+SC-PER-00004	HUL Pears Pure Soap
+SC-PER-00005	ITC Savlon Soap
+SC-PER-00006	HUL Lux Beauty Soap
+SC-PER-00007	P&G Head & Shoulders Anti-Dandruff
+SC-PER-00008	HUL Clinic Plus Strong
+SC-PER-00009	HUL Sunsilk Black Shine
+SC-PER-00010	HUL Dove Shampoo
+SC-PER-00011	P&G Pantene Pro-V
+SC-PER-00012	Dabur Chyawanprash
+SC-PER-00013	Patanjali Giloy Juice
+SC-PER-00014	Patanjali Amla Juice
+SC-PER-00015	Patanjali Aloe Vera Gel
+SC-PER-00016	Dabur Rose Water
+SC-PER-00017	Himalaya Cucumber Face Wash
+SC-PER-00018	Nivea Moisturising Lotion
+SC-PER-00019	Lakme Sunscreen SPF 50
+SC-PER-00020	Fair & Lovely Fairness Cream
+SC-PER-00021	Colgate Strong Teeth
+SC-PER-00022	HUL Pepsodent Germicheck
+SC-PER-00023	Patanjali Dant Kanti
+SC-PER-00024	Colgate Toothbrush Medium
+SC-PER-00025	Reckitt Dettol Handwash
+SC-PER-00026	ITC Savlon Handwash
+SC-PER-00027	Whisper Sanitary Pads
+SC-PER-00028	J&J Stayfree Secure
+SC-PER-00029	Dabur Hair Oil Almond
+SC-PER-00030	Parachute Coconut Hair Oil
+SC-PER-00031	Dabur Amla Hair Oil
+SC-PER-00032	Fogg Body Spray
+SC-PER-00033	Nivea Deodorant Roll-On
+SC-PER-00034	Gillette Shaving Cream
+SC-PER-00035	Gillette Razor Blades
+SC-PER-00036	Old Spice After Shave
+SC-PER-00037	Johnson's Baby Soap
+SC-PER-00038	Johnson's Baby Shampoo
+SC-PER-00039	Johnson's Baby Lotion
+SC-PER-00040	Johnson's Baby Powder
+SC-PER-00041	Mamaearth Wet Wipes
+SC-PER-00042	Banjara's Multani Mitti
+SC-PER-00043	Dove Hair Conditioner
+SC-PER-00044	Man Matters Beard Oil
+SC-PER-00045	Nivea Lip Balm
+SC-PER-00046	Head & Shoulders Shampoo Anti-Dandruff
+SC-PER-00047	Himalaya Face Wash
+SC-PER-00048	Nivea Body Lotion
+SC-PER-00049	Dabur Toothpaste Herbal
+SC-PER-00050	Lakme Sunscreen
+SC-PIC-00001	Mother's Recipe Mango Pickle
+SC-PIC-00002	Mother's Recipe Lemon Pickle
+SC-PIC-00003	Priya Mixed Pickle
+SC-PIC-00004	Priya Ginger Pickle
+SC-PIC-00005	Priya Garlic Pickle
+SC-PIC-00006	Priya Chilli Pickle
+SC-PIC-00007	Priya Gongura Pickle
+SC-PIC-00008	Mother's Recipe Sweet Mango Chunda
+SC-PIC-00009	Priya Tomato Pickle
+SC-PIC-00010	Priya Amla Pickle
+SC-PIC-00011	Mother's Recipe Urad Papad
+SC-PIC-00012	Bikaji Moong Papad
+SC-PIC-00013	Bikaji Punjabi Papad
+SC-PIC-00014	Haldiram's Masala Papad
+SC-PIC-00015	Bikaji Khichiya Papad
+SC-PIC-00016	Haldiram's Masala Khakra
+SC-PIC-00017	Kissan Tomato Sauce
+SC-PIC-00018	Veeba Chilli Garlic Sauce
+SC-PIC-00019	Veeba Peri Peri Masala
+SC-PIC-00020	Veeba Tandoori Mayo
+SC-PIC-00021	Ching's Secret Hakka Noodles Family
+SC-PIC-00022	Veeba Sandwich Spread
+SC-PIC-00023	Priya Mango Thokku
+SC-PIC-00024	Veeba Garlic Mayo
+SC-PIC-00025	Everest Dry Mango Powder
+SC-PIC-00026	Tata Sampann Imli Chutney
+SC-PIC-00027	Tata Sampann Mint Chutney
+SC-PIC-00028	Tata Sampann Green Chutney
+SC-PIC-00029	Veeba Ready Salsa
+SC-PIC-00030	MTR Coconut Chutney
+SC-PIC-00031	MTR Tomato Chutney
+SC-PIC-00032	MTR Peanut Chutney
+SC-PIC-00033	MTR Pudina Chutney
+SC-PIC-00034	MTR Sweet Chutney
+SC-PIC-00035	Tata Sampann Garlic Paste
+SC-PIC-00036	Tata Sampann Ginger Paste
+SC-PIC-00037	Tata Sampann Ginger Garlic Paste
+SC-PIC-00038	Haldiram's Boondi
+SC-PIC-00039	Tata Sampann Raita Mix
+SC-PIC-00040	Priya Lime Pickle
+SC-PIC-00041	Mother's Recipe Chilli Pickle
+SC-PIC-00042	Ching's Secret Soy Sauce
+SC-PIC-00043	MTR Green Chutney
+SC-PIC-00044	MTR Tamarind Chutney
+SC-PIC-00045	MTR Papad Khichiya
+SC-PIC-00046	MTR Punjabi Papad
+SC-SNA-00001	Haldiram's Aloo Bhujia
+SC-SNA-00002	Haldiram's Khatta Meetha
+SC-SNA-00003	Haldiram's Navratan Mix
+SC-SNA-00004	Haldiram's Moong Dal
+SC-SNA-00005	Haldiram's Dal Moth
+SC-SNA-00006	Haldiram's Chana Jor Garam
+SC-SNA-00007	Haldiram's Mathri
+SC-SNA-00008	Haldiram's Shakarpara
+SC-SNA-00009	Haldiram's Gathiya
+SC-SNA-00010	Bikaji Bhujiya
+SC-SNA-00011	Bikaji Chana Dal
+SC-SNA-00012	Haldiram's Kaju Katli
+SC-SNA-00013	Haldiram's Soan Papdi
+SC-SNA-00014	Haldiram's Rasgulla
+SC-SNA-00015	Haldiram's Gulab Jamun
+SC-SNA-00016	Patanjali Aloo Bhujia
+SC-SNA-00017	Patanjali Murukku
+SC-SNA-00018	MTR Chakli
+SC-SNA-00019	Balaji Plain Salted Wafers
+SC-SNA-00020	Balaji Masala Wafers
+SC-SNA-00021	Kurkure Masala Munch
+SC-SNA-00022	Kurkure Chilli Chatka
+SC-SNA-00023	Lay's Classic Salted Lay's
+SC-SNA-00024	Lay's Magic Masala Lay's
+SC-SNA-00025	Lay's Tomato Tango Lay's
+SC-SNA-00026	Uncle Chips Nawab's Choice Uncle Chips
+SC-SNA-00027	Uncle Chips Mumbai Masti Uncle Chips
+SC-SNA-00028	Mad Angles Achari Masti Mad Angles
+SC-SNA-00029	Mad Angles Pizza Masti Mad Angles
+SC-SNA-00030	Too Yumm Multigrain Chips
+SC-SNA-00031	Too Yumm Quinoa Chips
+SC-SNA-00032	Too Yumm Beetroot Chips
+SC-SNA-00033	Balaji Sev Murmura
+SC-SNA-00034	Balaji Chana Chor Garam
+SC-SNA-00035	Haldiram's Pudina Chips
+SC-SNA-00036	Lay's Wafer Style Lay's
+SC-SNA-00037	Kurkure Puffcorn
+SC-SNA-00038	Haldiram's Aam Chulbul
+SC-SNA-00039	Haldiram's Imli Candy
+SC-SNA-00040	Haldiram's Cheesling
+SC-SNA-00041	Haldiram's Fried Peanuts
+SC-SNA-00042	Haldiram's Masala Peanuts
+SC-SNA-00043	Bikaji Bikaneri Papad
+SC-SNA-00044	Bikaji Mawa Kachori
+SC-SNA-00045	Haldiram's Bengal Gram Laddu
+SC-SNA-00046	Haldiram's Kaju Anjeer Roll
+SC-SNA-00047	Haldiram's Soan Cake
+SC-SNA-00048	Haldiram's Bhakarwadi
+SC-TEA-00001	Tata Tea Premium Leaf Tea
+SC-TEA-00002	Brooke Bond Red Label Tea
+SC-TEA-00003	Brooke Bond Taj Mahal Tea
+SC-TEA-00004	Tetley Green Tea Bags
+SC-TEA-00005	Wagh Bakri Cardamom Masala Chai
+SC-TEA-00006	Nescafe Classic Instant Coffee
+SC-TEA-00007	Bru Sunrise Instant Coffee
+SC-TEA-00008	Cothas Filter Coffee Powder
+SC-TEA-00009	Lipton Yellow Label
+SC-TEA-00010	Tata Tea Gold Leaf
+SC-TEA-00011	Tata Tea Agni
+SC-TEA-00012	Brooke Bond Red Label 100
+SC-TEA-00013	Lipton Green Tea Immunity
+SC-TEA-00014	Lipton Green Tea Detox
+SC-TEA-00015	Tata Chai Masala
+SC-TEA-00016	Tetley Masala Chai Bags
+SC-TEA-00017	Tetley Elaichi Chai
+SC-TEA-00018	Tetley Ginger Tea
+SC-TEA-00019	Wagh Bakri Kashmiri Kahwa
+SC-TEA-00020	Wagh Bakri Lemongrass Tea
+SC-TEA-00021	Organic India Tulsi Tea
+SC-TEA-00022	Organic India Peppermint Tea
+SC-TEA-00023	Bru Filter Coffee
+SC-TEA-00024	HUL Bru Gold
+SC-TEA-00025	Nestle Nescafe Gold
+SC-TEA-00026	Nestle Nescafe Classic
+SC-TEA-00027	Davidoff Espresso
+SC-TEA-00028	Nestle Cold Coffee Sachet
+SC-TEA-00029	Nescafe Cappuccino Sachet
+SC-TEA-00030	Nescafe Decaf Coffee
+SC-TEA-00031	Blue Tokai Coffee Beans
+SC-TEA-00032	Blue Tokai French Press Coffee
+SC-TEA-00033	Wagh Bakri Tea Dust
+SC-TEA-00034	Lipton Leaf Tea
+SC-TEA-00035	Brooke Bond Salem Tea
+SC-TEA-00036	Wagh Bakri Nilgiri Tea
+SC-TEA-00037	Tata Assam Tea
+SC-TEA-00038	Tata Darjeeling Tea
+SC-TEA-00039	Wagh Bakri Masala Chai Premix
+SC-TEA-00040	Lipton Ginger Tea Bags
+SC-TEA-00041	Organic India Hibiscus Tea
+SC-TEA-00042	Lipton Green Tea Honey
+SC-TEA-00043	Organic India Chamomile Tea
+SC-TEA-00044	Tetley Cardamom Tea
+SC-TEA-00045	Nescafe Coffee Mix Caramel
+SC-TEA-00046	Bru South Indian Filter
+SC-TEA-00047	Tetley Chai Tea Bags
+SC-TEA-00048	Lipton Lemon Tea
+SC-TEA-00049	Nescafe Mocha Sachet
+SC-TEA-00050	Organic India Turmeric Tea
+SC-TEA-00051	Wagh Bakri Rose Tea
