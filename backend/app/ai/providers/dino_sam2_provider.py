@@ -29,9 +29,14 @@ class DinoSam2Provider:
 
             model_id = "IDEA-Research/grounding-dino-tiny"
             logger.info("Loading Grounding DINO model from %s...", model_id)
-            # Pinned revision mitigates B615 supply-chain risk (main is mutable; pin to hash in prod, nosec acknowledged)
-            self._processor = AutoProcessor.from_pretrained(model_id, revision="main", trust_remote_code=False)  # nosec B615
-            self._model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id, revision="main", trust_remote_code=False)  # nosec B615
+            # Load from local cache if available without checking HF hub every time
+            try:
+                self._processor = AutoProcessor.from_pretrained(model_id, local_files_only=True)
+                self._model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id, local_files_only=True)
+            except Exception:
+                # Fallback to normal load if not cached yet
+                self._processor = AutoProcessor.from_pretrained(model_id, revision="main", trust_remote_code=False)
+                self._model = AutoModelForZeroShotObjectDetection.from_pretrained(model_id, revision="main", trust_remote_code=False)
 
             self.device = "cuda" if torch.cuda.is_available() else "cpu"
             self._model.to(self.device)
@@ -54,21 +59,21 @@ class DinoSam2Provider:
 
         if text_queries is None:
             text_queries = [
-                "grocery item",
-                "snack bag",
+                "grocery product",
+                "juice carton",
                 "bottle",
-                "milk carton",
-                "vegetable",
-                "fruit",
                 "beverage can",
+                "snack bag",
+                "food package",
+                "milk carton",
                 "box",
-                "package",
             ]
 
         prompt = " . ".join(text_queries) + " ."
 
         try:
             import torch
+            import torchvision.ops as ops
 
             pil_img = Image.fromarray(image)
             inputs = self._processor(images=pil_img, text=prompt, return_tensors="pt").to(self.device)
@@ -79,21 +84,30 @@ class DinoSam2Provider:
             results = self._processor.post_process_grounded_object_detection(
                 outputs=outputs,
                 input_ids=inputs.input_ids,
-                box_threshold=0.25,
-                text_threshold=0.25,
+                threshold=0.32,
+                text_threshold=0.30,
                 target_sizes=[pil_img.size[::-1]],
             )[0]
 
-            detections = []
-            boxes = results["boxes"].cpu().numpy()
-            scores = results["scores"].cpu().numpy()
+            boxes_t = results["boxes"]
+            scores_t = results["scores"]
             labels = results["labels"]
 
-            for box, score, label in zip(boxes, scores, labels):
-                x1, y1, x2, y2 = box.tolist()
+            if len(boxes_t) == 0:
+                return []
+
+            # Non-Maximum Suppression (NMS) to eliminate duplicate overlapping crops on the same object
+            keep_indices = ops.nms(boxes_t, scores_t, iou_threshold=0.45).cpu().numpy()
+
+            boxes = boxes_t.cpu().numpy()
+            scores = scores_t.cpu().numpy()
+
+            detections = []
+            for idx in keep_indices:
+                x1, y1, x2, y2 = boxes[idx].tolist()
                 detections.append({
-                    "class_name": str(label) if label else "grocery item",
-                    "confidence": float(score),
+                    "class_name": str(labels[idx]) if labels[idx] else "grocery product",
+                    "confidence": float(scores[idx]),
                     "bbox": [x1, y1, x2, y2],
                 })
             return detections

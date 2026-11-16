@@ -11,6 +11,7 @@ import type {
   Payment,
   PaymentMethod,
   DetectionResult,
+  DetectionResponse,
 } from '@/types/api'
 
 /* ==========================================================================
@@ -168,20 +169,22 @@ export async function verifyPaymentApi(transactionId: string): Promise<Payment> 
    AI SCANNER APIs
    ========================================================================== */
 
-export async function detectImageApi(file: File): Promise<DetectionResult> {
+export async function detectImageApi(file: File): Promise<DetectionResponse> {
   const formData = new FormData()
   formData.append('file', file)
-  const response = await http.post<DetectionResult>('/ai/detect', formData, {
+  const response = await http.post<DetectionResponse>('/ai/detect', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120_000, // 2 minutes timeout for deep vision + OCR pipeline on CPU
   })
   return response.data
 }
 
-export async function detectAndAddApi(file: File): Promise<DetectionResult> {
+export async function detectAndAddApi(file: File): Promise<DetectionResponse> {
   const formData = new FormData()
   formData.append('file', file)
-  const response = await http.post<DetectionResult>('/ai/detect-and-add', formData, {
+  const response = await http.post<DetectionResponse>('/ai/detect-and-add', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120_000,
   })
   return response.data
 }

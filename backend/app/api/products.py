@@ -82,7 +82,7 @@ def list_categories(
 )
 def list_products(
     skip: int = Query(0, ge=0),
-    limit: int = Query(20, ge=1, le=500),
+    limit: int = Query(20, ge=1, le=2000),
     category_id: str | None = Query(None),
     min_price: float | None = Query(None, ge=0),
     max_price: float | None = Query(None, ge=0),

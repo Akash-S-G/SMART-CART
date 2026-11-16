@@ -86,7 +86,7 @@ def _to_response(inv: Inventory) -> InventoryResponse:
 @router.get("", response_model=list[InventoryResponse])
 def list_inventory(
     skip: int = Query(0, ge=0),
-    limit: int = Query(50, ge=1, le=500),
+    limit: int = Query(50, ge=1, le=2000),
     low_stock: bool = Query(False, description="Only low/out stock"),
     search: str | None = Query(None),
     db: Session = Depends(get_db),

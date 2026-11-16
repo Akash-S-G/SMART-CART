@@ -6,13 +6,14 @@ MODEL_DIR = BASE_DIR / "models"
 
 UPLOAD_DIR = BASE_DIR / "app" / "static" / "uploads"
 
-MODEL_NAME = "yolo11n.pt"
+# Use best.pt — the custom SmartCart model with 718 specific product classes
+MODEL_NAME = "best.pt"
 
 MODEL_PATH = MODEL_DIR / MODEL_NAME
 
 IMAGE_SIZE = 640
 
-CONFIDENCE_THRESHOLD = 0.35
+CONFIDENCE_THRESHOLD = 0.25
 
 IOU_THRESHOLD = 0.45
 

@@ -207,6 +207,13 @@ export interface DetectionResult {
   model?: string
   image_url?: string
 }
+
+export interface DetectionResponse {
+  detections: DetectionResult[]
+  inference_time_ms: number
+  image_width: number
+  image_height: number
+}
 export interface DetectionLog {
   id: string
   request_id: string

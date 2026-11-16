@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -23,6 +23,10 @@ import {
   PackageX,
   TrendingUp,
   PackageCheck,
+  LayoutGrid,
+  List,
+  Table as TableIcon,
+  Filter,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -106,7 +110,7 @@ export function AdminPage() {
   const { data: categories = [] } = useQuery({ queryKey: ['admin-categories'], queryFn: getCategoriesApi })
   const { data: products = [], isLoading } = useQuery({
     queryKey: ['admin-products'],
-    queryFn: () => listProductsApi(0, 200) as Promise<ProductRow[]>,
+    queryFn: () => listProductsApi(0, 1000) as Promise<ProductRow[]>,
   })
   const { data: customers = [] } = useQuery({ queryKey: ['admin-customers'], queryFn: getRealCustomersApi })
   const { data: logs = [] } = useQuery({ queryKey: ['admin-logs'], queryFn: getRealLogsApi })
@@ -270,12 +274,14 @@ function InventoryDashboardView({
   loading,
   onEdit,
   onDelete,
+  categories,
 }: {
   products: ProductRow[]
   searchQuery: string
   loading: boolean
   onEdit: (p: ProductRow) => void
   onDelete: (id: string) => void
+  categories: Category[]
 }) {
   const navigate = useNavigate()
   const { toast } = useToast()
@@ -284,7 +290,59 @@ function InventoryDashboardView({
   const [historyFor, setHistoryFor] = useState<ProductRow | null>(null)
   const [editInvFor, setEditInvFor] = useState<ProductRow | null>(null)
   const { data: valuation } = useQuery({ queryKey: ['inv-valuation'], queryFn: getInventoryValuationApi })
-  const { data: invRows } = useQuery({ queryKey: ['inventory-api'], queryFn: () => listInventoryApi({ limit: 200 }) })
+  const { data: invRows } = useQuery({ queryKey: ['inventory-api'], queryFn: () => listInventoryApi({ limit: 1000 }) })
+
+  // Interactive View Modes: 'table' (dense), 'cards' (grid), 'list' (expanded rows)
+  const [viewMode, setViewMode] = useState<'table' | 'cards' | 'list'>('table')
+
+  // Comprehensive Filters & Sorting
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [stockStatusFilter, setStockStatusFilter] = useState<'all' | 'in_stock' | 'low_stock' | 'out_of_stock'>('all')
+  const [sortBy, setSortBy] = useState<'name_asc' | 'name_desc' | 'price_asc' | 'price_desc' | 'stock_asc' | 'stock_desc'>('name_asc')
+
+  // Filtered & Sorted catalog for view (MUST be called before any early return to comply with Rules of Hooks)
+  const filteredProducts = useMemo(() => {
+    let list = [...products]
+
+    // 1. Search Query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim()
+      list = list.filter(
+        p =>
+          p.name.toLowerCase().includes(q) ||
+          p.sku.toLowerCase().includes(q) ||
+          (p.barcode || '').includes(q) ||
+          (p.brand || '').toLowerCase().includes(q)
+      )
+    }
+
+    // 2. Category Filter
+    if (selectedCategory !== 'all') {
+      list = list.filter(p => p.category_id === selectedCategory)
+    }
+
+    // 3. Stock Status Filter
+    if (stockStatusFilter === 'out_of_stock') {
+      list = list.filter(p => (p.stock ?? 0) === 0)
+    } else if (stockStatusFilter === 'low_stock') {
+      list = list.filter(p => (p.stock ?? 0) > 0 && (p.stock ?? 0) < 20)
+    } else if (stockStatusFilter === 'in_stock') {
+      list = list.filter(p => (p.stock ?? 0) >= 20)
+    }
+
+    // 4. Sorting
+    list.sort((a, b) => {
+      if (sortBy === 'name_asc') return a.name.localeCompare(b.name)
+      if (sortBy === 'name_desc') return b.name.localeCompare(a.name)
+      if (sortBy === 'price_asc') return (a.price ?? 0) - (b.price ?? 0)
+      if (sortBy === 'price_desc') return (b.price ?? 0) - (a.price ?? 0)
+      if (sortBy === 'stock_asc') return (a.stock ?? 0) - (b.stock ?? 0)
+      if (sortBy === 'stock_desc') return (b.stock ?? 0) - (a.stock ?? 0)
+      return 0
+    })
+
+    return list
+  }, [products, searchQuery, selectedCategory, stockStatusFilter, sortBy])
 
   if (loading) return <div className="p-10 text-center text-muted-foreground text-sm">Loading inventory metrics…</div>
 
@@ -293,15 +351,7 @@ function InventoryDashboardView({
   const outOfStockProducts = products.filter((p) => (p.stock ?? 0) === 0)
   const totalValuation = valuation?.total_valuation ?? products.reduce((acc, p) => acc + (p.price ?? 0) * (p.stock ?? 0), 0)
   const reorderMap = new Map((invRows || []).map(r => [r.product_id, r]))
-
-  const searchedProducts = searchQuery
-    ? products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (p.barcode || '').includes(searchQuery),
-      )
-    : []
+  const catMap = new Map((categories || []).map(c => [c.id, c.name]))
 
   return (
     <div className="p-6 space-y-8">
@@ -348,135 +398,296 @@ function InventoryDashboardView({
         </div>
       </div>
 
-      {/* Info Banner */}
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center gap-3">
-          <ImageIcon className="h-5 w-5 text-primary shrink-0" />
-          <p className="text-xs text-foreground font-medium">
-            <strong>Product Image & Catalog Controls:</strong> Product image uploading, editing, and deletion are now managed on each individual Product Page.
-          </p>
+      {/* View Switcher & Comprehensive Filter Bar */}
+      <div className="bg-background border border-border rounded-2xl p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Filter Controls */}
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <div className="flex items-center gap-1.5 font-bold text-muted-foreground">
+            <Filter className="h-3.5 w-3.5 text-primary" /> Filter:
+          </div>
+
+          {/* Category Filter */}
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="bg-card border border-border rounded-xl px-3 py-1.5 font-medium text-foreground text-xs focus:ring-1 focus:ring-primary outline-none"
+          >
+            <option value="all">All Categories ({products.length})</option>
+            {categories.map((c) => {
+              const count = products.filter(p => p.category_id === c.id).length
+              return (
+                <option key={c.id} value={c.id}>
+                  {c.name} ({count})
+                </option>
+              )
+            })}
+          </select>
+
+          {/* Stock Status Filter */}
+          <select
+            value={stockStatusFilter}
+            onChange={(e) => setStockStatusFilter(e.target.value as any)}
+            className="bg-card border border-border rounded-xl px-3 py-1.5 font-medium text-foreground text-xs focus:ring-1 focus:ring-primary outline-none"
+          >
+            <option value="all">All Stock Statuses</option>
+            <option value="in_stock">In Stock (≥20)</option>
+            <option value="low_stock">Low Stock (&lt;20)</option>
+            <option value="out_of_stock">Out of Stock (0)</option>
+          </select>
+
+          {/* Sort By */}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="bg-card border border-border rounded-xl px-3 py-1.5 font-medium text-foreground text-xs focus:ring-1 focus:ring-primary outline-none"
+          >
+            <option value="name_asc">Name: A to Z</option>
+            <option value="name_desc">Name: Z to A</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="stock_asc">Stock: Low to High</option>
+            <option value="stock_desc">Stock: High to Low</option>
+          </select>
+
+          {(selectedCategory !== 'all' || stockStatusFilter !== 'all' || searchQuery) && (
+            <button
+              onClick={() => { setSelectedCategory('all'); setStockStatusFilter('all'); }}
+              className="text-xs font-semibold text-primary hover:underline ml-1"
+            >
+              Reset
+            </button>
+          )}
+        </div>
+
+        {/* View Mode Toggle Buttons */}
+        <div className="flex items-center gap-1.5 bg-muted/40 p-1 rounded-xl border border-border/80 self-start md:self-auto">
+          <button
+            onClick={() => setViewMode('table')}
+            aria-label="Table View"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+              viewMode === 'table' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <TableIcon className="h-3.5 w-3.5" /> Table
+          </button>
+          <button
+            onClick={() => setViewMode('cards')}
+            aria-label="Cards Grid View"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+              viewMode === 'cards' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" /> Cards
+          </button>
+          <button
+            onClick={() => setViewMode('list')}
+            aria-label="List View"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+              viewMode === 'list' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <List className="h-3.5 w-3.5" /> List
+          </button>
         </div>
       </div>
 
-      {/* Quick Search Lookup Results */}
-      {searchQuery && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
-            <Search className="h-4 w-4 text-primary" /> Search Results ({searchedProducts.length})
-          </h3>
-          {searchedProducts.length === 0 ? (
-            <div className="p-6 text-center text-muted-foreground text-xs bg-background border rounded-2xl">
-              No products found matching "{searchQuery}".
-            </div>
-          ) : (
-            <div className="border border-border rounded-2xl overflow-hidden bg-background">
+      {/* Products Display Area */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-center text-xs text-muted-foreground font-semibold px-1">
+          <span>Showing {filteredProducts.length} of {products.length} products</span>
+          {searchQuery && <span>Matching "{searchQuery}"</span>}
+        </div>
+
+        {filteredProducts.length === 0 ? (
+          <div className="p-12 text-center text-muted-foreground text-xs bg-background border rounded-2xl flex flex-col items-center gap-2">
+            <PackageX className="h-8 w-8 text-muted-foreground/60" />
+            <span className="font-semibold text-foreground text-sm">No Products Found</span>
+            <span>Try adjusting your search query or filter options.</span>
+          </div>
+        ) : viewMode === 'table' ? (
+          /* =================== TABLE VIEW =================== */
+          <div className="border border-border rounded-2xl overflow-hidden bg-background shadow-sm">
+            <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="bg-muted/30 border-b text-muted-foreground font-bold">
-                    <th className="p-3">Product Name</th>
+                    <th className="p-3">Product</th>
                     <th className="p-3">SKU</th>
-                    <th className="p-3">Barcode</th>
+                    <th className="p-3">Category</th>
                     <th className="p-3">Price</th>
-                    <th className="p-3">Stock</th>
+                    <th className="p-3">Stock Level</th>
+                    <th className="p-3">Status</th>
                     <th className="p-3 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {searchedProducts.map((p) => (
-                    <tr key={p.id} className="hover:bg-muted/50">
-                      <td className="p-3 font-bold text-foreground">{p.name}</td>
-                      <td className="p-3 font-mono text-muted-foreground">{p.sku}</td>
-                      <td className="p-3 font-mono text-muted-foreground">{p.barcode || '—'}</td>
-                      <td className="p-3 font-bold text-foreground">₹{p.price ?? '—'}</td>
-                      <td className="p-3 font-bold text-foreground">{p.stock ?? '—'}</td>
-                      <td className="p-3 text-right flex justify-end gap-2">
-                        <Button
-                          size="sm"
-                          variant="gradient"
-                          className="rounded-lg text-[11px] h-7 px-3 gap-1"
-                          onClick={() => navigate(`/product/${p.id}`)}
-                        >
-                          Product Page <ExternalLink className="h-3 w-3" />
-                        </Button>
-                        <Button size="sm" variant="outline" className="rounded-lg text-[11px] h-7 px-2" onClick={() => onEdit(p)}>
-                          <Pencil className="h-3 w-3" />
-                        </Button>
-                        <Button size="sm" variant="outline" className="rounded-lg text-[11px] h-7 px-2 text-destructive" onClick={() => onDelete(p.id)}>
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredProducts.map((p) => {
+                    const stock = p.stock ?? 0
+                    const isZero = stock === 0
+                    const isLow = stock > 0 && stock < 20
+                    const imgUrl = (p.images && p.images[0]) || (p as any).image_url
+                    const inv = reorderMap.get(p.id)
+
+                    return (
+                      <tr key={p.id} className="hover:bg-muted/40 transition">
+                        <td className="p-3">
+                          <div className="flex items-center gap-3">
+                            {imgUrl ? (
+                              <img src={imgUrl} alt={p.name} className="w-10 h-10 object-cover rounded-xl border border-border shrink-0 bg-card" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-xl bg-muted/60 border border-border flex items-center justify-center shrink-0">
+                                <Boxes className="h-4 w-4 text-muted-foreground" />
+                              </div>
+                            )}
+                            <div>
+                              <p className="font-bold text-foreground text-xs leading-snug">{p.name}</p>
+                              {p.brand && <p className="text-[11px] text-muted-foreground font-medium">{p.brand}</p>}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-3 font-mono text-[11px] text-muted-foreground whitespace-nowrap">{p.sku}</td>
+                        <td className="p-3 text-muted-foreground whitespace-nowrap">{catMap.get(p.category_id) || 'General'}</td>
+                        <td className="p-3 font-bold text-foreground whitespace-nowrap">₹{p.price ?? '—'}</td>
+                        <td className="p-3 font-bold text-foreground whitespace-nowrap">
+                          {stock} <span className="text-[10px] font-normal text-muted-foreground">units</span>
+                        </td>
+                        <td className="p-3 whitespace-nowrap">
+                          <Badge warning={isLow} destructive={isZero} className="text-[10px] uppercase font-bold">
+                            {isZero ? 'Out of Stock' : isLow ? 'Low Stock' : 'In Stock'}
+                          </Badge>
+                        </td>
+                        <td className="p-3 text-right whitespace-nowrap">
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Button size="sm" variant="gradient" className="rounded-lg text-[10px] h-7 px-2 font-semibold" onClick={() => setAdjustFor(p)}>+Stock</Button>
+                            <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setHistoryFor(p)}>History</Button>
+                            <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setEditInvFor(p)} title="Set Reorder Threshold"><RefreshCw className="h-3 w-3" /></Button>
+                            <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => navigate(`/product/${p.id}`)} title="View Product Page"><ExternalLink className="h-3 w-3" /></Button>
+                            <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => onEdit(p)} title="Edit Product"><Pencil className="h-3 w-3" /></Button>
+                            <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2 text-destructive" onClick={() => onDelete(p.id)} title="Delete Product"><Trash2 className="h-3 w-3" /></Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        ) : viewMode === 'cards' ? (
+          /* =================== CARDS GRID VIEW =================== */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredProducts.map((p) => {
+              const stock = p.stock ?? 0
+              const isZero = stock === 0
+              const isLow = stock > 0 && stock < 20
+              const imgUrl = (p.images && p.images[0]) || (p as any).image_url
+              const inv = reorderMap.get(p.id)
 
-      {/* Critical Stock & Reorder Alerts Table */}
-      <div className="space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-amber-500" /> Low Stock & Critical Inventory Alerts ({lowStockProducts.length + outOfStockProducts.length})
-        </h3>
-        {[...outOfStockProducts, ...lowStockProducts].length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground text-xs bg-background border rounded-2xl flex flex-col items-center gap-2">
-            <PackageCheck className="h-8 w-8 text-emerald-500" />
-            <span className="font-semibold text-foreground">Inventory Levels Optimal</span>
-            <span>All product stock levels are above the threshold limit (20 units).</span>
+              return (
+                <div key={p.id} className="bg-background border border-border rounded-2xl p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+                  <div className="space-y-3">
+                    <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-muted/40 border border-border">
+                      {imgUrl ? (
+                        <img src={imgUrl} alt={p.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                          <Boxes className="h-8 w-8" />
+                        </div>
+                      )}
+                      <div className="absolute top-2 right-2">
+                        <Badge warning={isLow} destructive={isZero} className="text-[10px] uppercase font-bold shadow-sm">
+                          {isZero ? 'Out of Stock' : isLow ? 'Low Stock' : `${stock} Left`}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-bold text-primary uppercase tracking-wider">{catMap.get(p.category_id) || 'General'}</span>
+                      <h4 className="font-bold text-sm text-foreground leading-snug line-clamp-2 mt-0.5">{p.name}</h4>
+                      {p.brand && <p className="text-xs text-muted-foreground mt-0.5">{p.brand}</p>}
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs pt-2 border-t border-border/60">
+                      <div>
+                        <span className="text-[10px] text-muted-foreground block font-medium">SKU</span>
+                        <span className="font-mono font-bold text-[11px] text-foreground">{p.sku}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[10px] text-muted-foreground block font-medium">Price</span>
+                        <span className="font-black text-sm text-foreground">₹{p.price ?? '—'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 mt-3 border-t border-border flex items-center justify-between gap-1.5 flex-wrap">
+                    <Button size="sm" variant="gradient" className="rounded-lg text-[10px] h-7 px-2.5 font-semibold" onClick={() => setAdjustFor(p)}>+Stock</Button>
+                    <div className="flex items-center gap-1">
+                      <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setHistoryFor(p)}>History</Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => navigate(`/product/${p.id}`)} title="View Page"><ExternalLink className="h-3 w-3" /></Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => onEdit(p)} title="Edit"><Pencil className="h-3 w-3" /></Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2 text-destructive" onClick={() => onDelete(p.id)} title="Delete"><Trash2 className="h-3 w-3" /></Button>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         ) : (
-          <div className="border border-border rounded-2xl overflow-hidden bg-background">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-muted/30 border-b text-muted-foreground font-bold">
-                  <th className="p-3">Product Name</th>
-                  <th className="p-3">SKU</th>
-                  <th className="p-3">Current Stock</th>
-                  <th className="p-3">Price</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {[...outOfStockProducts, ...lowStockProducts].map((p) => {
-                  const isZero = (p.stock ?? 0) === 0
-                  return (
-                    <tr key={p.id} className="hover:bg-muted/50">
-                      <td className="p-3 font-bold text-foreground">{p.name}</td>
-                      <td className="p-3 font-mono text-muted-foreground">{p.sku}</td>
-                      <td className="p-3 font-bold text-foreground">{p.stock ?? 0}</td>
-                      <td className="p-3 font-bold text-foreground">₹{p.price ?? '—'}</td>
-                      <td className="p-3">
-                        <Badge warning={!isZero} destructive={isZero} className="text-[10px] uppercase">
-                          {isZero ? 'Out of Stock' : 'Low Stock'}
+          /* =================== DETAILED LIST VIEW =================== */
+          <div className="space-y-3">
+            {filteredProducts.map((p) => {
+              const stock = p.stock ?? 0
+              const isZero = stock === 0
+              const isLow = stock > 0 && stock < 20
+              const imgUrl = (p.images && p.images[0]) || (p as any).image_url
+              const inv = reorderMap.get(p.id)
+
+              return (
+                <div key={p.id} className="bg-background border border-border rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:border-primary/40 transition">
+                  <div className="flex items-center gap-4">
+                    {imgUrl ? (
+                      <img src={imgUrl} alt={p.name} className="w-16 h-16 object-cover rounded-xl border border-border shrink-0 bg-card" />
+                    ) : (
+                      <div className="w-16 h-16 rounded-xl bg-muted/60 border border-border flex items-center justify-center shrink-0">
+                        <Boxes className="h-6 w-6 text-muted-foreground" />
+                      </div>
+                    )}
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h4 className="font-bold text-sm text-foreground">{p.name}</h4>
+                        <Badge warning={isLow} destructive={isZero} className="text-[10px] uppercase font-bold">
+                          {isZero ? 'Out of Stock' : isLow ? 'Low Stock' : 'In Stock'}
                         </Badge>
-                      </td>
-                      <td className="p-3 text-right flex justify-end gap-1.5 flex-wrap">
-                        {(() => {
-                          const inv = reorderMap.get(p.id)
-                          return inv ? <span className="text-[10px] text-muted-foreground mr-1">Reorder: {inv.reorder_level ?? 20} · Loc: {inv.location ?? '—'}</span> : null
-                        })()}
-                        <Button size="sm" variant="gradient" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setAdjustFor(p)}>+Stock</Button>
-                        <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setHistoryFor(p)}>History</Button>
-                        <Button size="sm" variant="outline" className="rounded-lg text-[10px] h-7 px-2" onClick={() => setEditInvFor(p)}><RefreshCw className="h-3 w-3" /></Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="rounded-lg text-[11px] h-7 px-2 gap-1"
-                          onClick={() => navigate(`/product/${p.id}`)}
-                        >
-                          <ExternalLink className="h-3 w-3" />
-                        </Button>
-                        <Button size="sm" variant="outline" className="rounded-lg text-[11px] h-7 px-2" onClick={() => onEdit(p)}>
-                          <Pencil className="h-3 w-3" />
-                        </Button>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Brand: <span className="font-semibold text-foreground">{p.brand || '—'}</span> · 
+                        Category: <span className="font-semibold text-foreground">{catMap.get(p.category_id) || 'General'}</span> · 
+                        SKU: <span className="font-mono text-foreground font-semibold">{p.sku}</span>
+                      </p>
+                      {inv && (
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          Location: <span className="font-mono">{inv.location || '—'}</span> · Reorder Level: <span className="font-semibold">{inv.reorder_level ?? 20}</span>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between md:justify-end gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-border">
+                    <div className="text-left md:text-right">
+                      <div className="text-sm font-black text-foreground">₹{p.price ?? '—'}</div>
+                      <div className="text-xs text-muted-foreground font-bold">{stock} units available</div>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <Button size="sm" variant="gradient" className="rounded-lg text-xs h-8 px-3 font-semibold" onClick={() => setAdjustFor(p)}>+Stock</Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-xs h-8 px-2.5" onClick={() => setHistoryFor(p)}>History</Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-xs h-8 px-2.5" onClick={() => navigate(`/product/${p.id}`)} title="View Page"><ExternalLink className="h-3.5 w-3.5" /></Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-xs h-8 px-2.5" onClick={() => onEdit(p)} title="Edit"><Pencil className="h-3.5 w-3.5" /></Button>
+                      <Button size="sm" variant="outline" className="rounded-lg text-xs h-8 px-2.5 text-destructive" onClick={() => onDelete(p.id)} title="Delete"><Trash2 className="h-3.5 w-3.5" /></Button>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         )}
       </div>

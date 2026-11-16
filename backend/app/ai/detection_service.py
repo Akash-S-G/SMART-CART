@@ -72,31 +72,54 @@ class DetectionService:
         for idx, detection in enumerate(detections):
             x1, y1, x2, y2 = detection.bbox
 
+            # Detect whether this box came from DINO (bounding-box-only fallback)
+            is_dino_box = detection.class_name.startswith("__dino__:")
+            display_label = detection.class_name[len("__dino__:"):] if is_dino_box else detection.class_name
+
             # ── 1. Crop bounding box ──────────────────────────────────
             crop = self._crop(image, detection.bbox)
 
             # ── 2. OCR on crop ────────────────────────────────────────
             ocr_tokens = ocr_engine.extract_text(crop)
-            logger.debug(
-                "Bbox[%d] class=%s conf=%.2f ocr=%s",
-                idx, detection.class_name, detection.confidence, ocr_tokens,
+            source_tag = "DINO-box" if is_dino_box else "YOLO"
+            logger.info(
+                "[AI-Pipeline] Crop #%d | Source: %s | Label: '%s' | Confidence: %.2f | OCR tokens: %s",
+                idx, source_tag, display_label, detection.confidence, ocr_tokens,
             )
 
-            # ── 3. OCR-based fuzzy match ──────────────────────────────
+            # ── 3. OCR-based fuzzy match (highest priority always) ────
             product = None
             if ocr_tokens:
                 product = self.matcher.ocr_match(ocr_tokens, crop)
+                if product:
+                    logger.info("[AI-Pipeline] Crop #%d matched via OCR -> Product: '%s' (SKU: %s)", idx, product.name, product.sku)
 
-            # ── 4. YOLO class-name fuzzy match ────────────────────────
-            if product is None:
-                product = self.matcher.best_match(detection.class_name)
+            # ── 4a. best.pt class-name direct match (YOLO-sourced boxes only) ──
+            # best.pt labels ARE specific product names (e.g. "Amul Gold Full Cream Milk")
+            # so attempt a direct DB lookup — no confidence gating needed.
+            if product is None and not is_dino_box:
+                product = self.matcher.best_match(display_label)
+                if product:
+                    logger.info(
+                        "[AI-Pipeline] Crop #%d matched via best.pt class '%s' (conf: %.2f) -> Product: '%s'",
+                        idx, display_label, detection.confidence, product.name,
+                    )
 
-            # ── 5. Last-resort fallback ───────────────────────────────
+            # ── 4b. DINO box: skip class-name matching (labels are generic) ────
+            # For DINO-sourced boxes we rely exclusively on OCR; a generic label
+            # like 'milk carton' must NOT be fuzzy-matched to a specific product.
+
+            # ── 5. No match ───────────────────────────────────────────
             if product is None:
-                product = self.matcher.fallback_match()
+                logger.info(
+                    "[AI-Pipeline] Crop #%d (source: %s, label: '%s', conf: %.2f) — no catalog match found.",
+                    idx, source_tag, display_label, detection.confidence,
+                )
+
+            label_name = product.name if product else display_label
 
             bbox_box = DetectionBox(
-                label=detection.class_name,
+                label=label_name,
                 confidence=detection.confidence,
                 x=x1,
                 y=y1,
@@ -107,7 +130,7 @@ class DetectionService:
             results.append(
                 DetectionResult(
                     request_id=f"det-{idx}",
-                    object_type=detection.class_name,
+                    object_type=label_name,
                     confidence=detection.confidence,
                     bbox=bbox_box,
                     matched_product=product,
@@ -154,14 +177,19 @@ class DetectionService:
             if ocr_text:
                 tokens = ocr_text.split()
                 product = self.matcher.ocr_match(tokens)
+                if product:
+                    logger.info("[AI-Remote-Pipeline] Detection #%d matched via OCR '%s' -> Product: '%s'", idx, ocr_text, product.name)
 
             # 2. Match via class name
             if product is None and class_name:
                 product = self.matcher.best_match(class_name)
+                if product:
+                    logger.info("[AI-Remote-Pipeline] Detection #%d matched via Class Name '%s' -> Product: '%s'", idx, class_name, product.name)
 
             # 3. Fallback match
             if product is None:
                 product = self.matcher.fallback_match()
+                logger.info("[AI-Remote-Pipeline] Detection #%d fell back to default product -> '%s'", idx, product.name if product else "None")
 
             label_name = product.name if product else class_name
 

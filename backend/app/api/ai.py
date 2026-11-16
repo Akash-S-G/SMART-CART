@@ -5,10 +5,13 @@ from fastapi import (
     Depends,
     File,
     HTTPException,
+    Request,
     UploadFile,
     status,
 )
 from sqlalchemy.orm import Session
+import time
+from app.core.logging import logger
 
 from app.ai.model_loader import model_loader
 from app.ai.preprocessing import preprocessor
@@ -28,32 +31,55 @@ router = APIRouter(
     tags=["AI"],
 )
 
+# In-memory rate limiting for AI detection endpoints (per IP): max 30 scans per minute
+_AI_RATE_LIMITS: dict[str, list[float]] = {}
+
+def check_ai_rate_limit(req: Request, max_scans: int = 30, window_secs: int = 60):
+    now = time.time()
+    fwd = req.headers.get("X-Forwarded-For")
+    ip = fwd.split(",")[0].strip() if fwd else (req.headers.get("X-Real-IP") or (req.client.host if req.client else "unknown"))
+    
+    timestamps = [t for t in _AI_RATE_LIMITS.get(ip, []) if now - t < window_secs]
+    _AI_RATE_LIMITS[ip] = timestamps
+    if len(timestamps) >= max_scans:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="AI scan rate limit exceeded (maximum 30 scans per minute). Please wait a moment before scanning again.",
+        )
+    _AI_RATE_LIMITS.setdefault(ip, []).append(now)
+
 @router.post(
     "/detect",
     response_model=DetectionResponse,
 )
 async def detect_image(
     file: UploadFile = File(...),
+    req: Request = None,
     db: Session = Depends(get_db),
 ):
+    if req:
+        check_ai_rate_limit(req)
+
     if not file.content_type.startswith("image/"):
         raise HTTPException(
             status_code=400,
             detail="File must be an image.",
         )
 
+    logger.info("[AI-Endpoint] Received image upload: %s (%s)", file.filename, file.content_type)
     contents = await file.read()
 
     from app.core.config import settings
-    if settings.AI_SERVICE_URL:
+    # Only dispatch to cloud service if an explicit external AI_SERVICE_URL is configured
+    if settings.AI_SERVICE_URL and settings.AI_SERVICE_URL.strip():
         try:
             import httpx
-            import time
             t0 = time.perf_counter()
             target_url = settings.AI_SERVICE_URL.rstrip('/')
             if not target_url.endswith('.modal.run') and not target_url.endswith('/predict'):
                 target_url = f"{target_url}/predict"
 
+            logger.info("[AI-Endpoint] Dispatching to remote vision service: %s", target_url)
             async with httpx.AsyncClient(timeout=8.0) as client:
                 resp = await client.post(
                     target_url,
@@ -64,19 +90,25 @@ async def detect_image(
                     remote_dets = data.get("detections", [])
                     service = DetectionService(db)
                     latency_ms = (time.perf_counter() - t0) * 1000
+                    logger.info("[AI-Endpoint] Remote service responded in %.2fms with %d detections", latency_ms, len(remote_dets))
                     return service.process_remote_detections(
                         remote_dets,
                         image_width=data.get("imageWidth", 640),
                         image_height=data.get("imageHeight", 480),
                         inference_time_ms=latency_ms,
                     )
+                else:
+                    logger.warning("[AI-Endpoint] Remote service responded with status %d: %s", resp.status_code, resp.text[:200])
         except Exception as err:
-            from app.core.logging import logger
-            logger.warning(f"External AI microservice call to {settings.AI_SERVICE_URL} failed ({err}). Using local engine fallback.")
+            logger.warning("[AI-Endpoint] Remote AI call to %s failed (%s). Falling back to local offline pipeline.", settings.AI_SERVICE_URL, err)
 
+    # Pure offline flow: local DINO/YOLO + OCR pipeline
+    logger.info("[AI-Endpoint] Using offline vision pipeline (DINO / YOLO + OCR)...")
     image = preprocessor.load_bytes(contents)
     service = DetectionService(db)
-    return service.detect(image)
+    result = service.detect(image)
+    logger.info("[AI-Endpoint] Offline detection completed in %.2fms with %d items detected", result.inference_time_ms, len(result.detections))
+    return result
 
 
 
@@ -86,11 +118,14 @@ async def detect_image(
 )
 async def detect_and_add(
     file: UploadFile = File(...),
+    req: Request = None,
     current_user: User = Depends(
         get_current_user
     ),
     db: Session = Depends(get_db),
 ):
+    if req:
+        check_ai_rate_limit(req)
 
     if not file.content_type.startswith(
         "image/"
@@ -105,10 +140,10 @@ async def detect_and_add(
     from app.core.config import settings
     service = DetectionService(db)
 
-    if settings.AI_SERVICE_URL:
+    # Only dispatch to cloud service if an explicit external AI_SERVICE_URL is configured
+    if settings.AI_SERVICE_URL and settings.AI_SERVICE_URL.strip():
         try:
             import httpx
-            import time
             t0 = time.perf_counter()
             target_url = settings.AI_SERVICE_URL.rstrip('/')
             if not target_url.endswith('.modal.run') and not target_url.endswith('/predict'):
@@ -141,9 +176,10 @@ async def detect_and_add(
                                 pass
                     return response
         except Exception as err:
-            from app.core.logging import logger
-            logger.warning(f"External AI microservice call to {settings.AI_SERVICE_URL} failed ({err}). Using local engine fallback.")
+            logger.warning("[AI-Endpoint] Remote AI call to %s failed (%s). Falling back to local offline pipeline.", settings.AI_SERVICE_URL, err)
 
+    # Pure offline flow
+    logger.info("[AI-Endpoint] Using offline vision pipeline for detect-and-add...")
     image = preprocessor.load_bytes(
         contents
     )

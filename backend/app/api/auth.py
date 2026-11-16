@@ -32,24 +32,55 @@ router = APIRouter(
     tags=["Authentication"],
 )
 
-# In-memory brute force lockout store: {email: [timestamps]}
-_FAILED_LOGINS: dict[str, list[float]] = {}
+# In-memory brute force lockout store:
+# {email: [timestamps]} and {ip: [timestamps]}
+_FAILED_LOGINS_EMAIL: dict[str, list[float]] = {}
+_FAILED_LOGINS_IP: dict[str, list[float]] = {}
 
-def check_brute_force(email: str):
+def _get_client_ip(req: Request) -> str:
+    fwd = req.headers.get("X-Forwarded-For")
+    if fwd:
+        return fwd.split(",")[0].strip()
+    real = req.headers.get("X-Real-IP")
+    if real:
+        return real.strip()
+    return req.client.host if req.client else "unknown"
+
+def check_brute_force(email: str, req: Request):
     now = time.time()
-    attempts = [t for t in _FAILED_LOGINS.get(email, []) if now - t < 900]  # 15 min window
-    _FAILED_LOGINS[email] = attempts
-    if len(attempts) >= 5:
+    client_ip = _get_client_ip(req)
+
+    # 1. Check IP-based lockout: max 10 failed login attempts per 15 minutes per IP
+    ip_attempts = [t for t in _FAILED_LOGINS_IP.get(client_ip, []) if now - t < 900]
+    _FAILED_LOGINS_IP[client_ip] = ip_attempts
+    if len(ip_attempts) >= 10:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many failed login attempts from this IP address. Please try again in 15 minutes.",
+        )
+
+    # 2. Check Account/Email-based lockout: max 5 failed attempts per 15 minutes per account
+    email_attempts = [t for t in _FAILED_LOGINS_EMAIL.get(email, []) if now - t < 900]
+    _FAILED_LOGINS_EMAIL[email] = email_attempts
+    if len(email_attempts) >= 5:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail="Account locked temporarily due to too many failed login attempts. Try again in 15 minutes.",
         )
 
-def record_failed_login(email: str):
-    _FAILED_LOGINS.setdefault(email, []).append(time.time())
+def record_failed_login(email: str, req: Request):
+    now = time.time()
+    client_ip = _get_client_ip(req)
+    _FAILED_LOGINS_EMAIL.setdefault(email, []).append(now)
+    _FAILED_LOGINS_IP.setdefault(client_ip, []).append(now)
 
-def clear_failed_logins(email: str):
-    _FAILED_LOGINS.pop(email, None)
+def clear_failed_logins(email: str, req: Request):
+    _FAILED_LOGINS_EMAIL.pop(email, None)
+    client_ip = _get_client_ip(req)
+    # We do not completely clear the whole IP list on single user success to prevent distributed brute force,
+    # but we decrement 1 recent attempt for that IP if present.
+    if client_ip in _FAILED_LOGINS_IP and _FAILED_LOGINS_IP[client_ip]:
+        _FAILED_LOGINS_IP[client_ip].pop()
 
 
 class ForgotPasswordRequest(BaseModel):
@@ -94,14 +125,15 @@ def register(
 )
 def login(
     request: LoginRequest,
+    req: Request,
     response: Response,
     db: Session = Depends(get_db),
 ):
-    check_brute_force(request.email)
+    check_brute_force(request.email, req)
     service = AuthService(db)
     try:
         res = service.login(request)
-        clear_failed_logins(request.email)
+        clear_failed_logins(request.email, req)
         response.set_cookie(
             key="refresh_token",
             value=res.refresh_token,
@@ -111,7 +143,7 @@ def login(
         )
         return res
     except ValueError as exc:
-        record_failed_login(request.email)
+        record_failed_login(request.email, req)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(exc),
